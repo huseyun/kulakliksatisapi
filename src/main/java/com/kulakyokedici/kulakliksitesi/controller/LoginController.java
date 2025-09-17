@@ -1,5 +1,3 @@
-//AI
-
 package com.kulakyokedici.kulakliksitesi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kulakyokedici.kulakliksitesi.objects.security.AuthRequest;
+import com.kulakyokedici.kulakliksitesi.objects.security.dto.AuthRequestDto;
 import com.kulakyokedici.kulakliksitesi.service.security.JwtService;
 
 @RestController
@@ -21,7 +19,7 @@ import com.kulakyokedici.kulakliksitesi.service.security.JwtService;
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService; // Basit bir token üretme servisi (kodunu aşağıda vereceğim)
+    private final JwtService jwtService;
     
     @Autowired
     public LoginController(AuthenticationManager authenticationManager, JwtService jwtService) {
@@ -30,7 +28,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<String> login(@RequestBody AuthRequestDto request) {
         Authentication authenticationRequest =
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
 
@@ -39,12 +37,8 @@ public class LoginController {
         UserDetails userDetails = (UserDetails) authenticatedPrincipal.getPrincipal();
         String token = jwtService.generateToken(userDetails);
         
-        // Front-end'in kolayca işlemesi için JSON objesi döndürüyoruz.
         String jsonResponse = "{\"token\": \"" + token + "\"}";
         
         return ResponseEntity.ok(jsonResponse);
     }
-
-    // Not: AuthRequest sınıfı kullanıcı adı ve şifreyi içeren basit bir DTO'dur.
-    // public record AuthRequest(String username, String password) {}
 }
