@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kulakyokedici.kulakliksitesi.objects.security.AuthRequestDto;
+import com.kulakyokedici.kulakliksitesi.objects.security.dto.AuthRequestDto;
 import com.kulakyokedici.kulakliksitesi.service.security.JwtService;
 
 @RestController

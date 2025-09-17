@@ -1,4 +1,4 @@
-package com.kulakyokedici.kulakliksitesi.objects.security;
+package com.kulakyokedici.kulakliksitesi.objects.security.dto;
 
 public class AuthRequestDto
 {
