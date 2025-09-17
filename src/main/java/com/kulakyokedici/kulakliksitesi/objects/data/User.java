@@ -46,7 +46,7 @@ public class User
 	@Column(name = "email")
 	private String email;
 	
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_typelist",
     	joinColumns = @JoinColumn(name = "user_id"),
     	inverseJoinColumns = @JoinColumn(name = "usertype_id"))
@@ -62,6 +62,16 @@ public class User
     	return username;
     }
     
+    public Long getId()
+    {
+    	return id;
+    }
+    
+    public String getEmail()
+    {
+    	return email;
+    }
+    
     public Set<UserTypes> getUserTypes()
     {
     	return userTypes;
@@ -70,6 +80,14 @@ public class User
     public void setPassword(String password)
     {
     	this.password = password;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public void setUserTypes(Set<UserTypes> userTypes) {
+        this.userTypes = userTypes;
     }
     
     public void resetId()

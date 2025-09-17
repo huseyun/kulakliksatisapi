@@ -27,4 +27,14 @@ public class Item
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
     private Seller seller;
+    
+    public String getItemName()
+	{
+		return itemName;
+	}
+    
+    public Double getItemPrice()
+    {
+    	return itemPrice;
+    }
 }

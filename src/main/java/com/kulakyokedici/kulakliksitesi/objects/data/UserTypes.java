@@ -20,4 +20,9 @@ public class UserTypes
     {
     	return name;
     }
+    
+    public Long getId()
+    {
+    	return id;
+    }
 }

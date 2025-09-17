@@ -28,4 +28,9 @@ public class ShopperService
 	{
 		return shopperRepository.findAll();
 	}
+	
+	public void updateShopper(Shopper shopper)
+	{
+		shopperRepository.save(shopper);
+	}
 }

@@ -20,4 +20,14 @@ public class Shopper extends User
 	
 	@Column(name = "last_name")
 	private String lastName;
+	
+	public String getFirstName()
+	{
+		return firstName;
+	}
+	
+	public String getLastName()
+	{
+		return lastName;
+	}
 }

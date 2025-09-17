@@ -28,4 +28,9 @@ public class SellerService
 	{
 		return sellerRepository.findAll();
 	}
+	
+	public void updateSeller(Seller seller)
+	{
+		sellerRepository.save(seller);
+	}
 }
