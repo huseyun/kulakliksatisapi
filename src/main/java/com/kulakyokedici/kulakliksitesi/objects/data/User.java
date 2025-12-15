@@ -3,7 +3,6 @@ package com.kulakyokedici.kulakliksitesi.objects.data;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -50,7 +49,7 @@ public class User
     @JoinTable(name = "user_typelist",
     	joinColumns = @JoinColumn(name = "user_id"),
     	inverseJoinColumns = @JoinColumn(name = "usertype_id"))
-	private Set<UserTypes> userTypes = new HashSet<>();
+	private Set<UserType> userTypes = new HashSet<>();
     
     public String getPassword()
     {
@@ -72,7 +71,7 @@ public class User
     	return email;
     }
     
-    public Set<UserTypes> getUserTypes()
+    public Set<UserType> getUserTypes()
     {
     	return userTypes;
     }
@@ -86,7 +85,7 @@ public class User
         this.email = email;
     }
     
-    public void setUserTypes(Set<UserTypes> userTypes) {
+    public void setUserTypes(Set<UserType> userTypes) {
         this.userTypes = userTypes;
     }
     

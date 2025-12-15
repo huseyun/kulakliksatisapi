@@ -1,7 +1,8 @@
 /*
  * TODO 1: jwtservice, jwtauthenticationfilter, nasil calisiyor ogren
  * TODO 2: admin sayfası, kullanıcı eklesin, kullanıcı silsin.
- * 
+ * TODO 3: veri objelerini baştan sona oku, düzenle.
+ * TODO 4: DTO paternini entegre etmeye çalış.
  */
 
 package com.kulakyokedici.kulakliksitesi;

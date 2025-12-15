@@ -21,12 +21,20 @@ public class Seller extends User
 	}
 
 	@Column(name = "company_name")
-	private String company_name;
+	private String companyName;
 	
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Item> items;
 	
     public List<Item> getItems() {
         return items;
+    }
+    
+    public String getCompanyName() {
+        return companyName;
+    }
+    
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

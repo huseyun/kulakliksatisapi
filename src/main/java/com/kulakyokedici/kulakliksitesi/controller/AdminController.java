@@ -102,6 +102,20 @@ public class AdminController
 		return ResponseEntity.ok().build();
 	}
 	
+	@PostMapping("/post/addadmin")
+	public ResponseEntity<Void> addAdmin(@RequestBody Admin admin)
+	{
+		adminService.addAdmin(admin);
+		return ResponseEntity.ok().build();
+	}
+	
+	@PostMapping("/post/addseller")
+	public ResponseEntity<Void> addSeller(@RequestBody Seller seller)
+	{
+		sellerService.addSeller(seller);
+		return ResponseEntity.ok().build();
+	}
+	
 	@PutMapping("/put/updateuser")
 	public ResponseEntity<Void> updateUser(@RequestBody User newUser)
 	{

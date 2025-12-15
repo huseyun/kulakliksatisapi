@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
-import com.kulakyokedici.kulakliksitesi.objects.data.UserTypes;
+import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypesRepository;
 
@@ -53,13 +53,13 @@ public class UserService
 		user.resetId();
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Set<UserTypes> managedUserTypes = user.getUserTypes().stream()
+        Set<UserType> managedUserTypes = user.getUserTypes().stream()
                 .map(ut -> userTypesRepository.findById(ut.getId()).orElse(null))
                 .filter(ut -> ut != null)
                 .collect(Collectors.toSet());
         
         user.setUserTypes(managedUserTypes);
-
+        
 		userRepository.save(user);
 	}
 	
