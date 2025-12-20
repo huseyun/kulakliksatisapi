@@ -13,6 +13,8 @@ import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.repository.SellerRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypesRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class SellerService
 {
@@ -40,9 +42,16 @@ public class SellerService
 		return sellerRepository.findAll();
 	}
 	
+	@Transactional
 	public void updateSeller(Seller seller)
 	{
-		sellerRepository.save(seller);
+		Seller existing = sellerRepository.findById(seller.getId()).orElse(null);
+	            existing.setUsername(seller.getUsername());
+	            existing.setEmail(seller.getEmail());
+	            existing.setPassword(seller.getPassword());
+	            existing.setCompanyName(seller.getCompanyName());
+
+	        sellerRepository.save(existing);
 	}
 	
 	public void addSeller(Seller seller)

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.repository.ShopperRepository;
 
@@ -31,6 +32,13 @@ public class ShopperService
 	
 	public void updateShopper(Shopper shopper)
 	{
-		shopperRepository.save(shopper);
+	    Shopper existing = shopperRepository.findById(shopper.getId()).orElse(null);
+	    if (existing != null) {
+	        if (shopper.getPassword() == null) {
+	            shopper.setPassword(existing.getPassword());
+	        }
+	        
+	        shopperRepository.save(shopper);
+	    }
 	}
 }

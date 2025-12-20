@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,8 @@ import com.kulakyokedici.kulakliksitesi.service.ItemService;
 import com.kulakyokedici.kulakliksitesi.service.SellerService;
 import com.kulakyokedici.kulakliksitesi.service.ShopperService;
 import com.kulakyokedici.kulakliksitesi.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/admin")
@@ -96,42 +99,42 @@ public class AdminController
 	}
 	
 	@PostMapping("/post/adduser")
-	public ResponseEntity<Void> addUser(@RequestBody User user)
+	public ResponseEntity<Void> addUser(@Valid @RequestBody User user)
 	{
 		userService.addUser(user);
 		return ResponseEntity.ok().build();
 	}
 	
 	@PostMapping("/post/addadmin")
-	public ResponseEntity<Void> addAdmin(@RequestBody Admin admin)
+	public ResponseEntity<Void> addAdmin(@Valid @RequestBody Admin admin)
 	{
 		adminService.addAdmin(admin);
 		return ResponseEntity.ok().build();
 	}
 	
 	@PostMapping("/post/addseller")
-	public ResponseEntity<Void> addSeller(@RequestBody Seller seller)
+	public ResponseEntity<Void> addSeller(@Valid @RequestBody Seller seller)
 	{
 		sellerService.addSeller(seller);
 		return ResponseEntity.ok().build();
 	}
 	
 	@PutMapping("/put/updateuser")
-	public ResponseEntity<Void> updateUser(@RequestBody User newUser)
+	public ResponseEntity<Void> updateUser(@Valid @RequestBody User newUser)
 	{
 		userService.updateUser(newUser);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/put/updateseller")
-	public ResponseEntity<Void> updateSeller(@RequestBody Seller newSeller)
+	public ResponseEntity<Void> updateSeller(@Valid @RequestBody Seller newSeller)
 	{
 		sellerService.updateSeller(newSeller);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/put/updateshopper")
-	public ResponseEntity<Void> updateShopper(@RequestBody Shopper newShopper)
+	public ResponseEntity<Void> updateShopper(@Valid @RequestBody Shopper newShopper)
 	{
 		shopperService.updateShopper(newShopper);
 		return ResponseEntity.noContent().build();
