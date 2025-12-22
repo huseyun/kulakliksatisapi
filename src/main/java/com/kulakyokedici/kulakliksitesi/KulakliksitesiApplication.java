@@ -4,6 +4,7 @@
  * TODO 3: veri objelerini baştan sona oku, düzenle.
  * TODO 4: DTO paternini entegre etmeye çalış.
  * TODO 5: güncelleme işlerinin hatalarını düzelt.
+ * TODO 6: postman testlerini olustur.
  */
 
 package com.kulakyokedici.kulakliksitesi;

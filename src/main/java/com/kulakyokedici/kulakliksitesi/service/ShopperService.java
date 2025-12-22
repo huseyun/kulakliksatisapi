@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsDto;
 import com.kulakyokedici.kulakliksitesi.repository.ShopperRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ShopperService
@@ -30,15 +32,20 @@ public class ShopperService
 		return shopperRepository.findAll();
 	}
 	
+	@Transactional
 	public void updateShopper(Shopper shopper)
 	{
 	    Shopper existing = shopperRepository.findById(shopper.getId()).orElse(null);
 	    if (existing != null) {
-	        if (shopper.getPassword() == null) {
-	            shopper.setPassword(existing.getPassword());
-	        }
-	        
-	        shopperRepository.save(shopper);
+	    	shopper.setPassword(existing.getPassword());
 	    }
+	}
+	
+	@Transactional
+	public void updateShopperDetails(ShopperDetailsDto newShopperDetails)
+	{
+		Shopper existing = shopperRepository.findShopperById(newShopperDetails.getId());
+		existing.setFirstName(newShopperDetails.getFirstName());
+		existing.setLastName(newShopperDetails.getLastName());
 	}
 }

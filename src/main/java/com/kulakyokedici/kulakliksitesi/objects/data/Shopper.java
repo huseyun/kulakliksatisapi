@@ -30,4 +30,14 @@ public class Shopper extends User
 	{
 		return lastName;
 	}
+	
+	public void setFirstName(String firstname)
+	{
+		this.firstName = firstname;
+	}
+	
+	public void setLastName(String lastName)
+	{
+		this.lastName = lastName;
+	}
 }

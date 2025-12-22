@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +18,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsDto;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
 import com.kulakyokedici.kulakliksitesi.service.SellerService;
@@ -137,6 +137,20 @@ public class AdminController
 	public ResponseEntity<Void> updateShopper(@Valid @RequestBody Shopper newShopper)
 	{
 		shopperService.updateShopper(newShopper);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping("/put/updateshopperdetails")
+	public ResponseEntity<Void> updateShopperDetails(@Valid @RequestBody ShopperDetailsDto newShopperDetails)
+	{
+		shopperService.updateShopperDetails(newShopperDetails);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping("/put/updateadmin")
+	public ResponseEntity<Void> updateAdmin(@Valid @RequestBody Admin newAdmin)
+	{
+		adminService.updateAdmin(newAdmin);
 		return ResponseEntity.noContent().build();
 	}
 }

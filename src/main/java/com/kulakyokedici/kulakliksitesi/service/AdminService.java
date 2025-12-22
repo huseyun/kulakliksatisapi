@@ -13,6 +13,8 @@ import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.repository.AdminRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypesRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class AdminService
 {
@@ -35,6 +37,7 @@ public class AdminService
 		return adminRepository.findAll();
 	}
 	
+	@Transactional
 	public void addAdmin(Admin admin)
 	{
 		admin.resetId();
@@ -46,7 +49,16 @@ public class AdminService
                 .collect(Collectors.toSet());
         
         admin.setUserTypes(managedUserTypes);
-        
-        adminRepository.save(admin);
+	}
+	
+	@Transactional
+	public void updateAdmin(Admin admin)
+	{
+		Admin existing = adminRepository.findAdminById(admin.getId());
+		existing.fullUpdate(admin);
+		
+	    if (admin.getPassword() != null && !admin.getPassword().isEmpty()) {
+	        existing.setPassword(passwordEncoder.encode(admin.getPassword()));
+	    }
 	}
 }

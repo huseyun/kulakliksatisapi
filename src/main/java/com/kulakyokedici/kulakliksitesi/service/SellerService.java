@@ -50,10 +50,9 @@ public class SellerService
 	            existing.setEmail(seller.getEmail());
 	            existing.setPassword(seller.getPassword());
 	            existing.setCompanyName(seller.getCompanyName());
-
-	        sellerRepository.save(existing);
 	}
 	
+	@Transactional
 	public void addSeller(Seller seller)
 	{
 		seller.resetId();
@@ -65,7 +64,5 @@ public class SellerService
                 .collect(Collectors.toSet());
         
         seller.setUserTypes(managedUserTypes);
-        
-        sellerRepository.save(seller);
 	}
 }
