@@ -22,12 +22,12 @@ public class ShopperService
 		this.shopperRepository = shopperRepository;
 	}
 	
-	public Shopper getShopperDetails(Long id)
+	public Shopper provideShopperById(Long id)
 	{
 		return shopperRepository.findShopperById(id);
 	}
 	
-	public List<Shopper> getAllShoppers()
+	public List<Shopper> provideAllShoppers()
 	{
 		return shopperRepository.findAll();
 	}

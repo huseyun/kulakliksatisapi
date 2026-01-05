@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.NewAdminDto;
 import com.kulakyokedici.kulakliksitesi.repository.AdminRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypesRepository;
 
@@ -38,17 +39,17 @@ public class AdminService
 	}
 	
 	@Transactional
-	public void addAdmin(Admin admin)
+	public void addAdmin(NewAdminDto newAdmin)
 	{
-		admin.resetId();
-		admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-
-        Set<UserType> managedUserTypes = admin.getUserTypes().stream()
-                .map(ut -> userTypesRepository.findById(ut.getId()).orElse(null))
-                .filter(ut -> ut != null)
-                .collect(Collectors.toSet());
-        
-        admin.setUserTypes(managedUserTypes);
+		Admin admin = new Admin();
+		
+		admin.setUsername(newAdmin.getUsername());
+		admin.setEmail(newAdmin.getEmail());
+		admin.setPassword(passwordEncoder.encode(newAdmin.getPassword()));
+		
+		admin.getUserTypes().add(userTypesRepository.findByName("ADMIN"));
+		
+        adminRepository.save(admin);
 	}
 	
 	@Transactional

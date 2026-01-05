@@ -48,20 +48,21 @@ public class UserService
 		return userRepository.findByEmail(email);
 	}
 	
-	public void addUser(User user)
-	{
-		user.resetId();
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        Set<UserType> managedUserTypes = user.getUserTypes().stream()
-                .map(ut -> userTypesRepository.findById(ut.getId()).orElse(null))
-                .filter(ut -> ut != null)
-                .collect(Collectors.toSet());
-        
-        user.setUserTypes(managedUserTypes);
-        
-		userRepository.save(user);
-	}
+	// Ihtiyaç kalmadı şimdilik
+//	public void addUser(User user)
+//	{
+//		user.resetId();
+//		user.setPassword(passwordEncoder.encode(user.getPassword()));
+//
+//        Set<UserType> managedUserTypes = user.getUserTypes().stream()
+//                .map(ut -> userTypesRepository.findById(ut.getId()).orElse(null))
+//                .filter(ut -> ut != null)
+//                .collect(Collectors.toSet());
+//        
+//        user.setUserTypes(managedUserTypes);
+//        
+//		userRepository.save(user);
+//	}
 	
 	public void updateUser(User user)
 	{

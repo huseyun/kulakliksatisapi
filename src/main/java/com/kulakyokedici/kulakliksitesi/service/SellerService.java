@@ -64,5 +64,7 @@ public class SellerService
                 .collect(Collectors.toSet());
         
         seller.setUserTypes(managedUserTypes);
+        
+        sellerRepository.save(seller);
 	}
 }

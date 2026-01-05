@@ -18,6 +18,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.NewAdminDto;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsDto;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
@@ -77,7 +78,7 @@ public class AdminController
 	@GetMapping("/get/allshoppers")
 	public ResponseEntity<List<Shopper>> getAllShoppers()
 	{
-		return ResponseEntity.ok(shopperService.getAllShoppers());
+		return ResponseEntity.ok(shopperService.provideAllShoppers());
 	}
 	
 	@GetMapping("/get/allsellers")
@@ -98,17 +99,10 @@ public class AdminController
 		return ResponseEntity.ok(itemService.getItemsBySellerId(sellerId));
 	}
 	
-	@PostMapping("/post/adduser")
-	public ResponseEntity<Void> addUser(@Valid @RequestBody User user)
-	{
-		userService.addUser(user);
-		return ResponseEntity.ok().build();
-	}
-	
 	@PostMapping("/post/addadmin")
-	public ResponseEntity<Void> addAdmin(@Valid @RequestBody Admin admin)
+	public ResponseEntity<Void> addAdmin(@Valid @RequestBody NewAdminDto newAdmin)
 	{
-		adminService.addAdmin(admin);
+		adminService.addAdmin(newAdmin);
 		return ResponseEntity.ok().build();
 	}
 	
