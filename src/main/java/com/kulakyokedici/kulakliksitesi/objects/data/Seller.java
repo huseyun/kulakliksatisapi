@@ -37,4 +37,10 @@ public class Seller extends User
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
+    
+    public void fullUpdate(Seller newSeller)
+    {
+    	super.fullUpdate(newSeller);
+    	companyName = newSeller.companyName;
+    }
 }

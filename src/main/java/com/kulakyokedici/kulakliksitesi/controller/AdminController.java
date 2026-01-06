@@ -113,12 +113,12 @@ public class AdminController
 		return ResponseEntity.ok().build();
 	}
 	
-	@PutMapping("/put/updateuser")
-	public ResponseEntity<Void> updateUser(@Valid @RequestBody User newUser)
-	{
-		userService.updateUser(newUser);
-		return ResponseEntity.noContent().build();
-	}
+//	@PutMapping("/put/updateuser")
+//	public ResponseEntity<Void> updateUser(@Valid @RequestBody User newUser)
+//	{
+//		userService.updateUser(newUser);
+//		return ResponseEntity.noContent().build();
+//	}
 	
 	@PutMapping("/put/updateseller")
 	public ResponseEntity<Void> updateSeller(@Valid @RequestBody Seller newSeller)

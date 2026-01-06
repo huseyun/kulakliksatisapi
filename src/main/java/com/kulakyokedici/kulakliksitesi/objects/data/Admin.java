@@ -13,10 +13,4 @@ public class Admin extends User
 	{
 		super(username, password);
 	}
-	
-	public void fullUpdate(Admin sourceAdmin)
-	{
-		this.setUsername(sourceAdmin.getUsername());
-		this.setEmail(sourceAdmin.getEmail());
-	}
 }

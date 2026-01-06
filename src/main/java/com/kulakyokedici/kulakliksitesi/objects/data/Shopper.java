@@ -40,4 +40,11 @@ public class Shopper extends User
 	{
 		this.lastName = lastName;
 	}
+	
+	public void fullUpdate(Shopper newShopper)
+	{
+		super.fullUpdate(newShopper);
+		this.firstName = newShopper.getFirstName();
+		this.lastName = newShopper.getLastName();
+	}
 }

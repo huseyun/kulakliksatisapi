@@ -21,7 +21,7 @@ import jakarta.persistence.Table;
 //alt siniflarda nasil baglanacak? yeni tablo olusturup foreign key ile.
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "all_users")
-public class User
+public abstract class User
 {
 	
 	public User() {}
@@ -97,5 +97,12 @@ public class User
     public void resetId()
 	{
 		this.id = null;
+	}
+    
+	public void fullUpdate(User sourceUser)
+	{
+		this.setUsername(sourceUser.getUsername());
+		this.setEmail(sourceUser.getEmail());
+		this.setPassword(sourceUser.getPassword());
 	}
 }

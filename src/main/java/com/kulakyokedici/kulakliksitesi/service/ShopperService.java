@@ -36,9 +36,7 @@ public class ShopperService
 	public void updateShopper(Shopper shopper)
 	{
 	    Shopper existing = shopperRepository.findById(shopper.getId()).orElse(null);
-	    if (existing != null) {
-	    	shopper.setPassword(existing.getPassword());
-	    }
+	    existing.fullUpdate(shopper);
 	}
 	
 	@Transactional
