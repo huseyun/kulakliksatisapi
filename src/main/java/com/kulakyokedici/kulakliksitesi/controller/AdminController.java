@@ -18,7 +18,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.NewAdminDto;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserInfoDto;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsDto;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
@@ -100,7 +100,7 @@ public class AdminController
 	}
 	
 	@PostMapping("/post/addadmin")
-	public ResponseEntity<Void> addAdmin(@Valid @RequestBody NewAdminDto newAdmin)
+	public ResponseEntity<Void> addAdmin(@Valid @RequestBody UserInfoDto newAdmin)
 	{
 		adminService.addAdmin(newAdmin);
 		return ResponseEntity.ok().build();

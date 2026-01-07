@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.NewAdminDto;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserInfoDto;
 import com.kulakyokedici.kulakliksitesi.repository.AdminRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypesRepository;
 
@@ -39,7 +39,7 @@ public class AdminService
 	}
 	
 	@Transactional
-	public void addAdmin(NewAdminDto newAdmin)
+	public void addAdmin(UserInfoDto newAdmin)
 	{
 		Admin admin = new Admin();
 		
