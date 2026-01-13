@@ -1,8 +1,9 @@
-package com.kulakyokedici.kulakliksitesi.objects.data.dto;
+ package com.kulakyokedici.kulakliksitesi.objects.data.dto;
 
 import jakarta.validation.constraints.NotNull;
 
-public class ShopperDetailsDto {
+public class ShopperDetailsRequest {
+	
 	@NotNull(message = "Shopper ID cannot be null")
 	private Long id;
 	

@@ -1,6 +1,6 @@
 package com.kulakyokedici.kulakliksitesi.objects.data.dto;
 
-public class UserInfoDto {
+public class UserInfoRequest {
 	
 	private String username;
 	private String password;

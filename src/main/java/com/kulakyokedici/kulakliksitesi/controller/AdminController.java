@@ -18,8 +18,8 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserInfoDto;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsDto;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserInfoRequest;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
 import com.kulakyokedici.kulakliksitesi.service.SellerService;
@@ -100,7 +100,7 @@ public class AdminController
 	}
 	
 	@PostMapping("/post/addadmin")
-	public ResponseEntity<Void> addAdmin(@Valid @RequestBody UserInfoDto newAdmin)
+	public ResponseEntity<Void> addAdmin(@Valid @RequestBody UserInfoRequest newAdmin)
 	{
 		adminService.addAdmin(newAdmin);
 		return ResponseEntity.ok().build();
@@ -134,10 +134,11 @@ public class AdminController
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/put/updateshopperdetails")
-	public ResponseEntity<Void> updateShopperDetails(@Valid @RequestBody ShopperDetailsDto newShopperDetails)
+	@PutMapping("/put/updateshopperdetails/{shopperId}")
+	public ResponseEntity<Void> updateShopperDetails(@PathVariable Long shopperId, 
+			@Valid @RequestBody ShopperDetailsRequest newShopperDetails)
 	{
-		shopperService.updateShopperDetails(newShopperDetails);
+		shopperService.updateShopperDetails(shopperId, newShopperDetails);
 		return ResponseEntity.noContent().build();
 	}
 	

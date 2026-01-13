@@ -5,6 +5,7 @@
  * TODO DTO paternini butun siniflara uygula.
  * TODO Itemlere girismeye basla.
  * TODO full update ve detailupdate fonksiyonlarini, DTO'larla eszaman implement etmeye basla.
+ * TODO update controller'lerini, url'den id alacak sekilde duzenle.
  * TODO TAMAM güncelleme işlerinin hatalarını düzelt.
  * TODO TAMAM veri objelerini baştan sona oku, düzenle.
  * TODO TAMAM DTO paternini entegre etmeye çalış.

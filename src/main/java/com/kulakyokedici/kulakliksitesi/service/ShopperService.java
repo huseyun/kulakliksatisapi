@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsDto;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsRequest;
 import com.kulakyokedici.kulakliksitesi.repository.ShopperRepository;
 
 import jakarta.transaction.Transactional;
@@ -22,9 +22,9 @@ public class ShopperService
 		this.shopperRepository = shopperRepository;
 	}
 	
-	public Shopper provideShopperById(Long id)
+	public Shopper provideShopperById(Long shopperId)
 	{
-		return shopperRepository.findShopperById(id);
+		return shopperRepository.findShopperById(shopperId);
 	}
 	
 	public List<Shopper> provideAllShoppers()
@@ -40,9 +40,9 @@ public class ShopperService
 	}
 	
 	@Transactional
-	public void updateShopperDetails(ShopperDetailsDto newShopperDetails)
+	public void updateShopperDetails(Long shopperId, ShopperDetailsRequest newShopperDetails)
 	{
-		Shopper existing = shopperRepository.findShopperById(newShopperDetails.getId());
+		Shopper existing = provideShopperById(shopperId);
 		existing.setFirstName(newShopperDetails.getFirstName());
 		existing.setLastName(newShopperDetails.getLastName());
 	}

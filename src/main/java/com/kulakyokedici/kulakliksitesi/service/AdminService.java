@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserInfoDto;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserInfoRequest;
 import com.kulakyokedici.kulakliksitesi.repository.AdminRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypesRepository;
 
@@ -38,8 +38,7 @@ public class AdminService
 		return adminRepository.findAll();
 	}
 	
-	@Transactional
-	public void addAdmin(UserInfoDto newAdmin)
+	public void addAdmin(UserInfoRequest newAdmin)
 	{
 		Admin admin = new Admin();
 		
