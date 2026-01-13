@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.repository.ShopperRepository;
 
 import jakarta.transaction.Transactional;
@@ -33,14 +34,24 @@ public class ShopperService
 	}
 	
 	@Transactional
-	public void updateShopper(Shopper shopper)
+	public void updateShopper(Long id,
+			ShopperUpdateRequest newShopper)
 	{
-	    Shopper existing = shopperRepository.findById(shopper.getId()).orElse(null);
+	    Shopper existing = shopperRepository.findById(id).orElse(null);
+	    
+	    Shopper shopper = new Shopper();
+	    shopper.setUsername(newShopper.username());
+	    shopper.setEmail(newShopper.email());
+	    shopper.setFirstName(newShopper.firstName());
+	    shopper.setLastName(newShopper.lastName());
+	    shopper.setPassword(newShopper.password());
+	    
 	    existing.fullUpdate(shopper);
 	}
 	
 	@Transactional
-	public void updateShopperDetails(Long shopperId, ShopperDetailsUpdateRequest newShopperDetails)
+	public void updateShopperDetails(Long shopperId, 
+			ShopperDetailsUpdateRequest newShopperDetails)
 	{
 		Shopper existing = provideShopperById(shopperId);
 		existing.setFirstName(newShopperDetails.firstName());

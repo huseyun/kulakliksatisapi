@@ -19,6 +19,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserCreateRequest;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
@@ -108,7 +109,7 @@ public class AdminController
 	
 	@PostMapping("/post/addseller")
 	public ResponseEntity<Void> addSeller(@Valid @RequestBody Seller seller)
-	{
+	{	
 		sellerService.addSeller(seller);
 		return ResponseEntity.ok().build();
 	}
@@ -120,17 +121,19 @@ public class AdminController
 //		return ResponseEntity.noContent().build();
 //	}
 	
-	@PutMapping("/put/updateseller")
-	public ResponseEntity<Void> updateSeller(@Valid @RequestBody Seller newSeller)
+	@PutMapping("/put/updateseller/{sellerId}")
+	public ResponseEntity<Void> updateSeller(@PathVariable Long sellerId,
+			@Valid @RequestBody Seller newSeller)
 	{
 		sellerService.updateSeller(newSeller);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/put/updateshopper")
-	public ResponseEntity<Void> updateShopper(@Valid @RequestBody Shopper newShopper)
+	@PutMapping("/put/updateshopper/{shopperId}")
+	public ResponseEntity<Void> updateShopper(@PathVariable Long shopperId, 
+			@Valid @RequestBody ShopperUpdateRequest newShopper)
 	{
-		shopperService.updateShopper(newShopper);
+		shopperService.updateShopper(shopperId, newShopper);
 		return ResponseEntity.noContent().build();
 	}
 	
@@ -142,7 +145,7 @@ public class AdminController
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/put/updateadmin")
+	@PutMapping("/put/updateadmin/{adminId}")
 	public ResponseEntity<Void> updateAdmin(@Valid @RequestBody Admin newAdmin)
 	{
 		adminService.updateAdmin(newAdmin);

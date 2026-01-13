@@ -14,7 +14,7 @@ public class Shopper extends User
 	{
 		super(username, password);
 	}
-
+	
 	@Column(name = "first_name")
 	private String firstName;
 	

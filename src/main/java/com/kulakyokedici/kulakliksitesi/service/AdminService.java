@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.repository.AdminRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypesRepository;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @Service
 public class AdminService
@@ -38,7 +40,7 @@ public class AdminService
 		return adminRepository.findAll();
 	}
 	
-	public void addAdmin(UserCreateRequest newAdmin)
+	public void addAdmin(@Valid UserCreateRequest newAdmin)
 	{
 		Admin admin = new Admin();
 		
