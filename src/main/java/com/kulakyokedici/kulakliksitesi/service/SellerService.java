@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.repository.SellerRepository;
-import com.kulakyokedici.kulakliksitesi.repository.UserTypesRepository;
+import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -19,12 +19,12 @@ import jakarta.transaction.Transactional;
 public class SellerService
 {
 	private SellerRepository sellerRepository;
-    private final UserTypesRepository userTypesRepository;
+    private final UserTypeRepository userTypesRepository;
 	private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	public SellerService(SellerRepository sellerRepository,
-			UserTypesRepository userTypesRepository,
+			UserTypeRepository userTypesRepository,
 			PasswordEncoder passwordEncoder)
 	{
 		this.sellerRepository = sellerRepository;

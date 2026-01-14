@@ -1,3 +1,4 @@
+/*
 -- Kullanıcı rolleri `ROLE_` öneki olmadan ekleniyor
 INSERT INTO user_types (name) VALUES ('ADMIN'); -- ID: 1
 INSERT INTO user_types (name) VALUES ('SHOPPER');  -- ID: 2
@@ -29,3 +30,4 @@ INSERT INTO items (item_name, item_price, seller_id) VALUES ('Logitech G Pro X K
 INSERT INTO items (item_name, item_price, seller_id) VALUES ('Razer DeathAdder V2 Mouse', 450.50, 2);
 INSERT INTO items (item_name, item_price, seller_id) VALUES ('Corsair K70 RGB Klavye', 850.75, 2);
 INSERT INTO items (item_name, item_price, seller_id) VALUES ('SteelSeries Arctis 7 Kulaklık', 1500.00, 2);
+*/

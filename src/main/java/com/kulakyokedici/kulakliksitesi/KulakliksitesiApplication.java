@@ -7,6 +7,7 @@
  * TODO full update ve detailupdate fonksiyonlarini, DTO'larla eszaman implement etmeye basla.
  * TODO update controller'lerini, url'den id alacak sekilde duzenle.
  * TODO exception handling mekanizmasini olustur.
+ * TODO veri objelerini, dogrulamalarini, nasil olacaklarini kurgula.
  * TODO TAMAM güncelleme işlerinin hatalarını düzelt.
  * TODO TAMAM veri objelerini baştan sona oku, düzenle.
  * TODO TAMAM DTO paternini entegre etmeye çalış.

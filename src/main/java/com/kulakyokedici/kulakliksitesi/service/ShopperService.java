@@ -3,6 +3,7 @@ package com.kulakyokedici.kulakliksitesi.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
@@ -16,11 +17,13 @@ import jakarta.transaction.Transactional;
 public class ShopperService
 {
 	private ShopperRepository shopperRepository;
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public ShopperService(ShopperRepository shopperRepository)
+	public ShopperService(ShopperRepository shopperRepository, PasswordEncoder passwordEncoder)
 	{
 		this.shopperRepository = shopperRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	public Shopper provideShopperById(Long shopperId)
@@ -44,7 +47,7 @@ public class ShopperService
 	    shopper.setEmail(newShopper.email());
 	    shopper.setFirstName(newShopper.firstName());
 	    shopper.setLastName(newShopper.lastName());
-	    shopper.setPassword(newShopper.password());
+	    shopper.setPassword(passwordEncoder.encode(shopper.getPassword()));
 	    
 	    existing.fullUpdate(shopper);
 	}

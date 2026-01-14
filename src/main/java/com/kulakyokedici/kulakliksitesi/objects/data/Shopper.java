@@ -1,6 +1,9 @@
 package com.kulakyokedici.kulakliksitesi.objects.data;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -20,6 +23,38 @@ public class Shopper extends User
 	
 	@Column(name = "last_name")
 	private String lastName;
+	
+    @Embedded
+    @AttributeOverrides(
+    {
+    @AttributeOverride(name = "addressLine1",
+    column = @Column(name = "BILLING_ADDRESSLINE1")),
+    @AttributeOverride(name = "addressLine2",
+    column = @Column(name = "BILLING_ADDRESSLINE2")),
+    @AttributeOverride(name = "zipCode",
+    column = @Column(name = "BILLING_ZIPCODE", length = 5)),
+    @AttributeOverride(name = "district",
+    column = @Column(name = "BILLING_DISTRICT", length = 5)),
+    @AttributeOverride(name = "city",
+    column = @Column(name = "BILLING_CITY"))
+    })
+    protected Address billingAddress;
+    
+    @Embedded
+    @AttributeOverrides(
+    {
+    @AttributeOverride(name = "addressLine1",
+    column = @Column(name = "SHIPPING_ADDRESSLINE1")),
+    @AttributeOverride(name = "addressLine2",
+    column = @Column(name = "SHIPPING_ADDRESSLINE2")),
+    @AttributeOverride(name = "zipCode",
+    column = @Column(name = "SHIPPING_ZIPCODE", length = 5)),
+    @AttributeOverride(name = "district",
+    column = @Column(name = "SHIPPING_DISTRICT", length = 5)),
+    @AttributeOverride(name = "city",
+    column = @Column(name = "SHIPPING_CITY"))
+    })
+    protected Address shippingAddress;
 	
 	public String getFirstName()
 	{

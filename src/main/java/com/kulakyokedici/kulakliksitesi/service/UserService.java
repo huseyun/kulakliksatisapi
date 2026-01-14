@@ -11,17 +11,17 @@ import org.springframework.stereotype.Service;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
-import com.kulakyokedici.kulakliksitesi.repository.UserTypesRepository;
+import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
 @Service
 public class UserService
 {
 	private UserRepository userRepository;
-    private final UserTypesRepository userTypesRepository;
+    private final UserTypeRepository userTypesRepository;
 	private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public UserService(UserRepository userRepository, UserTypesRepository userTypesRepository, PasswordEncoder passwordEncoder)
+	public UserService(UserRepository userRepository, UserTypeRepository userTypesRepository, PasswordEncoder passwordEncoder)
 	{
 		this.userRepository = userRepository;
         this.userTypesRepository = userTypesRepository;
