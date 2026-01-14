@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -66,6 +67,9 @@ public abstract class User
     
     @CreationTimestamp
     private LocalDateTime userCreationTime;
+    
+    @UpdateTimestamp
+    private LocalDateTime userLastupdated;
     
     public String getPassword()
     {

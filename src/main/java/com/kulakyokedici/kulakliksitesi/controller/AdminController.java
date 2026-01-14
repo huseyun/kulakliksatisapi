@@ -21,6 +21,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.User;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
 import com.kulakyokedici.kulakliksitesi.service.SellerService;
@@ -114,10 +115,11 @@ public class AdminController
 		return ResponseEntity.ok().build();
 	}
 	
-//	@PutMapping("/put/updateuser")
-//	public ResponseEntity<Void> updateUser(@Valid @RequestBody User newUser)
+//	@PutMapping("/put/updateuser/{userId}")
+//	public ResponseEntity<Void> updateUser(@PathVariable Long userId,
+//			@Valid @RequestBody UserUpdateRequest newUser)
 //	{
-//		userService.updateUser(newUser);
+//		userService.updateUser(userId, newUser);
 //		return ResponseEntity.noContent().build();
 //	}
 	
@@ -146,9 +148,10 @@ public class AdminController
 	}
 	
 	@PutMapping("/put/updateadmin/{adminId}")
-	public ResponseEntity<Void> updateAdmin(@Valid @RequestBody Admin newAdmin)
+	public ResponseEntity<Void> updateAdmin(@PathVariable Long adminId,
+			@Valid @RequestBody UserUpdateRequest newAdmin)
 	{
-		adminService.updateAdmin(newAdmin);
+		adminService.updateAdmin(adminId, newAdmin);
 		return ResponseEntity.noContent().build();
 	}
 }

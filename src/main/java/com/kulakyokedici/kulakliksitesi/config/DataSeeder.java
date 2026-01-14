@@ -1,5 +1,3 @@
-// AI
-
 package com.kulakyokedici.kulakliksitesi.config;
 
 import java.util.HashSet;
@@ -11,11 +9,10 @@ import org.springframework.stereotype.Component;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
 import com.kulakyokedici.kulakliksitesi.objects.data.EUserType;
+import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
-
-import jakarta.transaction.Transactional;
 
 @Component
 public class DataSeeder implements CommandLineRunner {
@@ -39,17 +36,32 @@ public class DataSeeder implements CommandLineRunner {
         createRoleIfNotFound(EUserType.SELLER);
         createRoleIfNotFound(EUserType.SHOPPER);
 
-        if (!userRepository.existsByUsername("admin")) {
+        if (!userRepository.existsByUsername("admin")) 
+        {
             Admin admin = new Admin();
             admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("adminpass"));
             admin.setEmail("admin@admin.com");
-            admin.setPassword(passwordEncoder.encode("admin"));
 
             UserType adminRole = userTypeRepository.findByName(EUserType.ADMIN);
             
             admin.setUserTypes(new HashSet<>(Set.of(adminRole))); 
 
             userRepository.save(admin);
+        }
+        
+        if (!userRepository.existsByUsername("shopper"))
+        {
+        	Shopper shopper = new Shopper();
+        	shopper.setUsername("shopper");
+        	shopper.setPassword(passwordEncoder.encode("shopperpass"));
+        	shopper.setEmail("shopper@shopper.com");
+        	
+        	UserType shopperRole = userTypeRepository.findByName(EUserType.SHOPPER);
+        	
+        	shopper.setUserTypes(new HashSet<>(Set.of(shopperRole)));
+        	
+        	userRepository.save(shopper);
         }
     }
 

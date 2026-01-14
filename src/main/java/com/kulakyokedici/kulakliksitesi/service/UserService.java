@@ -1,15 +1,12 @@
 package com.kulakyokedici.kulakliksitesi.service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
-import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
@@ -48,25 +45,11 @@ public class UserService
 		return userRepository.findByEmail(email);
 	}
 	
-	// Ihtiyaç kalmadı şimdilik
-//	public void addUser(User user)
+//	@Transactional
+//	public void updateUser(Long userId, UserUpdateRequest newUser)
 //	{
-//		user.resetId();
-//		user.setPassword(passwordEncoder.encode(user.getPassword()));
-//
-//        Set<UserType> managedUserTypes = user.getUserTypes().stream()
-//                .map(ut -> userTypesRepository.findById(ut.getId()).orElse(null))
-//                .filter(ut -> ut != null)
-//                .collect(Collectors.toSet());
-//        
-//        user.setUserTypes(managedUserTypes);
-//        
-//		userRepository.save(user);
+//		User existing = userRepository.findUserById(userId);
+//		existing.fullUpdate(user);
 //	}
-	
-	public void updateUser(User user)
-	{
-		userRepository.save(user);
-	}
 	
 }

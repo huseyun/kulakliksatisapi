@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kulakyokedici.kulakliksitesi.mapper.ShopperMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
@@ -18,12 +19,14 @@ public class ShopperService
 {
 	private ShopperRepository shopperRepository;
 	private PasswordEncoder passwordEncoder;
+	private ShopperMapper shopperMapper;
 	
 	@Autowired
-	public ShopperService(ShopperRepository shopperRepository, PasswordEncoder passwordEncoder)
+	public ShopperService(ShopperRepository shopperRepository, PasswordEncoder passwordEncoder, ShopperMapper shopperMapper)
 	{
 		this.shopperRepository = shopperRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.shopperMapper = shopperMapper; 
 	}
 	
 	public Shopper provideShopperById(Long shopperId)
@@ -42,12 +45,7 @@ public class ShopperService
 	{
 	    Shopper existing = shopperRepository.findById(id).orElse(null);
 	    
-	    Shopper shopper = new Shopper();
-	    shopper.setUsername(newShopper.username());
-	    shopper.setEmail(newShopper.email());
-	    shopper.setFirstName(newShopper.firstName());
-	    shopper.setLastName(newShopper.lastName());
-	    shopper.setPassword(passwordEncoder.encode(shopper.getPassword()));
+	    Shopper shopper = shopperMapper.toEntity(newShopper);
 	    
 	    existing.fullUpdate(shopper);
 	}

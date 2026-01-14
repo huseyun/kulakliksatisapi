@@ -1,5 +1,6 @@
 package com.kulakyokedici.kulakliksitesi.objects.data;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -25,6 +26,7 @@ public class Shopper extends User
 	private String lastName;
 	
     @Embedded
+    @Nullable
     @AttributeOverrides(
     {
     @AttributeOverride(name = "addressLine1",
@@ -38,9 +40,10 @@ public class Shopper extends User
     @AttributeOverride(name = "city",
     column = @Column(name = "BILLING_CITY"))
     })
-    protected Address billingAddress;
+    private Address billingAddress;
     
     @Embedded
+    @Nullable
     @AttributeOverrides(
     {
     @AttributeOverride(name = "addressLine1",
@@ -54,7 +57,7 @@ public class Shopper extends User
     @AttributeOverride(name = "city",
     column = @Column(name = "SHIPPING_CITY"))
     })
-    protected Address shippingAddress;
+    private Address shippingAddress;
 	
 	public String getFirstName()
 	{

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
 import com.kulakyokedici.kulakliksitesi.objects.data.EUserType;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.repository.AdminRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
@@ -50,13 +51,8 @@ public class AdminService
 	}
 	
 	@Transactional
-	public void updateAdmin(Admin admin)
+	public void updateAdmin(Long adminId, UserUpdateRequest newAdmin)
 	{
-		Admin existing = adminRepository.findAdminById(admin.getId());
-		existing.fullUpdate(admin);
-		
-	    if (admin.getPassword() != null && !admin.getPassword().isEmpty()) {
-	        existing.setPassword(passwordEncoder.encode(admin.getPassword()));
-	    }
+		Admin existing = adminRepository.findAdminById(adminId);
 	}
 }
