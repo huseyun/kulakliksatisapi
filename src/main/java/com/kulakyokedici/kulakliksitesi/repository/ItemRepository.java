@@ -16,4 +16,6 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
     
     @Query("SELECT i FROM Item i WHERE i.seller.username = :username")
     List<Item> findBySellerUsername(@Param("username") String username);
+    
+    public boolean existsByItemName(String itemName);
 }

@@ -9,27 +9,36 @@ import org.springframework.stereotype.Component;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
 import com.kulakyokedici.kulakliksitesi.objects.data.EUserType;
+import com.kulakyokedici.kulakliksitesi.objects.data.Image;
+import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
+import com.kulakyokedici.kulakliksitesi.repository.ItemRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
+
+import jakarta.transaction.Transactional;
 
 @Component
 public class DataSeeder implements CommandLineRunner {
 
     private final UserTypeRepository userTypeRepository;
     private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataSeeder(UserTypeRepository userTypeRepository, 
                       UserRepository userRepository, 
-                      PasswordEncoder passwordEncoder) {
+                      PasswordEncoder passwordEncoder,
+                      ItemRepository itemRepository) {
         this.userTypeRepository = userTypeRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.itemRepository = itemRepository;
     }
-
+    
+    @Transactional
     @Override
     public void run(String... args) throws Exception {
         
@@ -80,7 +89,22 @@ public class DataSeeder implements CommandLineRunner {
         	seller.setUserTypes(new HashSet<>(Set.of(sellerRole)));
         	
         	userRepository.save(seller);
+        	
+        	Image image = new Image();
+        	image.setUrl("https://cdn.jsdelivr.net/gh/huseyun/contentdeliverygeneral@0.1.0/kulaklik-satis-api/product_detail_x2_desktop_HD_600_Sennheiser_01.webp");
+        	
+        	Item item = new Item();
+        	item.setItemName("logitek g502");
+        	item.setItemPrice(550.0);
+        	item.getImages().add(image);
+        	
+        	item.setSeller(seller);
+        	
+        	itemRepository.save(item);
+        	
+        	seller.getItems().add(item);
         }
+        
     }
 
     private void createRoleIfNotFound(EUserType roleName) {

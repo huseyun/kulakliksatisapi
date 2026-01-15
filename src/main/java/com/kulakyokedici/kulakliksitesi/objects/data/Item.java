@@ -20,7 +20,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "items")
-public class Item
+public class Item implements Comparable<Item>
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,9 +78,20 @@ public class Item
 	{
 		return itemName;
 	}
+	
+	public void setItemName(String itemName)
+	{
+		this.itemName = itemName;
+	}
     
     public Double getItemPrice()
     {
     	return itemPrice;
     }
+
+	@Override
+	public int compareTo(Item other)
+	{
+		return this.id.compareTo(other.id);
+	}
 }
