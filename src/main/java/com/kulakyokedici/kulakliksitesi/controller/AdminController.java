@@ -18,6 +18,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserCreateRequest;
@@ -125,9 +126,9 @@ public class AdminController
 	
 	@PutMapping("/put/updateseller/{sellerId}")
 	public ResponseEntity<Void> updateSeller(@PathVariable Long sellerId,
-			@Valid @RequestBody Seller newSeller)
+			@Valid @RequestBody SellerUpdateRequest newSeller)
 	{
-		sellerService.updateSeller(newSeller);
+		sellerService.updateSeller(sellerId, newSeller);
 		return ResponseEntity.noContent().build();
 	}
 	

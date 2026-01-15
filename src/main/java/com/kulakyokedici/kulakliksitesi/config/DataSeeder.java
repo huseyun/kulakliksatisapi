@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
 import com.kulakyokedici.kulakliksitesi.objects.data.EUserType;
+import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
@@ -56,12 +57,29 @@ public class DataSeeder implements CommandLineRunner {
         	shopper.setUsername("shopper");
         	shopper.setPassword(passwordEncoder.encode("shopperpass"));
         	shopper.setEmail("shopper@shopper.com");
+        	shopper.setFirstName("ali");
+        	shopper.setLastName("fazaoglu");
         	
         	UserType shopperRole = userTypeRepository.findByName(EUserType.SHOPPER);
         	
         	shopper.setUserTypes(new HashSet<>(Set.of(shopperRole)));
         	
         	userRepository.save(shopper);
+        }
+        
+        if (!userRepository.existsByUsername("seller"))
+        {
+        	Seller seller = new Seller();
+        	seller.setUsername("seller");
+        	seller.setPassword(passwordEncoder.encode("shopperpass"));
+        	seller.setEmail("seller@seller.com");
+        	seller.setCompanyName("ödemiş ltd şti");
+        	
+        	UserType sellerRole = userTypeRepository.findByName(EUserType.SELLER);
+        	
+        	seller.setUserTypes(new HashSet<>(Set.of(sellerRole)));
+        	
+        	userRepository.save(seller);
         }
     }
 

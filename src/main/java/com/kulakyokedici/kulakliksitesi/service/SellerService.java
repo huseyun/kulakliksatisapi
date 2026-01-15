@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kulakyokedici.kulakliksitesi.mapper.SellerMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.repository.SellerRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
@@ -21,15 +23,19 @@ public class SellerService
 	private SellerRepository sellerRepository;
     private final UserTypeRepository userTypesRepository;
 	private final PasswordEncoder passwordEncoder;
+	private SellerMapper sellerMapper;
 	
 	@Autowired
 	public SellerService(SellerRepository sellerRepository,
 			UserTypeRepository userTypesRepository,
-			PasswordEncoder passwordEncoder)
+			PasswordEncoder passwordEncoder,
+			SellerMapper sellerMapper)
 	{
 		this.sellerRepository = sellerRepository;
 		this.userTypesRepository = userTypesRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.sellerMapper = sellerMapper;
+		
 	}
 	
 	public Seller getSellerDetails(Long id)
@@ -43,13 +49,13 @@ public class SellerService
 	}
 	
 	@Transactional
-	public void updateSeller(Seller seller)
+	public void updateSeller(Long id, SellerUpdateRequest newSeller)
 	{
-		Seller existing = sellerRepository.findById(seller.getId()).orElse(null);
-	            existing.setUsername(seller.getUsername());
-	            existing.setEmail(seller.getEmail());
-	            existing.setPassword(seller.getPassword());
-	            existing.setCompanyName(seller.getCompanyName());
+		Seller existing = sellerRepository.findById(id).orElse(null);
+
+		Seller seller = sellerMapper.toEntity(newSeller);
+		
+		existing.fullUpdate(seller);
 	}
 	
 	@Transactional
