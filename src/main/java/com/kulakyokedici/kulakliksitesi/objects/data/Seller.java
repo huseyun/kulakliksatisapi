@@ -1,6 +1,6 @@
 package com.kulakyokedici.kulakliksitesi.objects.data;
 
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 import jakarta.persistence.CascadeType;
@@ -25,9 +25,9 @@ public class Seller extends User
 	private String companyName;
 	
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private SortedSet<Item> items = new TreeSet<>();
+    private Set<Item> items = new TreeSet<>();
 	
-    public SortedSet<Item> getItems() {
+    public Set<Item> getItems() {
         return items;
     }
     

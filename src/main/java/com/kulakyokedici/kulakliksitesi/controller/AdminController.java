@@ -1,6 +1,7 @@
 package com.kulakyokedici.kulakliksitesi.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
-import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ItemResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
@@ -97,7 +98,7 @@ public class AdminController
 	}
 	
 	@GetMapping("/get/selleritems/{sellerId}")
-	public ResponseEntity<List<Item>> getItemsBySellerId(@PathVariable Long sellerId)
+	public ResponseEntity<Set<ItemResponse>> getItemsBySellerId(@PathVariable Long sellerId)
 	{
 		return ResponseEntity.ok(itemService.getItemsBySellerId(sellerId));
 	}
