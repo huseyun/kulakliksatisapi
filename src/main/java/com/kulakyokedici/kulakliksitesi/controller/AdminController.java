@@ -1,6 +1,7 @@
 package com.kulakyokedici.kulakliksitesi.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +15,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
-import com.kulakyokedici.kulakliksitesi.objects.data.Item;
-import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ItemResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerDetailedResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
 import com.kulakyokedici.kulakliksitesi.service.SellerService;
 import com.kulakyokedici.kulakliksitesi.service.ShopperService;
 import com.kulakyokedici.kulakliksitesi.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/admin")
@@ -74,11 +83,11 @@ public class AdminController
 	@GetMapping("/get/allshoppers")
 	public ResponseEntity<List<Shopper>> getAllShoppers()
 	{
-		return ResponseEntity.ok(shopperService.getAllShoppers());
+		return ResponseEntity.ok(shopperService.provideAllShoppers());
 	}
 	
 	@GetMapping("/get/allsellers")
-	public ResponseEntity<List<Seller>> getAllSellers()
+	public ResponseEntity<List<SellerDetailedResponse>> getAllSellers()
 	{
 		return ResponseEntity.ok(sellerService.getAllSellers());
 	}
@@ -90,36 +99,54 @@ public class AdminController
 	}
 	
 	@GetMapping("/get/selleritems/{sellerId}")
-	public ResponseEntity<List<Item>> getItemsBySellerId(@PathVariable Long sellerId)
+	public ResponseEntity<Set<ItemResponse>> getItemsBySellerId(@PathVariable Long sellerId)
 	{
 		return ResponseEntity.ok(itemService.getItemsBySellerId(sellerId));
 	}
 	
-	@PostMapping("/post/adduser")
-	public ResponseEntity<Void> addUser(@RequestBody User user)
+	@PostMapping("/post/addadmin")
+	public ResponseEntity<Void> addAdmin(@Valid @RequestBody UserCreateRequest newAdmin)
 	{
-		userService.addUser(user);
+		adminService.addAdmin(newAdmin);
 		return ResponseEntity.ok().build();
 	}
 	
-	@PutMapping("/put/updateuser")
-	public ResponseEntity<Void> updateUser(@RequestBody User newUser)
+	@PostMapping("/post/addseller")
+	public ResponseEntity<Void> addSeller(@Valid @RequestBody SellerCreateRequest newSeller)
+	{	
+		sellerService.addSeller(newSeller);
+		return ResponseEntity.ok().build();
+	}
+	
+	@PutMapping("/put/updateseller/{sellerId}")
+	public ResponseEntity<Void> updateSeller(@PathVariable Long sellerId,
+			@Valid @RequestBody SellerUpdateRequest newSeller)
 	{
-		userService.updateUser(newUser);
+		sellerService.updateSeller(sellerId, newSeller);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/put/updateseller")
-	public ResponseEntity<Void> updateSeller(@RequestBody Seller newSeller)
+	@PutMapping("/put/updateshopper/{shopperId}")
+	public ResponseEntity<Void> updateShopper(@PathVariable Long shopperId, 
+			@Valid @RequestBody ShopperUpdateRequest newShopper)
 	{
-		sellerService.updateSeller(newSeller);
+		shopperService.updateShopper(shopperId, newShopper);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/put/updateshopper")
-	public ResponseEntity<Void> updateShopper(@RequestBody Shopper newShopper)
+	@PutMapping("/put/updateshopperdetails/{shopperId}")
+	public ResponseEntity<Void> updateShopperDetails(@PathVariable Long shopperId, 
+			@Valid @RequestBody ShopperDetailsUpdateRequest newShopperDetails)
 	{
-		shopperService.updateShopper(newShopper);
+		shopperService.updateShopperDetails(shopperId, newShopperDetails);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping("/put/updateadmin/{adminId}")
+	public ResponseEntity<Void> updateAdmin(@PathVariable Long adminId,
+			@Valid @RequestBody UserUpdateRequest newAdmin)
+	{
+		adminService.updateAdmin(adminId, newAdmin);
 		return ResponseEntity.noContent().build();
 	}
 }

@@ -1,6 +1,7 @@
 package com.kulakyokedici.kulakliksitesi.objects.data;
 
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -21,12 +22,26 @@ public class Seller extends User
 	}
 
 	@Column(name = "company_name")
-	private String company_name;
+	private String companyName;
 	
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Item> items;
+    private Set<Item> items = new TreeSet<>();
 	
-    public List<Item> getItems() {
+    public Set<Item> getItems() {
         return items;
+    }
+    
+    public String getCompanyName() {
+        return companyName;
+    }
+    
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+    
+    public void fullUpdate(Seller newSeller)
+    {
+    	super.fullUpdate(newSeller);
+    	companyName = newSeller.companyName;
     }
 }
