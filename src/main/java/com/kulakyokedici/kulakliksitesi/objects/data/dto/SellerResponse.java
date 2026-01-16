@@ -1,19 +1,17 @@
 package com.kulakyokedici.kulakliksitesi.objects.data.dto;
 
-import java.util.Set;
-
 public record SellerResponse(
 		String username,
-		String password,
+		String email,
 		String companyName)
 {
 	public SellerResponse(
 			String username,
-			String password,
+			String email,
 			String companyName)
 	{
 		this.username = username;
-		this.password = password;
+		this.email = email;
 		this.companyName = companyName;
 	}
 }

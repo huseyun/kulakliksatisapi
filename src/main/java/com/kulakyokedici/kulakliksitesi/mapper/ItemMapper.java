@@ -5,23 +5,32 @@ import org.springframework.stereotype.Component;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ItemResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.ItemSummaryResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerResponse;
 
 @Component
 public class ItemMapper
 {
-	private final SellerMapper sellerMapper;
 	
 	@Autowired
-	public ItemMapper(SellerMapper sellerMapper)
-	{
-		this.sellerMapper = sellerMapper;
-	}
+	public ItemMapper() {}
 	
 	public ItemResponse toResponse(Item item)
 	{
 		return new ItemResponse(item.getItemName(),
 				item.getItemPrice(),
-				sellerMapper.toResponse(item.getSeller()),
+				new SellerResponse(
+						item.getSeller().getUsername(),
+						item.getSeller().getEmail(),
+						item.getSeller().getCompanyName()),
+				item.getImages());
+	}
+	
+	public ItemSummaryResponse toSummaryResponse(Item item)
+	{
+		return new ItemSummaryResponse(
+				item.getItemName(),
+				item.getItemPrice(),
 				item.getImages());
 	}
 }

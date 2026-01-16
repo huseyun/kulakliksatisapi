@@ -23,7 +23,7 @@ public class ShopperMapper
 		Shopper shopper = new Shopper();
 		
 		shopper.setUsername(newShopper.username());
-		shopper.setPassword(newShopper.password());
+		shopper.setPassword(passwordEncoder.encode(newShopper.password()));
 		shopper.setEmail(newShopper.email());
 		shopper.setFirstName(newShopper.firstName());
 		shopper.setLastName(newShopper.lastName());

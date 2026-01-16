@@ -8,6 +8,7 @@
  * TODO exception handling mekanizmasini olustur.
  * TODO veri objelerini, dogrulamalarini, nasil olacaklarini kurgula.
  * TODO saticiya gore item getirme sonsuz dongusunu duzelt
+ * TODO mapper'larin circular reference isine cozum bul.
  * TODO TAMAM update controller'lerini, url'den id alacak sekilde duzenle.
  * TODO TAMAM güncelleme işlerinin hatalarını düzelt.
  * TODO TAMAM veri objelerini baştan sona oku, düzenle.

@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import com.kulakyokedici.kulakliksitesi.mapper.SellerMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerDetailedResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.repository.SellerRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
@@ -43,16 +46,28 @@ public class SellerService
 		return sellerRepository.findSellerById(id);
 	}
 	
-	public List<Seller> getAllSellers()
+	public List<SellerDetailedResponse> getAllSellers()
 	{
-		return sellerRepository.findAll();
+		List<Seller> allSellers =  sellerRepository.findAll();
+		
+		return allSellers.stream()
+				.map(seller -> sellerMapper.toDetailedResponse(seller))
+				.collect(Collectors.toList());
+	}
+	
+	public void addSeller(SellerCreateRequest newSeller)
+	{
+		Seller seller = sellerMapper.toEntity(newSeller);
+		
+		sellerRepository.save(seller);
+		
 	}
 	
 	@Transactional
 	public void updateSeller(Long id, SellerUpdateRequest newSeller)
 	{
 		Seller existing = sellerRepository.findById(id).orElse(null);
-
+		
 		Seller seller = sellerMapper.toEntity(newSeller);
 		
 		existing.fullUpdate(seller);

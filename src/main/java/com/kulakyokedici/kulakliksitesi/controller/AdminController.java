@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
-import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ItemResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerDetailedResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
@@ -86,7 +87,7 @@ public class AdminController
 	}
 	
 	@GetMapping("/get/allsellers")
-	public ResponseEntity<List<Seller>> getAllSellers()
+	public ResponseEntity<List<SellerDetailedResponse>> getAllSellers()
 	{
 		return ResponseEntity.ok(sellerService.getAllSellers());
 	}
@@ -111,19 +112,11 @@ public class AdminController
 	}
 	
 	@PostMapping("/post/addseller")
-	public ResponseEntity<Void> addSeller(@Valid @RequestBody Seller seller)
+	public ResponseEntity<Void> addSeller(@Valid @RequestBody SellerCreateRequest newSeller)
 	{	
-		sellerService.addSeller(seller);
+		sellerService.addSeller(newSeller);
 		return ResponseEntity.ok().build();
 	}
-	
-//	@PutMapping("/put/updateuser/{userId}")
-//	public ResponseEntity<Void> updateUser(@PathVariable Long userId,
-//			@Valid @RequestBody UserUpdateRequest newUser)
-//	{
-//		userService.updateUser(userId, newUser);
-//		return ResponseEntity.noContent().build();
-//	}
 	
 	@PutMapping("/put/updateseller/{sellerId}")
 	public ResponseEntity<Void> updateSeller(@PathVariable Long sellerId,
