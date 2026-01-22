@@ -2,7 +2,7 @@ name: Publish Docker Image
 
 on:
   push:
-    branches: [ "infrastructure/deployment" ]
+    branches: [ "master" ]
 
 permissions:
   contents: read
