@@ -3,7 +3,7 @@ name: Publish Docker Image
 # Bu işlem ne zaman tetiklensin?
 on:
   push:
-    branches: [ "master" ] # Sadece master'a push gelince çalış.
+    branches: [ "infrastructure/deployment" ] # Sadece master'a push gelince çalış. şimdilik bu branch
 
 # İzinler: GitHub'ın paket deposuna (packages) yazma izni lazım.
 permissions:
