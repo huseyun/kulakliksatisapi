@@ -37,12 +37,10 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
 
-      # 3. GÜNCELLENEN ADIM: platforms parametresi eklendi
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
-          # BURASI KRİTİK: Hem Intel (amd64) hem ARM (arm64) için üret diyoruz.
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
