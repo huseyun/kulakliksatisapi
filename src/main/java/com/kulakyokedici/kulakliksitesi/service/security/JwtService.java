@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,8 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService 
 {
 
-    // UYARI: BU ANAHTARI ASLA KOD İÇİNE BU ŞEKİLDE YAZMAYIN!
-    // Bu anahtarı application.properties dosyasından veya ortam değişkenlerinden okuyun.
-    // Örnek: @Value("${application.security.jwt.secret-key}")
-    private static final String SECRET_KEY = "4a6f4e635266556a586e3272357538782f413f4428472b4b6250645367566B59"; // Örnek, çok güçlü bir anahtar
+	@Value("${jwt-secret-key}")
+    private String SECRET_KEY;
 
     // Token'ın geçerlilik süresi (milisaniye cinsinden). Örnek: 24 saat.
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
