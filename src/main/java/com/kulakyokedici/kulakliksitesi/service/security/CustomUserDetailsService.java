@@ -27,10 +27,6 @@ public class CustomUserDetailsService implements UserDetailsService
  {
 	 User user = userRepository.findByUsername(username);
 	 
-	 System.out.println(user.getPassword());
-	 System.out.println(user.getUsername());
-	 user.getUserTypes().forEach((userTypes) -> System.out.println(userTypes.getName()));
-	 
      return new SecurityUser(user);
  	}
 }
