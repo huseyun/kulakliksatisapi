@@ -8,6 +8,4 @@ public record ItemSummaryResponse(
 		String itemName,
 		Double itemPrice,
 		Set<Image> images)
-{
-
-}
+{}

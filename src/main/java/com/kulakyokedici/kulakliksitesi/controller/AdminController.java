@@ -24,6 +24,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
@@ -63,7 +64,7 @@ public class AdminController
 			@RequestParam(name = "email", required = false) String email)
 	{
 		User user;
-		if(requestedId != 0)
+		if(requestedId != 0L)
 			user = userService.provideUserById(0);
 		else if(username != "")
 			user = userService.provideUserByUsername(username);
@@ -75,7 +76,7 @@ public class AdminController
 	}
 	
 	@GetMapping("/get/allusers")
-	public ResponseEntity<List<User>> getAllUsers()
+	public ResponseEntity<List<UserResponse>> getAllUsers()
 	{
 		return ResponseEntity.ok(userService.provideAllUsers());
 	}
