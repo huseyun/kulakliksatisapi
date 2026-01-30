@@ -1,6 +1,7 @@
 package com.kulakyokedici.kulakliksitesi.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,8 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.ShopperMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperDetailsUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
 import com.kulakyokedici.kulakliksitesi.repository.ShopperRepository;
 
 import jakarta.transaction.Transactional;
@@ -34,9 +36,13 @@ public class ShopperService
 		return shopperRepository.findShopperById(shopperId);
 	}
 	
-	public List<Shopper> provideAllShoppers()
+	public List<ShopperResponse> provideAllShoppers()
 	{
-		return shopperRepository.findAll();
+		List<Shopper> shoppers = shopperRepository.findAll();
+		
+		return shoppers.stream()
+				.map(seller -> shopperMapper.toResponse(seller))
+				.collect(Collectors.toList());
 	}
 	
 	@Transactional

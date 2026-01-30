@@ -1,4 +1,4 @@
-package com.kulakyokedici.kulakliksitesi.objects.data.dto;
+package com.kulakyokedici.kulakliksitesi.objects.data.dto.response;
 
 public record SellerResponse(
 		String username,

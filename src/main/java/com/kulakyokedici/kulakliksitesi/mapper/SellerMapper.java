@@ -5,11 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ItemSummaryResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerCreateRequest;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerDetailedResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerDetailedResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerResponse;
 
 @Component
 public class SellerMapper

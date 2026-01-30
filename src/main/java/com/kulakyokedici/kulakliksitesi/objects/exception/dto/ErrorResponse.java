@@ -1,4 +1,4 @@
-package com.kulakyokedici.kulakliksitesi.objects.exception;
+package com.kulakyokedici.kulakliksitesi.objects.exception.dto;
 
 import java.time.LocalDateTime;
 

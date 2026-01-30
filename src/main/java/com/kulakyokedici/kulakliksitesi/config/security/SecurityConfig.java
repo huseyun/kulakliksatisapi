@@ -58,6 +58,7 @@ public class SecurityConfig {
 		.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // Kendi filtremizi standart filtreden önceye ekliyoruz.
 		.authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/error").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/profile/").hasAnyRole("ADMIN", "USER")
 //				.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("GUEST", "USER", "ADMIN")

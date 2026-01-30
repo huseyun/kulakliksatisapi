@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.ItemMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.Item;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ItemResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
 import com.kulakyokedici.kulakliksitesi.repository.ItemRepository;
 
 @Service
@@ -22,12 +23,12 @@ public class ItemService
 		this.itemMapper = itemMapper;
 	}
 	
-	public Set<ItemResponse> getItemsBySellerId(Long sellerId)
+	public Set<ItemSummaryResponse> getItemsBySellerId(Long sellerId)
 	{
 		Set<Item> items = itemRepository.findBySellerId(sellerId);
 		
-		Set<ItemResponse> responseItems = items.stream()
-				.map(i -> itemMapper.toResponse(i))
+		Set<ItemSummaryResponse> responseItems = items.stream()
+				.map(i -> itemMapper.toSummaryResponse(i))
 				.collect(Collectors.toSet());
 		return responseItems;
 	}

@@ -1,19 +1,15 @@
 package com.kulakyokedici.kulakliksitesi.mapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Item;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ItemResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ItemSummaryResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerResponse;
 
 @Component
 public class ItemMapper
 {
-	
-	@Autowired
-	public ItemMapper() {}
 	
 	public ItemResponse toResponse(Item item)
 	{

@@ -1,4 +1,4 @@
-package com.kulakyokedici.kulakliksitesi.objects.data.dto;
+package com.kulakyokedici.kulakliksitesi.objects.data.dto.response;
 
 import java.util.Set;
 
@@ -8,6 +8,4 @@ public record ItemSummaryResponse(
 		String itemName,
 		Double itemPrice,
 		Set<Image> images)
-{
-
-}
+{}

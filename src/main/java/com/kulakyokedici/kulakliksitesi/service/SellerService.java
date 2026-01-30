@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import com.kulakyokedici.kulakliksitesi.mapper.SellerMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerCreateRequest;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerDetailedResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerDetailedResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerResponse;
 import com.kulakyokedici.kulakliksitesi.repository.SellerRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
