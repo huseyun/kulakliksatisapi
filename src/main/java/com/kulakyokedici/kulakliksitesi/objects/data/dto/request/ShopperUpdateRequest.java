@@ -1,4 +1,4 @@
-package com.kulakyokedici.kulakliksitesi.objects.data.dto;
+package com.kulakyokedici.kulakliksitesi.objects.data.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 

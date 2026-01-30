@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.UserMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.UserUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserResponse;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService
@@ -59,11 +62,14 @@ public class UserService
 		return userRepository.findByEmail(email);
 	}
 	
-//	@Transactional
-//	public void updateUser(Long userId, UserUpdateRequest newUser)
-//	{
-//		User existing = userRepository.findUserById(userId);
-//		existing.fullUpdate(user);
-//	}
+	@Transactional
+	public void updateUser(Long userId, UserUpdateRequest newUser)
+	{
+		User existing = userRepository.findUserById(userId);
+		existing.setEmail(newUser.email());
+		existing.setPassword(passwordEncoder.encode(newUser.password()));
+		existing.setUsername(newUser.username());
+	}
 	
 }
+

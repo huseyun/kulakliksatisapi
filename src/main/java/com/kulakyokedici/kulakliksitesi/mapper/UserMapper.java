@@ -3,8 +3,8 @@ package com.kulakyokedici.kulakliksitesi.mapper;
 import org.springframework.stereotype.Component;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserTypeResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserTypeResponse;
 
 @Component
 public class UserMapper {

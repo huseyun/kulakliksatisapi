@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
-import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ItemResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerCreateRequest;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerDetailedResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.SellerUpdateRequest;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperDetailsUpdateRequest;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.ShopperUpdateRequest;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserCreateRequest;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.UserUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperDetailsUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.UserCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.UserUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.AdminResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerDetailedResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserResponse;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
 import com.kulakyokedici.kulakliksitesi.service.SellerService;
@@ -63,16 +63,18 @@ public class AdminController
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email)
 	{
-		User user;
-		if(requestedId != 0L)
-			user = userService.provideUserById(0);
-		else if(username != "")
+		User user = null;
+		if(requestedId != null)
+			user = userService.provideUserById(requestedId);
+		else if(!username.isEmpty() && username != null)
 			user = userService.provideUserByUsername(username);
-		else if(email != "")
+		else if(!email.isEmpty() && email != null)
 			user = userService.provideUserByEmail(email);
+		
+		if(user != null)
+			return ResponseEntity.ok(user);
 		else
-			user = null;
-		return ResponseEntity.ok(user);
+			return ResponseEntity.notFound().build(); // burda bir hata var
 	}
 	
 	@GetMapping("/get/allusers")
@@ -82,7 +84,7 @@ public class AdminController
 	}
 	
 	@GetMapping("/get/allshoppers")
-	public ResponseEntity<List<Shopper>> getAllShoppers()
+	public ResponseEntity<List<ShopperResponse>> getAllShoppers()
 	{
 		return ResponseEntity.ok(shopperService.provideAllShoppers());
 	}
@@ -94,13 +96,13 @@ public class AdminController
 	}
 	
 	@GetMapping("/get/alladmins")
-	public ResponseEntity<List<Admin>> getAllAdmins()
+	public ResponseEntity<List<AdminResponse>> getAllAdmins()
 	{
 		return ResponseEntity.ok(adminService.provideAllAdmins());
 	}
 	
 	@GetMapping("/get/selleritems/{sellerId}")
-	public ResponseEntity<Set<ItemResponse>> getItemsBySellerId(@PathVariable Long sellerId)
+	public ResponseEntity<Set<ItemSummaryResponse>> getItemsBySellerId(@PathVariable Long sellerId)
 	{
 		return ResponseEntity.ok(itemService.getItemsBySellerId(sellerId));
 	}
@@ -117,6 +119,14 @@ public class AdminController
 	{	
 		sellerService.addSeller(newSeller);
 		return ResponseEntity.ok().build();
+	}
+	
+	@PutMapping("/put/updateuser/{userId}")
+	public ResponseEntity<Void> updateUser(@PathVariable Long userId,
+			@Valid @RequestBody UserUpdateRequest newUser)
+	{
+		userService.updateUser(userId, newUser);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/put/updateseller/{sellerId}")

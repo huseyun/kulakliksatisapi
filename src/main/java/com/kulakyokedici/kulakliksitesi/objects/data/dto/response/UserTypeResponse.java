@@ -1,4 +1,4 @@
-package com.kulakyokedici.kulakliksitesi.objects.data.dto;
+package com.kulakyokedici.kulakliksitesi.objects.data.dto.response;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.EUserType;
 
