@@ -2,8 +2,6 @@ package com.kulakyokedici.kulakliksitesi.objects.data.dto.response;
 
 import java.util.Set;
 
-import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
-
 public record UserResponse(
 		String username,
 		String email,

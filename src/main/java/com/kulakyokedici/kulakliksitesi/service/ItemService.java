@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.ItemMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.Item;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
 import com.kulakyokedici.kulakliksitesi.repository.ItemRepository;
 

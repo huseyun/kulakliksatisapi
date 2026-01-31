@@ -11,6 +11,7 @@ import com.kulakyokedici.kulakliksitesi.mapper.UserMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.UserUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserResponse;
+import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
@@ -52,8 +53,12 @@ public class UserService
 		return userRepository.findByUsername(username);
 	}
 	
+	// exception testi
 	public User provideUserById(long id)
 	{
+		if(!userRepository.existsById(id))
+			throw new ResourceNotFoundException("kullanıcı", "id", id);
+		
 		return userRepository.findUserById(id);
 	}
 	

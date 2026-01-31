@@ -14,7 +14,6 @@ import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerCreateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerDetailedResponse;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerResponse;
 import com.kulakyokedici.kulakliksitesi.repository.SellerRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
