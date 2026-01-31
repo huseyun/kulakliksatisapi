@@ -5,12 +5,11 @@ import org.springframework.http.HttpStatus;
 public class ResourceNotFoundException extends BaseException {
 
 	public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
-		super((resourceName
-				+ ", " 
-				+ fieldName 
-				+ ":" 
-				+ fieldValue 
-				+ " değeri ile bulunamadı."), HttpStatus.NOT_FOUND);
+		super(String.format("%s, %s:%s değeri ile bulunamadı.", 
+					resourceName,
+					fieldName,
+					fieldValue), 
+				HttpStatus.NOT_FOUND);
 	}
 
 }
