@@ -9,6 +9,6 @@ public record UserCreateRequest(
 		@NotBlank(message = "sifre bos olamaz.")
 		String password,
 		@NotBlank(message = "e-posta girilmelidir.")
-		@Email(message = "wrong e-mail format")
+		@Email(message = "yanlış e posta formatı.")
 		String email) 
 {}
