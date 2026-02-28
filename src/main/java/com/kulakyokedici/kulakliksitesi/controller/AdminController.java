@@ -59,25 +59,25 @@ public class AdminController
 	}
 	
 	@GetMapping("/get/user")
-	public ResponseEntity<User> getUser(@RequestParam(name = "id", required = false) Long requestedId,
+	public ResponseEntity<UserResponse> getUser(@RequestParam(name = "id", required = false) Long requestedId,
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email)
 	{
-		User user = null;
+		UserResponse userResponse = null;
 		if(requestedId != null)
-			user = userService.getUserById(requestedId);
+			userResponse = userService.getUserById(requestedId);
 		else if(!username.isEmpty() && username != null)
-			user = userService.getUserByUsername(username);
+			userResponse = userService.getUserByUsername(username);
 		else if(!email.isEmpty() && email != null)
-			user = userService.getUserByEmail(email);
+			userResponse = userService.getUserByEmail(email);
 		
-		return ResponseEntity.ok(user);
+		return ResponseEntity.ok(userResponse);
 	}
 	
 	@GetMapping("/get/allusers")
 	public ResponseEntity<List<UserResponse>> getAllUsers()
 	{
-		return ResponseEntity.ok(userService.provideAllUsers());
+		return ResponseEntity.ok(userService.getAllUsers());
 	}
 	
 	@GetMapping("/get/allshoppers")

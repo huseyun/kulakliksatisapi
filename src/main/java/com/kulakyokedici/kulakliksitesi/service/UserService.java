@@ -20,24 +20,21 @@ import jakarta.transaction.Transactional;
 public class UserService
 {
 	private UserRepository userRepository;
-//    private final UserTypeRepository userTypesRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final UserMapper userMapper;
 	
 	@Autowired
 	public UserService(
 			UserRepository userRepository,
-//			UserTypeRepository userTypesRepository,
 			PasswordEncoder passwordEncoder,
 			UserMapper userMapper)
 	{
 		this.userRepository = userRepository;
-//        this.userTypesRepository = userTypesRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.userMapper = userMapper;
 	}
 	
-	public List<UserResponse> provideAllUsers()
+	public List<UserResponse> getAllUsers()
 	{
 		List<User> users = userRepository.findAll();
 		
@@ -46,23 +43,29 @@ public class UserService
 				.collect(Collectors.toList());
 	}
 	
-	public User getUserByUsername(String username)
+	public UserResponse getUserByUsername(String username)
 	{
-		return userRepository.findByUsername(username)
+		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
+		
+		return userMapper.toUserResponse(user);
 	}
 	
 	// exception testi
-	public User getUserById(long id)
+	public UserResponse getUserById(long id)
 	{
-		return userRepository.findUserById(id)
+		User user = userRepository.findUserById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
+		
+		return userMapper.toUserResponse(user);
 	}
 	
-	public User getUserByEmail(String email)
+	public UserResponse getUserByEmail(String email)
 	{
-		return userRepository.findByEmail(email)
+		User user = userRepository.findByEmail(email)
 				.orElseThrow(() -> new ResourceNotFoundException("user", "email", email));
+		
+		return userMapper.toUserResponse(user);
 	}
 	
 	@Transactional

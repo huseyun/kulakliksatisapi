@@ -1,7 +1,8 @@
 /*
  * TODO jwtservice, jwtauthenticationfilter, nasil calisiyor ogren
  * TODO admin sayfası, kullanıcı eklesin, kullanıcı silsin.
- * TODO Itemlere girismeye basla.
+ * TODO itemlere girismeye basla.
+ * TODO bütün servisler optional ile çalışsın, exception yapısını kullansın.
  * TODO TAMAM user'i abstract hale getirmeye calis. mantikli mi arastir.
  * TODO TAMAM DTO paternini butun siniflara uygula.
  * TODO TAMAM (bean validation, dto validation) veri objelerini, dogrulamalarini, nasil olacaklarini kurgula.
