@@ -72,10 +72,12 @@ public class AdminController
 		
 		if(id != null)
 			userResponse = userService.getUserById(id);
-		else if(username != null)
+		else if(username != null && !username.isBlank())
 			userResponse = userService.getUserByUsername(username);
-		else if(email != null)
+		else if(email != null && !email.isBlank())
 			userResponse = userService.getUserByEmail(email);
+		else
+			throw new ResourceNotFoundException("user", "parameter", "verilmedi");
 		
 		return ResponseEntity.ok(userResponse);
 	}
@@ -89,10 +91,12 @@ public class AdminController
 		
 		if(id != null)
 			adminResponse = adminService.getAdminById(id);
-		else if(username != null)
+		else if(username != null && !username.isBlank())
 			adminResponse = adminService.getAdminByUsername(username);
-		else if(email != null)
+		else if(email != null && !email.isBlank())
 			adminResponse = adminService.getAdminByEmail(email);
+		else
+			throw new ResourceNotFoundException("admin", "verilmemiş parametre", "verilmemiş değer");
 		
 		return ResponseEntity.ok(adminResponse);
 	}
