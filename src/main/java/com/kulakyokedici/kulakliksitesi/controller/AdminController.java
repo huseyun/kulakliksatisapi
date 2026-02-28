@@ -71,10 +71,7 @@ public class AdminController
 		else if(!email.isEmpty() && email != null)
 			user = userService.getUserByEmail(email);
 		
-		if(user != null)
-			return ResponseEntity.ok(user);
-		else
-			return ResponseEntity.notFound().build(); // burda bir hata var
+		return ResponseEntity.ok(user);
 	}
 	
 	@GetMapping("/get/allusers")

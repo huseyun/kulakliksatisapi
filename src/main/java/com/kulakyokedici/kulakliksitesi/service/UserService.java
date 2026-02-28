@@ -44,12 +44,12 @@ public class UserService
 		return users.stream()
 				.map(user -> userMapper.toUserResponse(user))
 				.collect(Collectors.toList());
-		
 	}
 	
 	public User getUserByUsername(String username)
 	{
-		return userRepository.findByUsername(username);
+		return userRepository.findByUsername(username)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
 	}
 	
 	// exception testi
@@ -61,7 +61,8 @@ public class UserService
 	
 	public User getUserByEmail(String email)
 	{
-		return userRepository.findByEmail(email);
+		return userRepository.findByEmail(email)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "email", email));
 	}
 	
 	@Transactional
@@ -74,6 +75,5 @@ public class UserService
 		existing.setPassword(passwordEncoder.encode(newUser.password()));
 		existing.setUsername(newUser.username());
 	}
-	
 }
 
