@@ -2,6 +2,7 @@ package com.kulakyokedici.kulakliksitesi.repository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -9,7 +10,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.User;
 
 public interface UserRepository extends CrudRepository<User, Long>
 {
-	public User findUserById(Long id);
+	public Optional<User> findUserById(Long id);
 	
 	public User findByUsername(String username);
 	

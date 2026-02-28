@@ -65,11 +65,11 @@ public class AdminController
 	{
 		User user = null;
 		if(requestedId != null)
-			user = userService.provideUserById(requestedId);
+			user = userService.getUserById(requestedId);
 		else if(!username.isEmpty() && username != null)
-			user = userService.provideUserByUsername(username);
+			user = userService.getUserByUsername(username);
 		else if(!email.isEmpty() && email != null)
-			user = userService.provideUserByEmail(email);
+			user = userService.getUserByEmail(email);
 		
 		if(user != null)
 			return ResponseEntity.ok(user);

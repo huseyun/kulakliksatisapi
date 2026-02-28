@@ -9,12 +9,17 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.kulakyokedici.kulakliksitesi.objects.exception.BaseException;
 import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.objects.exception.dto.ErrorResponse;
 import com.kulakyokedici.kulakliksitesi.objects.exception.dto.ValidationErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	
+	/*
+	 * framework hataları bu kısımda.
+	 */
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
@@ -34,9 +39,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 	
-	// test exception handle
-	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex)
+	/*
+	 * iş hataları bu kısımda.
+	 */
+	
+	@ExceptionHandler(BaseException.class)
+	public ResponseEntity<ErrorResponse> handleAllBusinessExceptions(BaseException ex)
 	{
 		ErrorResponse errorResponse = new ErrorResponse(
 				ex.getHttpStatus().value(),
@@ -45,6 +53,10 @@ public class GlobalExceptionHandler {
 		
 		return new ResponseEntity<>(errorResponse, ex.getHttpStatus());
 	}
+	
+	/*
+	 * beklenmedik tüm hatalar bu kısımda.
+	 */
 
 	@ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllGeneric(Exception ex) {

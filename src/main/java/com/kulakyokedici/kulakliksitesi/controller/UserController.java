@@ -29,6 +29,6 @@ public class UserController
 	@GetMapping
 	private ResponseEntity<? extends User> getUserDetails(Principal principal)
 	{
-		return ResponseEntity.ok(userService.provideUserByUsername(principal.getName()));
+		return ResponseEntity.ok(userService.getUserByUsername(principal.getName()));
 	}
 }
