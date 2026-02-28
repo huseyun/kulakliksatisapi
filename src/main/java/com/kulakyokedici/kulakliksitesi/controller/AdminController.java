@@ -26,6 +26,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryRes
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerDetailedResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserResponse;
+import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
 import com.kulakyokedici.kulakliksitesi.service.SellerService;
@@ -58,20 +59,42 @@ public class AdminController
 		this.adminService = adminService;
 	}
 	
+	/*
+	 * GET istekleri
+	 */
+	
 	@GetMapping("/get/user")
-	public ResponseEntity<UserResponse> getUser(@RequestParam(name = "id", required = false) Long requestedId,
+	public ResponseEntity<UserResponse> getUser(@RequestParam(name = "id", required = false) Long id,
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email)
 	{
 		UserResponse userResponse = null;
-		if(requestedId != null)
-			userResponse = userService.getUserById(requestedId);
-		else if(!username.isEmpty() && username != null)
+		
+		if(id != null)
+			userResponse = userService.getUserById(id);
+		else if(username != null)
 			userResponse = userService.getUserByUsername(username);
-		else if(!email.isEmpty() && email != null)
+		else if(email != null)
 			userResponse = userService.getUserByEmail(email);
 		
 		return ResponseEntity.ok(userResponse);
+	}
+	
+	@GetMapping("/get/admin")
+	public ResponseEntity<AdminResponse> getAdmin(@RequestParam(name = "id", required = false) Long id,
+			@RequestParam(name = "username", required = false) String username,
+			@RequestParam(name = "email", required = false) String email)
+	{
+		AdminResponse adminResponse = null;
+		
+		if(id != null)
+			adminResponse = adminService.getAdminById(id);
+		else if(username != null)
+			adminResponse = adminService.getAdminByUsername(username);
+		else if(email != null)
+			adminResponse = adminService.getAdminByEmail(email);
+		
+		return ResponseEntity.ok(adminResponse);
 	}
 	
 	@GetMapping("/get/allusers")
@@ -95,7 +118,7 @@ public class AdminController
 	@GetMapping("/get/alladmins")
 	public ResponseEntity<List<AdminResponse>> getAllAdmins()
 	{
-		return ResponseEntity.ok(adminService.provideAllAdmins());
+		return ResponseEntity.ok(adminService.getAllAdmins());
 	}
 	
 	@GetMapping("/get/selleritems/{sellerId}")
@@ -103,6 +126,11 @@ public class AdminController
 	{
 		return ResponseEntity.ok(itemService.getItemsBySellerId(sellerId));
 	}
+	
+	/*
+	 * POST istekleri
+	 * yeni kaynak eklemek için.
+	 */
 	
 	@PostMapping("/post/addadmin")
 	public ResponseEntity<Void> addAdmin(@Valid @RequestBody UserCreateRequest newAdmin)
@@ -117,6 +145,11 @@ public class AdminController
 		sellerService.addSeller(newSeller);
 		return ResponseEntity.ok().build();
 	}
+	
+	/*
+	 * PUT istekleri
+	 * kaynak güncellemek için.
+	 */
 	
 	@PutMapping("/put/updateuser/{userId}")
 	public ResponseEntity<Void> updateUser(@PathVariable Long userId,

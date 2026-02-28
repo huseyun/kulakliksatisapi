@@ -14,6 +14,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
+import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.ItemRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
@@ -53,7 +54,8 @@ public class DataSeeder implements CommandLineRunner {
             admin.setPassword(passwordEncoder.encode("adminpass"));
             admin.setEmail("admin@admin.com");
 
-            UserType adminRole = userTypeRepository.findByName(EUserType.ADMIN);
+            UserType adminRole = userTypeRepository.findByName(EUserType.ADMIN)
+            		.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.ADMIN.name()));
             
             admin.setUserTypes(new HashSet<>(Set.of(adminRole))); 
 
@@ -69,7 +71,8 @@ public class DataSeeder implements CommandLineRunner {
         	shopper.setFirstName("ali");
         	shopper.setLastName("fazaoglu");
         	
-        	UserType shopperRole = userTypeRepository.findByName(EUserType.SHOPPER);
+        	UserType shopperRole = userTypeRepository.findByName(EUserType.SHOPPER)
+        			.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.SHOPPER.name()));
         	
         	shopper.setUserTypes(new HashSet<>(Set.of(shopperRole)));
         	
@@ -84,7 +87,8 @@ public class DataSeeder implements CommandLineRunner {
         	seller.setEmail("seller@seller.com");
         	seller.setCompanyName("ödemiş ltd şti");
         	
-        	UserType sellerRole = userTypeRepository.findByName(EUserType.SELLER);
+        	UserType sellerRole = userTypeRepository.findByName(EUserType.SELLER)
+        			.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.SELLER.name()));
         	
         	seller.setUserTypes(new HashSet<>(Set.of(sellerRole)));
         	
@@ -108,7 +112,7 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void createRoleIfNotFound(EUserType roleName) {
-        if (userTypeRepository.findByName(roleName) == null) {
+        if (userTypeRepository.findByName(roleName).isEmpty()) {
             UserType role = new UserType();
             role.setName(roleName);
             userTypeRepository.save(role);
