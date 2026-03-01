@@ -1,5 +1,6 @@
 package com.kulakyokedici.kulakliksitesi.repository;
 
+import java.util.Optional;
 import java.util.SortedSet;
 
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -15,7 +16,7 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
 	@EntityGraph(attributePaths = {"images"})
     SortedSet<Item> findBySellerId(Long sellerId);
     
-    Item findByIdAndSellerId(Long itemId, Long sellerId);
+    Optional<Item> findByIdAndSellerId(Long itemId, Long sellerId);
     
     @Query("SELECT i FROM Item i WHERE i.seller.username = :username")
     SortedSet<Item> findBySellerUsername(@Param("username") String username);

@@ -24,6 +24,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.UserUpdateReque
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.AdminResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerDetailedResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserResponse;
 import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
@@ -71,11 +72,11 @@ public class AdminController
 		UserResponse userResponse = null;
 		
 		if(id != null)
-			userResponse = userService.getUserById(id);
+			userResponse = userService.getById(id);
 		else if(username != null && !username.isBlank())
-			userResponse = userService.getUserByUsername(username);
+			userResponse = userService.getByUsername(username);
 		else if(email != null && !email.isBlank())
-			userResponse = userService.getUserByEmail(email);
+			userResponse = userService.getByEmail(email);
 		else
 			throw new ResourceNotFoundException("user", "parameter", "verilmedi");
 		
@@ -90,45 +91,67 @@ public class AdminController
 		AdminResponse adminResponse = null;
 		
 		if(id != null)
-			adminResponse = adminService.getAdminById(id);
+			adminResponse = adminService.getById(id);
 		else if(username != null && !username.isBlank())
-			adminResponse = adminService.getAdminByUsername(username);
+			adminResponse = adminService.getByUsername(username);
 		else if(email != null && !email.isBlank())
-			adminResponse = adminService.getAdminByEmail(email);
+			adminResponse = adminService.getByEmail(email);
 		else
 			throw new ResourceNotFoundException("admin", "verilmemiş parametre", "verilmemiş değer");
 		
 		return ResponseEntity.ok(adminResponse);
 	}
 	
+	@GetMapping("/get/seller")
+	public ResponseEntity<SellerResponse> getSeller(@RequestParam(name = "id", required = false) Long id,
+			@RequestParam(name = "username", required = false) String username,
+			@RequestParam(name = "email", required = false) String email,
+			@RequestParam(name = "company_name", required = false) String companyName)
+	{
+		SellerResponse sellerResponse = null;
+		
+		if(id != null)
+			sellerResponse = sellerService.getById(id);
+		else if(username != null && !username.isBlank())
+			sellerResponse = sellerService.getByUsername(username);
+		else if(email != null && !email.isBlank())
+			sellerResponse = sellerService.getByEmail(email);
+		else if(companyName != null && !companyName.isBlank())
+			sellerResponse = sellerService.getByCompanyName(companyName);
+		else
+			throw new ResourceNotFoundException("admin", "verilmemiş parametre", "verilmemiş değer");
+		
+		return ResponseEntity.ok(sellerResponse);
+	}
+	
 	@GetMapping("/get/allusers")
 	public ResponseEntity<List<UserResponse>> getAllUsers()
 	{
-		return ResponseEntity.ok(userService.getAllUsers());
+		return ResponseEntity.ok(userService.getAll());
 	}
 	
 	@GetMapping("/get/allshoppers")
 	public ResponseEntity<List<ShopperResponse>> getAllShoppers()
 	{
-		return ResponseEntity.ok(shopperService.provideAllShoppers());
+		return ResponseEntity.ok(shopperService.getAll());
 	}
 	
 	@GetMapping("/get/allsellers")
 	public ResponseEntity<List<SellerDetailedResponse>> getAllSellers()
 	{
-		return ResponseEntity.ok(sellerService.getAllSellers());
+		return ResponseEntity.ok(sellerService.getAll());
 	}
 	
 	@GetMapping("/get/alladmins")
 	public ResponseEntity<List<AdminResponse>> getAllAdmins()
 	{
-		return ResponseEntity.ok(adminService.getAllAdmins());
+		return ResponseEntity.ok(adminService.getAll());
 	}
 	
 	@GetMapping("/get/selleritems/{sellerId}")
 	public ResponseEntity<Set<ItemSummaryResponse>> getItemsBySellerId(@PathVariable Long sellerId)
 	{
-		return ResponseEntity.ok(itemService.getItemsBySellerId(sellerId));
+		return ResponseEntity.ok(itemService.getAllBySellerId(sellerId));
 	}
 	
 	/*
@@ -139,14 +162,14 @@ public class AdminController
 	@PostMapping("/post/addadmin")
 	public ResponseEntity<Void> addAdmin(@Valid @RequestBody UserCreateRequest newAdmin)
 	{
-		adminService.addAdmin(newAdmin);
+		adminService.add(newAdmin);
 		return ResponseEntity.ok().build();
 	}
 	
 	@PostMapping("/post/addseller")
 	public ResponseEntity<Void> addSeller(@Valid @RequestBody SellerCreateRequest newSeller)
 	{	
-		sellerService.addSeller(newSeller);
+		sellerService.add(newSeller);
 		return ResponseEntity.ok().build();
 	}
 	
@@ -167,7 +190,7 @@ public class AdminController
 	public ResponseEntity<Void> updateSeller(@PathVariable Long sellerId,
 			@Valid @RequestBody SellerUpdateRequest newSeller)
 	{
-		sellerService.updateSeller(sellerId, newSeller);
+		sellerService.update(sellerId, newSeller);
 		return ResponseEntity.noContent().build();
 	}
 	
@@ -175,7 +198,7 @@ public class AdminController
 	public ResponseEntity<Void> updateShopper(@PathVariable Long shopperId, 
 			@Valid @RequestBody ShopperUpdateRequest newShopper)
 	{
-		shopperService.updateShopper(shopperId, newShopper);
+		shopperService.update(shopperId, newShopper);
 		return ResponseEntity.noContent().build();
 	}
 	
@@ -183,7 +206,7 @@ public class AdminController
 	public ResponseEntity<Void> updateShopperDetails(@PathVariable Long shopperId, 
 			@Valid @RequestBody ShopperDetailsUpdateRequest newShopperDetails)
 	{
-		shopperService.updateShopperDetails(shopperId, newShopperDetails);
+		shopperService.updateDetails(shopperId, newShopperDetails);
 		return ResponseEntity.noContent().build();
 	}
 	
@@ -191,7 +214,7 @@ public class AdminController
 	public ResponseEntity<Void> updateAdmin(@PathVariable Long adminId,
 			@Valid @RequestBody UserUpdateRequest newAdmin)
 	{
-		adminService.updateAdmin(adminId, newAdmin);
+		adminService.update(adminId, newAdmin);
 		return ResponseEntity.noContent().build();
 	}
 }

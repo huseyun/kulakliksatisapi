@@ -22,7 +22,7 @@ public class ItemService
 		this.itemMapper = itemMapper;
 	}
 	
-	public Set<ItemSummaryResponse> getItemsBySellerId(Long sellerId)
+	public Set<ItemSummaryResponse> getAllBySellerId(Long sellerId)
 	{
 		Set<Item> items = itemRepository.findBySellerId(sellerId);
 		

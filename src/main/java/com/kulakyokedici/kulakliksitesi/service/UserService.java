@@ -34,7 +34,7 @@ public class UserService
 		this.userMapper = userMapper;
 	}
 	
-	public List<UserResponse> getAllUsers()
+	public List<UserResponse> getAll()
 	{
 		List<User> users = userRepository.findAll();
 		
@@ -43,7 +43,7 @@ public class UserService
 				.collect(Collectors.toList());
 	}
 	
-	public UserResponse getUserByUsername(String username)
+	public UserResponse getByUsername(String username)
 	{
 		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
@@ -52,15 +52,15 @@ public class UserService
 	}
 	
 	// exception testi
-	public UserResponse getUserById(long id)
+	public UserResponse getById(long id)
 	{
-		User user = userRepository.findUserById(id)
+		User user = userRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
 		
 		return userMapper.toUserResponse(user);
 	}
 	
-	public UserResponse getUserByEmail(String email)
+	public UserResponse getByEmail(String email)
 	{
 		User user = userRepository.findByEmail(email)
 				.orElseThrow(() -> new ResourceNotFoundException("user", "email", email));
@@ -71,7 +71,7 @@ public class UserService
 	@Transactional
 	public void updateUser(Long userId, UserUpdateRequest newUser)
 	{
-		User existing = userRepository.findUserById(userId)
+		User existing = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("user", "id", userId));
 		
 		existing.setEmail(newUser.email());

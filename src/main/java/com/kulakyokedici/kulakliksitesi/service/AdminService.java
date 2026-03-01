@@ -39,7 +39,7 @@ public class AdminService
 		this.adminMapper = adminMapper;
 	}
 	
-	public List<AdminResponse> getAllAdmins()
+	public List<AdminResponse> getAll()
 	{
 		List<Admin> admins = adminRepository.findAll();
 		
@@ -48,31 +48,31 @@ public class AdminService
 				.collect(Collectors.toList());
 	}
 	
-	public AdminResponse getAdminById(Long id)
+	public AdminResponse getById(Long id)
 	{
-		Admin admin = adminRepository.findAdminById(id)
+		Admin admin = adminRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("admin", "id", id));
 		
 		return adminMapper.toResponse(admin);
 	}
 	
-	public AdminResponse getAdminByUsername(String username)
+	public AdminResponse getByUsername(String username)
 	{
-		Admin admin = adminRepository.findAdminByUsername(username)
+		Admin admin = adminRepository.findByUsername(username)
 				.orElseThrow(() -> new ResourceNotFoundException("admin", "username", username));
 		
 		return adminMapper.toResponse(admin);
 	}
 	
-	public AdminResponse getAdminByEmail(String email)
+	public AdminResponse getByEmail(String email)
 	{
-		Admin admin = adminRepository.findAdminByEmail(email)
+		Admin admin = adminRepository.findByEmail(email)
 				.orElseThrow(() -> new ResourceNotFoundException("admin", "email", email));
 		
 		return adminMapper.toResponse(admin);
 	}
 	
-	public void addAdmin(UserCreateRequest newAdmin)
+	public void add(UserCreateRequest newAdmin)
 	{
 		Admin admin = new Admin();
 		
@@ -87,9 +87,9 @@ public class AdminService
 	}
 	
 	@Transactional
-	public void updateAdmin(Long adminId, UserUpdateRequest newAdmin)
+	public void update(Long adminId, UserUpdateRequest newAdmin)
 	{
-		Admin existing = adminRepository.findAdminById(adminId)
+		Admin existing = adminRepository.findById(adminId)
 				.orElseThrow(() -> new ResourceNotFoundException("admin", "id", adminId)); 
 	}
 }

@@ -14,6 +14,8 @@ import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerCreateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerDetailedResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerResponse;
+import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.SellerRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
@@ -40,12 +42,39 @@ public class SellerService
 		
 	}
 	
-	public Seller getSellerDetails(Long id)
+	public SellerResponse getById(Long id)
 	{
-		return sellerRepository.findSellerById(id);
+		Seller seller = sellerRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("seller", "id", id));
+		
+		return sellerMapper.toResponse(seller);
 	}
 	
-	public List<SellerDetailedResponse> getAllSellers()
+	public SellerResponse getByUsername(String username)
+	{
+		Seller seller = sellerRepository.findByUsername(username)
+				.orElseThrow(() -> new ResourceNotFoundException("seller", "username", username));
+		
+		return sellerMapper.toResponse(seller);
+	}
+	
+	public SellerResponse getByEmail(String email)
+	{
+		Seller seller = sellerRepository.findByEmail(email)
+				.orElseThrow(() -> new ResourceNotFoundException("seller", "email", email));
+		
+		return sellerMapper.toResponse(seller);
+	}
+	
+	public SellerResponse getByCompanyName(String companyName)
+	{
+		Seller seller = sellerRepository.findByCompanyName(companyName)
+				.orElseThrow(() -> new ResourceNotFoundException("seller", "companyName", companyName));
+		
+		return sellerMapper.toResponse(seller);
+	}
+	
+	public List<SellerDetailedResponse> getAll()
 	{
 		List<Seller> allSellers =  sellerRepository.findAll();
 		
@@ -54,7 +83,7 @@ public class SellerService
 				.collect(Collectors.toList());
 	}
 	
-	public void addSeller(SellerCreateRequest newSeller)
+	public void add(SellerCreateRequest newSeller)
 	{
 		Seller seller = sellerMapper.toEntity(newSeller);
 		
@@ -63,9 +92,10 @@ public class SellerService
 	}
 	
 	@Transactional
-	public void updateSeller(Long id, SellerUpdateRequest newSeller)
+	public void update(Long id, SellerUpdateRequest newSeller)
 	{
-		Seller existing = sellerRepository.findById(id).orElse(null);
+		Seller existing = sellerRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("seller", "id", id));
 		
 		Seller seller = sellerMapper.toEntity(newSeller);
 		
@@ -73,7 +103,7 @@ public class SellerService
 	}
 	
 	@Transactional
-	public void addSeller(Seller seller)
+	public void add(Seller seller)
 	{
 		seller.resetId();
 		seller.setPassword(passwordEncoder.encode(seller.getPassword()));

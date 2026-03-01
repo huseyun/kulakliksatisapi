@@ -10,7 +10,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.User;
 
 public interface UserRepository extends CrudRepository<User, Long>
 {
-	public Optional<User> findUserById(Long id);
+	public Optional<User> findById(Long id);
 	
 	public Optional<User> findByUsername(String username);
 	

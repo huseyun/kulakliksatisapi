@@ -12,6 +12,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
+import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.ShopperRepository;
 
 import jakarta.transaction.Transactional;
@@ -31,12 +32,13 @@ public class ShopperService
 		this.shopperMapper = shopperMapper; 
 	}
 	
-	public Shopper provideShopperById(Long shopperId)
+	public Shopper provideShopperById(Long id)
 	{
-		return shopperRepository.findShopperById(shopperId);
+		return shopperRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("shopper", "id", id));
 	}
 	
-	public List<ShopperResponse> provideAllShoppers()
+	public List<ShopperResponse> getAll()
 	{
 		List<Shopper> shoppers = shopperRepository.findAll();
 		
@@ -46,10 +48,11 @@ public class ShopperService
 	}
 	
 	@Transactional
-	public void updateShopper(Long id,
+	public void update(Long id,
 			ShopperUpdateRequest newShopper)
 	{
-	    Shopper existing = shopperRepository.findById(id).orElse(null);
+	    Shopper existing = shopperRepository.findById(id)
+	    		.orElseThrow(() -> new ResourceNotFoundException("shopper", "id", id));
 	    
 	    Shopper shopper = shopperMapper.toEntity(newShopper);
 	    
@@ -57,7 +60,7 @@ public class ShopperService
 	}
 	
 	@Transactional
-	public void updateShopperDetails(Long shopperId, 
+	public void updateDetails(Long shopperId, 
 			ShopperDetailsUpdateRequest newShopperDetails)
 	{
 		Shopper existing = provideShopperById(shopperId);
