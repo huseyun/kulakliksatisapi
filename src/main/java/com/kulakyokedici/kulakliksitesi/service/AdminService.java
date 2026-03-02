@@ -22,20 +22,20 @@ import jakarta.transaction.Transactional;
 @Service
 public class AdminService
 {
-	private AdminRepository adminRepository;
+	private final AdminRepository adminRepository;
     private final UserTypeRepository userTypesRepository;
-	private final PasswordEncoder passwordEncoder;
+//	private final PasswordEncoder passwordEncoder;
 	private final AdminMapper adminMapper;
 	
 	@Autowired
 	public AdminService(AdminRepository adminRepository,
 			UserTypeRepository userTypesRepository,
-			PasswordEncoder passwordEncoder,
+//			PasswordEncoder passwordEncoder,
 			AdminMapper adminMapper)
 	{
 		this.adminRepository = adminRepository;
 		this.userTypesRepository = userTypesRepository;
-		this.passwordEncoder = passwordEncoder;
+//		this.passwordEncoder = passwordEncoder;
 		this.adminMapper = adminMapper;
 	}
 	
@@ -74,22 +74,29 @@ public class AdminService
 	
 	public void add(UserCreateRequest newAdmin)
 	{
-		Admin admin = new Admin();
+//		Admin admin = new Admin();
+//		
+//		admin.setUsername(newAdmin.username());
+//		admin.setEmail(newAdmin.email());
+//		admin.setPassword(passwordEncoder.encode(newAdmin.password()));
+//		
+//		admin.getUserTypes().add(userTypesRepository.findByName(EUserType.ADMIN)
+//				.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.ADMIN.name())));
 		
-		admin.setUsername(newAdmin.username());
-		admin.setEmail(newAdmin.email());
-		admin.setPassword(passwordEncoder.encode(newAdmin.password()));
+		Admin admin = adminMapper.toEntity(newAdmin);
 		
 		admin.getUserTypes().add(userTypesRepository.findByName(EUserType.ADMIN)
-				.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.ADMIN.name())));
+				.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.ADMIN)));
 		
         adminRepository.save(admin);
 	}
 	
 	@Transactional
-	public void update(Long adminId, UserUpdateRequest newAdmin)
+	public void update(Long adminId, UserUpdateRequest req)
 	{
 		Admin existing = adminRepository.findById(adminId)
-				.orElseThrow(() -> new ResourceNotFoundException("admin", "id", adminId)); 
+				.orElseThrow(() -> new ResourceNotFoundException("admin", "id", adminId));
+		
+		existing.fullUpdate(adminMapper.toEntity(req));
 	}
 }

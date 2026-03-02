@@ -173,6 +173,13 @@ public class AdminController
 		return ResponseEntity.ok().build();
 	}
 	
+//	@PostMapping("/post/addshopper")
+//	public ResponseEntity<Void> addShopper(@Valid @RequestBody UserCreateRequest newShopper)
+//	{
+//		shopperService.add(newShopper);
+//		return ResponseEntity.ok().build();
+//	}
+	
 	/*
 	 * PUT istekleri
 	 * kaynak güncellemek için.
@@ -182,7 +189,7 @@ public class AdminController
 	public ResponseEntity<Void> updateUser(@PathVariable Long userId,
 			@Valid @RequestBody UserUpdateRequest newUser)
 	{
-		userService.updateUser(userId, newUser);
+		userService.update(userId, newUser);
 		return ResponseEntity.noContent().build();
 	}
 	

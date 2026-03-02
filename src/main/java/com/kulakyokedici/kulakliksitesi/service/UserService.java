@@ -69,7 +69,7 @@ public class UserService
 	}
 	
 	@Transactional
-	public void updateUser(Long userId, UserUpdateRequest newUser)
+	public void update(Long userId, UserUpdateRequest newUser)
 	{
 		User existing = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("user", "id", userId));

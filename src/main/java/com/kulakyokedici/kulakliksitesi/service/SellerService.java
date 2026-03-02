@@ -101,20 +101,4 @@ public class SellerService
 		
 		existing.fullUpdate(seller);
 	}
-	
-	@Transactional
-	public void add(Seller seller)
-	{
-		seller.resetId();
-		seller.setPassword(passwordEncoder.encode(seller.getPassword()));
-
-        Set<UserType> managedUserTypes = seller.getUserTypes().stream()
-                .map(ut -> userTypesRepository.findById(ut.getId()).orElse(null))
-                .filter(ut -> ut != null)
-                .collect(Collectors.toSet());
-        
-        seller.setUserTypes(managedUserTypes);
-        
-        sellerRepository.save(seller);
-	}
 }
