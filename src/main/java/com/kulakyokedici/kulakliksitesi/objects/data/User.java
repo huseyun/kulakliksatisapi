@@ -132,10 +132,10 @@ public abstract class User
             .anyMatch(type -> type.getName().equals(typeName));
     }
     
-	public void fullUpdate(User sourceUser)
-	{
-		this.setUsername(sourceUser.getUsername());
-		this.setEmail(sourceUser.getEmail());
-		this.setPassword(sourceUser.getPassword());
-	}
+//	public void fullUpdate(User sourceUser)
+//	{
+//		this.setUsername(sourceUser.getUsername());
+//		this.setEmail(sourceUser.getEmail());
+//		this.setPassword(sourceUser.getPassword());
+//	}
 }

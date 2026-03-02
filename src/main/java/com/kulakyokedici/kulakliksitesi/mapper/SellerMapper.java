@@ -65,4 +65,12 @@ public class SellerMapper
 				seller.getEmail(),
 				seller.getCompanyName());
 	}
+	
+	public void updateEntity(Seller seller, SellerUpdateRequest req)
+	{
+		seller.setEmail(req.email());
+		seller.setUsername(req.username());
+		seller.setPassword(passwordEncoder.encode(req.password()));
+		seller.setCompanyName(req.companyName());
+	}
 }

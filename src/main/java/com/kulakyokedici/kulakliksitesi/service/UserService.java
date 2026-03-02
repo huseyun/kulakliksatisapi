@@ -69,14 +69,12 @@ public class UserService
 	}
 	
 	@Transactional
-	public void update(Long userId, UserUpdateRequest newUser)
+	public void update(Long id, UserUpdateRequest req)
 	{
-		User existing = userRepository.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("user", "id", userId));
+		User existing = userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
 		
-		existing.setEmail(newUser.email());
-		existing.setPassword(passwordEncoder.encode(newUser.password()));
-		existing.setUsername(newUser.username());
+		userMapper.updateEntity(existing, req);
 	}
 }
 

@@ -26,18 +26,15 @@ public class SellerService
 {
 	private SellerRepository sellerRepository;
     private final UserTypeRepository userTypesRepository;
-	private final PasswordEncoder passwordEncoder;
 	private SellerMapper sellerMapper;
 	
 	@Autowired
 	public SellerService(SellerRepository sellerRepository,
 			UserTypeRepository userTypesRepository,
-			PasswordEncoder passwordEncoder,
 			SellerMapper sellerMapper)
 	{
 		this.sellerRepository = sellerRepository;
 		this.userTypesRepository = userTypesRepository;
-		this.passwordEncoder = passwordEncoder;
 		this.sellerMapper = sellerMapper;
 		
 	}
@@ -92,13 +89,11 @@ public class SellerService
 	}
 	
 	@Transactional
-	public void update(Long id, SellerUpdateRequest newSeller)
+	public void update(Long id, SellerUpdateRequest req)
 	{
 		Seller existing = sellerRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("seller", "id", id));
 		
-		Seller seller = sellerMapper.toEntity(newSeller);
-		
-		existing.fullUpdate(seller);
+		sellerMapper.updateEntity(existing, req);
 	}
 }

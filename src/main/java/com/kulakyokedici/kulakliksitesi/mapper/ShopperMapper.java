@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
 
@@ -39,5 +40,20 @@ public class ShopperMapper
 				shopper.getEmail(),
 				shopper.getFirstName(),
 				shopper.getLastName());
+	}
+	
+	public void updateEntity(Shopper shopper, ShopperUpdateRequest req)
+	{
+		shopper.setEmail(req.email());
+		shopper.setFirstName(req.firstName());
+		shopper.setLastName(req.lastName());
+		shopper.setUsername(req.username());
+		shopper.setPassword(passwordEncoder.encode(req.password()));
+	}
+	
+	public void updateEntity(Shopper shopper, ShopperDetailsUpdateRequest req)
+	{
+		shopper.setFirstName(req.firstName());
+		shopper.setLastName(req.lastName());
 	}
 }

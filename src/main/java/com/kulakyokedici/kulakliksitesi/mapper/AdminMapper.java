@@ -1,5 +1,6 @@
 package com.kulakyokedici.kulakliksitesi.mapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +12,9 @@ import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.AdminResponse;
 @Component
 public class AdminMapper {
 	
-	private PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 	
+	@Autowired
 	public AdminMapper(
 			PasswordEncoder passwordEncoder)
 	{
@@ -46,5 +48,12 @@ public class AdminMapper {
 		admin.setPassword(passwordEncoder.encode(req.password()));
 		
 		return admin;
+	}
+	
+	public void updateEntity(Admin admin, UserUpdateRequest req)
+	{
+		admin.setEmail(req.email());
+		admin.setUsername(req.username());
+		admin.setPassword(passwordEncoder.encode(req.password()));
 	}
 }

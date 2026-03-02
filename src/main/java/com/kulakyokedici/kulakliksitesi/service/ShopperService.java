@@ -21,21 +21,21 @@ import jakarta.transaction.Transactional;
 public class ShopperService
 {
 	private ShopperRepository shopperRepository;
-	private PasswordEncoder passwordEncoder;
 	private ShopperMapper shopperMapper;
 	
 	@Autowired
-	public ShopperService(ShopperRepository shopperRepository, PasswordEncoder passwordEncoder, ShopperMapper shopperMapper)
+	public ShopperService(ShopperRepository shopperRepository, ShopperMapper shopperMapper)
 	{
 		this.shopperRepository = shopperRepository;
-		this.passwordEncoder = passwordEncoder;
 		this.shopperMapper = shopperMapper; 
 	}
 	
-	public Shopper provideShopperById(Long id)
+	public ShopperResponse getById(Long id)
 	{
-		return shopperRepository.findById(id)
+		Shopper shopper = shopperRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("shopper", "id", id));
+		
+		return shopperMapper.toResponse(shopper);
 	}
 	
 	public List<ShopperResponse> getAll()
@@ -49,22 +49,21 @@ public class ShopperService
 	
 	@Transactional
 	public void update(Long id,
-			ShopperUpdateRequest newShopper)
+			ShopperUpdateRequest req)
 	{
 	    Shopper existing = shopperRepository.findById(id)
 	    		.orElseThrow(() -> new ResourceNotFoundException("shopper", "id", id));
 	    
-	    Shopper shopper = shopperMapper.toEntity(newShopper);
-	    
-	    existing.fullUpdate(shopper);
+	    shopperMapper.updateEntity(existing, req);
 	}
 	
 	@Transactional
-	public void updateDetails(Long shopperId, 
+	public void updateDetails(Long id, 
 			ShopperDetailsUpdateRequest newShopperDetails)
 	{
-		Shopper existing = provideShopperById(shopperId);
-		existing.setFirstName(newShopperDetails.firstName());
-		existing.setLastName(newShopperDetails.lastName());
+		Shopper existing = shopperRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("shopper", "id", id));
+		
+		shopperMapper.updateEntity(existing, newShopperDetails);
 	}
 }
