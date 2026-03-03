@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kulakyokedici.kulakliksitesi.objects.data.User;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerCreateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperDetailsUpdateRequest;
@@ -27,6 +26,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerDetailed
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserResponse;
+import com.kulakyokedici.kulakliksitesi.objects.exception.InsufficientParametersException;
 import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
@@ -78,7 +78,7 @@ public class AdminController
 		else if(email != null && !email.isBlank())
 			userResponse = userService.getByEmail(email);
 		else
-			throw new ResourceNotFoundException("user", "parameter", "verilmedi");
+			throw new InsufficientParametersException("user");
 		
 		return ResponseEntity.ok(userResponse);
 	}
@@ -97,7 +97,7 @@ public class AdminController
 		else if(email != null && !email.isBlank())
 			adminResponse = adminService.getByEmail(email);
 		else
-			throw new ResourceNotFoundException("admin", "verilmemiş parametre", "verilmemiş değer");
+			throw new InsufficientParametersException("admin");
 		
 		return ResponseEntity.ok(adminResponse);
 	}
@@ -119,7 +119,7 @@ public class AdminController
 		else if(companyName != null && !companyName.isBlank())
 			sellerResponse = sellerService.getByCompanyName(companyName);
 		else
-			throw new ResourceNotFoundException("admin", "verilmemiş parametre", "verilmemiş değer");
+			throw new InsufficientParametersException("seller");
 		
 		return ResponseEntity.ok(sellerResponse);
 	}
