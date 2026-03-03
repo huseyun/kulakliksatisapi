@@ -11,8 +11,8 @@ import com.kulakyokedici.kulakliksitesi.mapper.UserMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.UserUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserResponse;
+import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
-import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -20,56 +20,61 @@ import jakarta.transaction.Transactional;
 public class UserService
 {
 	private UserRepository userRepository;
-    private final UserTypeRepository userTypesRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final UserMapper userMapper;
 	
 	@Autowired
 	public UserService(
 			UserRepository userRepository,
-			UserTypeRepository userTypesRepository,
 			PasswordEncoder passwordEncoder,
 			UserMapper userMapper)
 	{
 		this.userRepository = userRepository;
-        this.userTypesRepository = userTypesRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.userMapper = userMapper;
 	}
 	
-	public List<UserResponse> provideAllUsers()
+	public List<UserResponse> getAll()
 	{
 		List<User> users = userRepository.findAll();
 		
 		return users.stream()
 				.map(user -> userMapper.toUserResponse(user))
 				.collect(Collectors.toList());
+	}
+	
+	public UserResponse getByUsername(String username)
+	{
+		User user = userRepository.findByUsername(username)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
 		
+		return userMapper.toUserResponse(user);
 	}
 	
-	public User provideUserByUsername(String username)
+	// exception testi
+	public UserResponse getById(long id)
 	{
-		return userRepository.findByUsername(username);
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
+		
+		return userMapper.toUserResponse(user);
 	}
 	
-	public User provideUserById(long id)
+	public UserResponse getByEmail(String email)
 	{
-		return userRepository.findUserById(id);
-	}
-	
-	public User provideUserByEmail(String email)
-	{
-		return userRepository.findByEmail(email);
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "email", email));
+		
+		return userMapper.toUserResponse(user);
 	}
 	
 	@Transactional
-	public void updateUser(Long userId, UserUpdateRequest newUser)
+	public void update(Long id, UserUpdateRequest req)
 	{
-		User existing = userRepository.findUserById(userId);
-		existing.setEmail(newUser.email());
-		existing.setPassword(passwordEncoder.encode(newUser.password()));
-		existing.setUsername(newUser.username());
+		User existing = userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
+		
+		userMapper.updateEntity(existing, req);
 	}
-	
 }
 

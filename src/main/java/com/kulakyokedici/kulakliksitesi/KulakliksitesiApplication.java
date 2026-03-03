@@ -1,14 +1,23 @@
 /*
  * TODO jwtservice, jwtauthenticationfilter, nasil calisiyor ogren
  * TODO admin sayfası, kullanıcı eklesin, kullanıcı silsin.
- * TODO user'i abstract hale getirmeye calis. mantikli mi arastir.
- * TODO DTO paternini butun siniflara uygula.
- * TODO Itemlere girismeye basla.s
- * TODO exception handling mekanizmasini olustur.
- * TODO veri objelerini, dogrulamalarini, nasil olacaklarini kurgula.
- * TODO saticiya gore item getirme sonsuz dongusunu duzelt
- * TODO mapper'larin circular reference isine cozum bul.
- * TODO exception implementasyonunu düzgün hale getir.
+ * TODO itemlere girismeye basla.
+ * TODO endpoint isimlendirmelerini REST mimarisine uygun yap.
+ * TODO paging mantığı ekle.
+ * TODO loglama mekanizması
+ * TODO user controller işine başla.
+ * TODO lombok'a bir bak.
+ * TODO SONRAYA testing.
+ * TODO KOLAYLIK mapstruct kütüphanesine bir bak.
+ * TODO PRENSIP service'leri interface haline getirme.
+ * TODO TAMAM bütün servisler optional ile çalışsın, exception yapısını kullansın.
+ * TODO TAMAM user'i abstract hale getirmeye calis. mantikli mi arastir.
+ * TODO TAMAM DTO paternini butun siniflara uygula.
+ * TODO TAMAM (bean validation, dto validation) veri objelerini, dogrulamalarini, nasil olacaklarini kurgula.
+ * TODO TAMAM (dto'lar) saticiya gore item getirme sonsuz dongusunu duzelt
+ * TODO TAMAM  mapper'larin circular reference isine cozum bul.
+ * TODO TAMAM exception implementasyonunu düzgün hale getir.
+ * TODO TAMAM exception handling mekanizmasini olustur.
  * TODO TAMAM full update ve detailupdate fonksiyonlarini, DTO'larla eszaman implement etmeye basla.
  * TODO TAMAM update controller'lerini, url'den id alacak sekilde duzenle.
  * TODO TAMAM güncelleme işlerinin hatalarını düzelt.

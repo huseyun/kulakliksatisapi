@@ -4,39 +4,48 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.ShopperMapper;
+import com.kulakyokedici.kulakliksitesi.objects.data.EUserType;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperCreateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
+import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.ShopperRepository;
+import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class ShopperService
 {
-	private ShopperRepository shopperRepository;
-	private PasswordEncoder passwordEncoder;
-	private ShopperMapper shopperMapper;
+	private final ShopperRepository shopperRepository;
+	private final ShopperMapper shopperMapper;
+	private final UserTypeRepository userTypeRepository;
 	
 	@Autowired
-	public ShopperService(ShopperRepository shopperRepository, PasswordEncoder passwordEncoder, ShopperMapper shopperMapper)
+	public ShopperService(
+			ShopperRepository shopperRepository,
+			ShopperMapper shopperMapper,
+			UserTypeRepository userTypeRepository)
 	{
 		this.shopperRepository = shopperRepository;
-		this.passwordEncoder = passwordEncoder;
 		this.shopperMapper = shopperMapper; 
+		this.userTypeRepository = userTypeRepository;
 	}
 	
-	public Shopper provideShopperById(Long shopperId)
+	public ShopperResponse getById(Long id)
 	{
-		return shopperRepository.findShopperById(shopperId);
+		Shopper shopper = shopperRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("shopper", "id", id));
+		
+		return shopperMapper.toResponse(shopper);
 	}
 	
-	public List<ShopperResponse> provideAllShoppers()
+	public List<ShopperResponse> getAll()
 	{
 		List<Shopper> shoppers = shopperRepository.findAll();
 		
@@ -45,23 +54,34 @@ public class ShopperService
 				.collect(Collectors.toList());
 	}
 	
-	@Transactional
-	public void updateShopper(Long id,
-			ShopperUpdateRequest newShopper)
+	public void add(ShopperCreateRequest req)
 	{
-	    Shopper existing = shopperRepository.findById(id).orElse(null);
-	    
-	    Shopper shopper = shopperMapper.toEntity(newShopper);
-	    
-	    existing.fullUpdate(shopper);
+		Shopper shopper = shopperMapper.toEntity(req);
+		
+		shopper.getUserTypes().add(
+				userTypeRepository.findByName(EUserType.SHOPPER)
+				.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.SHOPPER)));
+		
+		shopperRepository.save(shopper);
 	}
 	
 	@Transactional
-	public void updateShopperDetails(Long shopperId, 
+	public void update(Long id,
+			ShopperUpdateRequest req)
+	{
+	    Shopper existing = shopperRepository.findById(id)
+	    		.orElseThrow(() -> new ResourceNotFoundException("shopper", "id", id));
+	    
+	    shopperMapper.updateEntity(existing, req);
+	}
+	
+	@Transactional
+	public void updateDetails(Long id, 
 			ShopperDetailsUpdateRequest newShopperDetails)
 	{
-		Shopper existing = provideShopperById(shopperId);
-		existing.setFirstName(newShopperDetails.firstName());
-		existing.setLastName(newShopperDetails.lastName());
+		Shopper existing = shopperRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("shopper", "id", id));
+		
+		shopperMapper.updateEntity(existing, newShopperDetails);
 	}
 }

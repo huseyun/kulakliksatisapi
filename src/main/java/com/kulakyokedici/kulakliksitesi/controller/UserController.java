@@ -26,9 +26,9 @@ public class UserController
 		this.userService = userService;
 	}
 	
-	@GetMapping
-	private ResponseEntity<? extends User> getUserDetails(Principal principal)
-	{
-		return ResponseEntity.ok(userService.provideUserByUsername(principal.getName()));
-	}
+//	@GetMapping
+//	private ResponseEntity<? extends User> getUserDetails(Principal principal)
+//	{
+//		return ResponseEntity.ok(userService.getUserByUsername(principal.getName()));
+//	}
 }

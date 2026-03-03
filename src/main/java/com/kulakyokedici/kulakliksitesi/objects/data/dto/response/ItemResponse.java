@@ -3,7 +3,6 @@ package com.kulakyokedici.kulakliksitesi.objects.data.dto.response;
 import java.util.Set;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Image;
-import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 
 public record ItemResponse(
 		String itemName,
