@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerCreateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerUpdateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperCreateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.UserCreateRequest;
@@ -27,7 +28,6 @@ import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerResponse
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserResponse;
 import com.kulakyokedici.kulakliksitesi.objects.exception.InsufficientParametersException;
-import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.service.AdminService;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
 import com.kulakyokedici.kulakliksitesi.service.SellerService;
@@ -167,18 +167,18 @@ public class AdminController
 	}
 	
 	@PostMapping("/post/addseller")
-	public ResponseEntity<Void> addSeller(@Valid @RequestBody SellerCreateRequest newSeller)
+	public ResponseEntity<Void> addSeller(@Valid @RequestBody SellerCreateRequest req)
 	{	
-		sellerService.add(newSeller);
+		sellerService.add(req);
 		return ResponseEntity.ok().build();
 	}
 	
-//	@PostMapping("/post/addshopper")
-//	public ResponseEntity<Void> addShopper(@Valid @RequestBody UserCreateRequest newShopper)
-//	{
-//		shopperService.add(newShopper);
-//		return ResponseEntity.ok().build();
-//	}
+	@PostMapping("/post/addshopper")
+	public ResponseEntity<Void> addShopper(@Valid @RequestBody ShopperCreateRequest req)
+	{
+		shopperService.add(req);
+		return ResponseEntity.ok().build();
+	}
 	
 	/*
 	 * PUT istekleri

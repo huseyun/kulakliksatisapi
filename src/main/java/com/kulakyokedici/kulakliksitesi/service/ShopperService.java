@@ -4,30 +4,37 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.ShopperMapper;
+import com.kulakyokedici.kulakliksitesi.objects.data.EUserType;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperCreateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
 import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.ShopperRepository;
+import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class ShopperService
 {
-	private ShopperRepository shopperRepository;
-	private ShopperMapper shopperMapper;
+	private final ShopperRepository shopperRepository;
+	private final ShopperMapper shopperMapper;
+	private final UserTypeRepository userTypeRepository;
 	
 	@Autowired
-	public ShopperService(ShopperRepository shopperRepository, ShopperMapper shopperMapper)
+	public ShopperService(
+			ShopperRepository shopperRepository,
+			ShopperMapper shopperMapper,
+			UserTypeRepository userTypeRepository)
 	{
 		this.shopperRepository = shopperRepository;
 		this.shopperMapper = shopperMapper; 
+		this.userTypeRepository = userTypeRepository;
 	}
 	
 	public ShopperResponse getById(Long id)
@@ -45,6 +52,17 @@ public class ShopperService
 		return shoppers.stream()
 				.map(seller -> shopperMapper.toResponse(seller))
 				.collect(Collectors.toList());
+	}
+	
+	public void add(ShopperCreateRequest req)
+	{
+		Shopper shopper = shopperMapper.toEntity(req);
+		
+		shopper.getUserTypes().add(
+				userTypeRepository.findByName(EUserType.SHOPPER)
+				.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.SHOPPER)));
+		
+		shopperRepository.save(shopper);
 	}
 	
 	@Transactional
