@@ -64,7 +64,7 @@ public class AdminController
 	 * GET istekleri
 	 */
 	
-	@GetMapping("/get/user")
+	@GetMapping("users")
 	public ResponseEntity<UserResponse> getUser(@RequestParam(name = "id", required = false) Long id,
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email)
@@ -83,7 +83,7 @@ public class AdminController
 		return ResponseEntity.ok(userResponse);
 	}
 	
-	@GetMapping("/get/admin")
+	@GetMapping("/admins")
 	public ResponseEntity<AdminResponse> getAdmin(@RequestParam(name = "id", required = false) Long id,
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email)
@@ -102,7 +102,7 @@ public class AdminController
 		return ResponseEntity.ok(adminResponse);
 	}
 	
-	@GetMapping("/get/seller")
+	@GetMapping("/sellers")
 	public ResponseEntity<SellerResponse> getSeller(@RequestParam(name = "id", required = false) Long id,
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email,
@@ -124,31 +124,31 @@ public class AdminController
 		return ResponseEntity.ok(sellerResponse);
 	}
 	
-	@GetMapping("/get/allusers")
+	@GetMapping("/users")
 	public ResponseEntity<List<UserResponse>> getAllUsers()
 	{
 		return ResponseEntity.ok(userService.getAll());
 	}
 	
-	@GetMapping("/get/allshoppers")
+	@GetMapping("/shoppers")
 	public ResponseEntity<List<ShopperResponse>> getAllShoppers()
 	{
 		return ResponseEntity.ok(shopperService.getAll());
 	}
 	
-	@GetMapping("/get/allsellers")
+	@GetMapping("/sellers")
 	public ResponseEntity<List<SellerDetailedResponse>> getAllSellers()
 	{
 		return ResponseEntity.ok(sellerService.getAll());
 	}
 	
-	@GetMapping("/get/alladmins")
+	@GetMapping("/admins")
 	public ResponseEntity<List<AdminResponse>> getAllAdmins()
 	{
 		return ResponseEntity.ok(adminService.getAll());
 	}
 	
-	@GetMapping("/get/selleritems/{sellerId}")
+	@GetMapping("/get/sellers/{sellerId}/items")
 	public ResponseEntity<Set<ItemSummaryResponse>> getItemsBySellerId(@PathVariable Long sellerId)
 	{
 		return ResponseEntity.ok(itemService.getAllBySellerId(sellerId));
@@ -159,21 +159,21 @@ public class AdminController
 	 * yeni kaynak eklemek için.
 	 */
 	
-	@PostMapping("/post/addadmin")
+	@PostMapping("/admins")
 	public ResponseEntity<Void> addAdmin(@Valid @RequestBody UserCreateRequest newAdmin)
 	{
 		adminService.add(newAdmin);
 		return ResponseEntity.ok().build();
 	}
 	
-	@PostMapping("/post/addseller")
+	@PostMapping("/sellers")
 	public ResponseEntity<Void> addSeller(@Valid @RequestBody SellerCreateRequest req)
 	{	
 		sellerService.add(req);
 		return ResponseEntity.ok().build();
 	}
 	
-	@PostMapping("/post/addshopper")
+	@PostMapping("/shoppers")
 	public ResponseEntity<Void> addShopper(@Valid @RequestBody ShopperCreateRequest req)
 	{
 		shopperService.add(req);
@@ -185,7 +185,7 @@ public class AdminController
 	 * kaynak güncellemek için.
 	 */
 	
-	@PutMapping("/put/updateuser/{userId}")
+	@PutMapping("/users/{userId}")
 	public ResponseEntity<Void> updateUser(@PathVariable Long userId,
 			@Valid @RequestBody UserUpdateRequest newUser)
 	{
@@ -193,7 +193,7 @@ public class AdminController
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/put/updateseller/{sellerId}")
+	@PutMapping("/sellers/{sellerId}")
 	public ResponseEntity<Void> updateSeller(@PathVariable Long sellerId,
 			@Valid @RequestBody SellerUpdateRequest newSeller)
 	{
@@ -201,7 +201,7 @@ public class AdminController
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/put/updateshopper/{shopperId}")
+	@PutMapping("/shoppers/{shopperId}")
 	public ResponseEntity<Void> updateShopper(@PathVariable Long shopperId, 
 			@Valid @RequestBody ShopperUpdateRequest newShopper)
 	{
@@ -209,7 +209,7 @@ public class AdminController
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/put/updateshopperdetails/{shopperId}")
+	@PutMapping("/shoppers/{shopperId}/details")
 	public ResponseEntity<Void> updateShopperDetails(@PathVariable Long shopperId, 
 			@Valid @RequestBody ShopperDetailsUpdateRequest newShopperDetails)
 	{
@@ -217,7 +217,7 @@ public class AdminController
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/put/updateadmin/{adminId}")
+	@PutMapping("/admins/{adminId}")
 	public ResponseEntity<Void> updateAdmin(@PathVariable Long adminId,
 			@Valid @RequestBody UserUpdateRequest newAdmin)
 	{
