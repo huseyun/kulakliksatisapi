@@ -24,5 +24,6 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
     
     public boolean existsByItemName(String itemName);
     
+    @EntityGraph(attributePaths = {"images"})
     public List<Item> findAll();
 }

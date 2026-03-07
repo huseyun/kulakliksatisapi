@@ -14,19 +14,19 @@ import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
 public class CustomUserDetailsService implements UserDetailsService 
 {
 
- private UserRepository userRepository;
-
- @Autowired
- public CustomUserDetailsService(UserRepository userRepository) 
- {
-     this.userRepository = userRepository;
- }
-
- @Override
- public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
- {
-	 User user = userRepository.findByUsername(username).get();
-	 
-     return new SecurityUser(user);
- 	}
+	private UserRepository userRepository;
+	
+	@Autowired
+	public CustomUserDetailsService(UserRepository userRepository) 
+	{
+	    this.userRepository = userRepository;
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
+	{
+		User user = userRepository.findByUsername(username).get();
+		 
+	    return new SecurityUser(user);
+	}
 }
