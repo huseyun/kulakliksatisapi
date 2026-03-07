@@ -13,5 +13,7 @@ public interface ShopperRepository extends CrudRepository<Shopper, Long>
 	
 	public Optional<Shopper> findByUsername(String username);
 	
+	public Optional<Shopper> findByEmail(String email);
+	
 	public List<Shopper> findAll();
 }

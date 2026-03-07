@@ -47,6 +47,14 @@ public class SellerService
 		return sellerMapper.toResponse(seller);
 	}
 	
+	public SellerDetailedResponse getDetailedResponseById(Long id)
+	{
+		Seller seller = sellerRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("seller", "id", id));
+		
+		return sellerMapper.toDetailedResponse(seller);
+	}
+	
 	public SellerResponse getByUsername(String username)
 	{
 		Seller seller = sellerRepository.findByUsername(username)

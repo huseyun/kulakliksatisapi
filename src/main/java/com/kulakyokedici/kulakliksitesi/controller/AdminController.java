@@ -64,91 +64,103 @@ public class AdminController
 	 * GET istekleri
 	 */
 	
-	@GetMapping("users")
-	public ResponseEntity<UserResponse> getUser(@RequestParam(name = "id", required = false) Long id,
+	@GetMapping("/users")
+	public ResponseEntity<?> getUser(
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email)
 	{
 		UserResponse userResponse = null;
 		
-		if(id != null)
-			userResponse = userService.getById(id);
-		else if(username != null && !username.isBlank())
+		if(username != null && !username.isBlank())
 			userResponse = userService.getByUsername(username);
 		else if(email != null && !email.isBlank())
 			userResponse = userService.getByEmail(email);
 		else
-			throw new InsufficientParametersException("user");
+			return ResponseEntity.ok(userService.getAll());
 		
 		return ResponseEntity.ok(userResponse);
 	}
 	
 	@GetMapping("/admins")
-	public ResponseEntity<AdminResponse> getAdmin(@RequestParam(name = "id", required = false) Long id,
+	public ResponseEntity<?> getAdmin(
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email)
 	{
 		AdminResponse adminResponse = null;
 		
-		if(id != null)
-			adminResponse = adminService.getById(id);
-		else if(username != null && !username.isBlank())
+		if(username != null && !username.isBlank())
 			adminResponse = adminService.getByUsername(username);
 		else if(email != null && !email.isBlank())
 			adminResponse = adminService.getByEmail(email);
 		else
-			throw new InsufficientParametersException("admin");
+			return ResponseEntity.ok(adminService.getAll());
 		
 		return ResponseEntity.ok(adminResponse);
 	}
 	
 	@GetMapping("/sellers")
-	public ResponseEntity<SellerResponse> getSeller(@RequestParam(name = "id", required = false) Long id,
+	public ResponseEntity<?> getSeller(
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email,
 			@RequestParam(name = "company_name", required = false) String companyName)
 	{
 		SellerResponse sellerResponse = null;
 		
-		if(id != null)
-			sellerResponse = sellerService.getById(id);
-		else if(username != null && !username.isBlank())
+		if(username != null && !username.isBlank())
 			sellerResponse = sellerService.getByUsername(username);
 		else if(email != null && !email.isBlank())
 			sellerResponse = sellerService.getByEmail(email);
 		else if(companyName != null && !companyName.isBlank())
 			sellerResponse = sellerService.getByCompanyName(companyName);
 		else
-			throw new InsufficientParametersException("seller");
+			return ResponseEntity.ok(sellerService.getAll());
 		
 		return ResponseEntity.ok(sellerResponse);
 	}
 	
-	@GetMapping("/users")
-	public ResponseEntity<List<UserResponse>> getAllUsers()
-	{
-		return ResponseEntity.ok(userService.getAll());
-	}
-	
+	// isim soyisim araması eklenecek
 	@GetMapping("/shoppers")
-	public ResponseEntity<List<ShopperResponse>> getAllShoppers()
+	public ResponseEntity<?> getShopper(
+			@RequestParam(name = "username", required = false) String username,
+			@RequestParam(name = "email", required = false) String email)
 	{
-		return ResponseEntity.ok(shopperService.getAll());
+		ShopperResponse shopperResponse = null;
+		
+		if(username != null && !username.isBlank())
+			shopperResponse = shopperService.getByUsername(username);
+		else if(email != null && !email.isBlank())
+			shopperResponse = shopperService.getByEmail(email);
+		else
+			return ResponseEntity.ok(shopperService.getAll());
+		
+		return ResponseEntity.ok(shopperResponse);
 	}
 	
-	@GetMapping("/sellers")
-	public ResponseEntity<List<SellerDetailedResponse>> getAllSellers()
+	@GetMapping("/users/{id}")
+	public ResponseEntity<UserResponse> getAllUsers(@PathVariable Long id)
 	{
-		return ResponseEntity.ok(sellerService.getAll());
+		return ResponseEntity.ok(userService.getById(id));
 	}
 	
-	@GetMapping("/admins")
-	public ResponseEntity<List<AdminResponse>> getAllAdmins()
+	@GetMapping("/shoppers/{id}")
+	public ResponseEntity<ShopperResponse> getAllShoppers(@PathVariable Long id)
 	{
-		return ResponseEntity.ok(adminService.getAll());
+		return ResponseEntity.ok(shopperService.getById(id));
 	}
 	
-	@GetMapping("/get/sellers/{sellerId}/items")
+	@GetMapping("/sellers/{id}")
+	public ResponseEntity<SellerDetailedResponse> getAllSellers(@PathVariable Long id)
+	{
+		return ResponseEntity.ok(sellerService.getDetailedResponseById(id));
+	}
+	
+	@GetMapping("/admins/{id}")
+	public ResponseEntity<AdminResponse> getAllAdmins(@PathVariable Long id)
+	{
+		return ResponseEntity.ok(adminService.getById(id));
+	}
+	
+	@GetMapping("/sellers/{sellerId}/items")
 	public ResponseEntity<Set<ItemSummaryResponse>> getItemsBySellerId(@PathVariable Long sellerId)
 	{
 		return ResponseEntity.ok(itemService.getAllBySellerId(sellerId));
