@@ -1,5 +1,6 @@
 package com.kulakyokedici.kulakliksitesi.service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,18 @@ public class ItemService
 		this.itemMapper = itemMapper;
 	}
 	
-	public Set<ItemSummaryResponse> getAllBySellerId(Long sellerId)
+	public List<ItemSummaryResponse> getSummaryAll()
+	{
+		List<Item> items = itemRepository.findAll();
+		
+		List<ItemSummaryResponse> responseItems = items.stream()
+				.map(i -> itemMapper.toSummaryResponse(i))
+				.collect(Collectors.toList());
+		
+		return responseItems;
+	}
+	
+	public Set<ItemSummaryResponse> getSummaryAllBySellerId(Long sellerId)
 	{
 		Set<Item> items = itemRepository.findBySellerId(sellerId);
 		

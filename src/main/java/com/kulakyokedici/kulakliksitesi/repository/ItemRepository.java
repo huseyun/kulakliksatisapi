@@ -1,5 +1,6 @@
 package com.kulakyokedici.kulakliksitesi.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.SortedSet;
 
@@ -22,4 +23,6 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
     SortedSet<Item> findBySellerUsername(@Param("username") String username);
     
     public boolean existsByItemName(String itemName);
+    
+    public List<Item> findAll();
 }
