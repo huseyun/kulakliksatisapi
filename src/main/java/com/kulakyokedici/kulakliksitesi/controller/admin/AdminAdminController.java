@@ -1,4 +1,4 @@
-package com.kulakyokedici.kulakliksitesi.controller;
+package com.kulakyokedici.kulakliksitesi.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

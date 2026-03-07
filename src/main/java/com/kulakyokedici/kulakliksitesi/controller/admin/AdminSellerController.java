@@ -1,4 +1,4 @@
-package com.kulakyokedici.kulakliksitesi.controller;
+package com.kulakyokedici.kulakliksitesi.controller.admin;
 
 import java.util.Set;
 

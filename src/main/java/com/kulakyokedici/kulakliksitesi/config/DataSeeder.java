@@ -104,6 +104,8 @@ public class DataSeeder implements CommandLineRunner {
         	
         	item.setSeller(seller);
         	
+        	item.setDescription("herhangi bir eşya");
+        	
         	itemRepository.save(item);
         	
         	seller.getItems().add(item);

@@ -49,7 +49,17 @@ public class Item implements Comparable<Item>
 			column = @Column(name = "image_url"))
 	private Set<Image> images = new HashSet<>();
 	
-    public Seller getSeller()
+	@Nullable
+	@Column(name = "description")
+	private String description;
+	
+	@Override
+	public int compareTo(Item other)
+	{
+		return this.id.compareTo(other.id);
+	}
+
+	public Seller getSeller()
 	{
 		return seller;
 	}
@@ -88,10 +98,14 @@ public class Item implements Comparable<Item>
     {
     	return itemPrice;
     }
-
-	@Override
-	public int compareTo(Item other)
+	
+    public String getDescription()
 	{
-		return this.id.compareTo(other.id);
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
 	}
 }
