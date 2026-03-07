@@ -137,25 +137,25 @@ public class AdminController
 	}
 	
 	@GetMapping("/users/{id}")
-	public ResponseEntity<UserResponse> getAllUsers(@PathVariable Long id)
+	public ResponseEntity<UserResponse> getUserById(@PathVariable Long id)
 	{
 		return ResponseEntity.ok(userService.getById(id));
 	}
 	
 	@GetMapping("/shoppers/{id}")
-	public ResponseEntity<ShopperResponse> getAllShoppers(@PathVariable Long id)
+	public ResponseEntity<ShopperResponse> getShopperById(@PathVariable Long id)
 	{
 		return ResponseEntity.ok(shopperService.getById(id));
 	}
 	
 	@GetMapping("/sellers/{id}")
-	public ResponseEntity<SellerDetailedResponse> getAllSellers(@PathVariable Long id)
+	public ResponseEntity<SellerDetailedResponse> getSellerById(@PathVariable Long id)
 	{
 		return ResponseEntity.ok(sellerService.getDetailedResponseById(id));
 	}
 	
 	@GetMapping("/admins/{id}")
-	public ResponseEntity<AdminResponse> getAllAdmins(@PathVariable Long id)
+	public ResponseEntity<AdminResponse> getAdminById(@PathVariable Long id)
 	{
 		return ResponseEntity.ok(adminService.getById(id));
 	}
