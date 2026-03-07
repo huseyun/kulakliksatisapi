@@ -1,8 +1,4 @@
 /*
- * TODO jwtservice, jwtauthenticationfilter, nasil calisiyor ogren
- * TODO admin sayfası, kullanıcı eklesin, kullanıcı silsin.
- * TODO itemlere girismeye basla.
- * TODO endpoint isimlendirmelerini REST mimarisine uygun yap.
  * TODO paging mantığı ekle.
  * TODO loglama mekanizması
  * TODO user controller işine başla.
@@ -10,6 +6,10 @@
  * TODO SONRAYA testing.
  * TODO KOLAYLIK mapstruct kütüphanesine bir bak.
  * TODO PRENSIP service'leri interface haline getirme.
+ * TODO TAMAM jwtservice, jwtauthenticationfilter, nasil calisiyor ogren
+ * TODO TAMAM itemlere girismeye basla.
+ * TODO TAMAM admin sayfası, kullanıcı eklesin, kullanıcı silsin.
+ * TODO TAMAM endpoint isimlendirmelerini REST mimarisine uygun yap.
  * TODO TAMAM bütün servisler optional ile çalışsın, exception yapısını kullansın.
  * TODO TAMAM user'i abstract hale getirmeye calis. mantikli mi arastir.
  * TODO TAMAM DTO paternini butun siniflara uygula.
