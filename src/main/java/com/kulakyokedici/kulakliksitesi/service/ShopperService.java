@@ -45,6 +45,22 @@ public class ShopperService
 		return shopperMapper.toResponse(shopper);
 	}
 	
+	public ShopperResponse getByUsername(String username)
+	{
+		Shopper shopper = shopperRepository.findByUsername(username)
+				.orElseThrow(() -> new ResourceNotFoundException("shopper", "username", username));
+		
+		return shopperMapper.toResponse(shopper);
+	}
+	
+	public ShopperResponse getByEmail(String email)
+	{
+		Shopper shopper = shopperRepository.findByEmail(email)
+				.orElseThrow(() -> new ResourceNotFoundException("shopper", "email", email));
+		
+		return shopperMapper.toResponse(shopper);
+	}
+	
 	public List<ShopperResponse> getAll()
 	{
 		List<Shopper> shoppers = shopperRepository.findAll();

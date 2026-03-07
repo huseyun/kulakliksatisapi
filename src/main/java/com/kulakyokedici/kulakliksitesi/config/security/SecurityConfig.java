@@ -60,7 +60,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/login").permitAll()
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/profile/").hasAnyRole("ADMIN", "USER")
+//                .requestMatchers("/api/profile/").hasAnyRole("ADMIN", "USER")
 //				.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("GUEST", "USER", "ADMIN")
 				.anyRequest().authenticated());
 		
