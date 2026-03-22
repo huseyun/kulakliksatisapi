@@ -14,7 +14,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 public interface ItemRepository extends CrudRepository<Item, Long> {
     
 	// eager loading, proxy yerine tek sorguda getir.
-	@EntityGraph(attributePaths = {"images"})
+	@EntityGraph(attributePaths = {"images", "smallImages"})
     SortedSet<Item> findBySellerId(Long sellerId);
     
     Optional<Item> findByIdAndSellerId(Long itemId, Long sellerId);
@@ -22,8 +22,8 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
     @Query("SELECT i FROM Item i WHERE i.seller.username = :username")
     SortedSet<Item> findBySellerUsername(@Param("username") String username);
     
-    public boolean existsByItemName(String itemName);
+    public boolean existsByName(String itemName);
     
-    @EntityGraph(attributePaths = {"images"})
+    @EntityGraph(attributePaths = {"images", "smallImages"})
     public List<Item> findAll();
 }

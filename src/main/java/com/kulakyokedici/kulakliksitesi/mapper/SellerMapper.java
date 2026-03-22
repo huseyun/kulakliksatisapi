@@ -1,9 +1,12 @@
 package com.kulakyokedici.kulakliksitesi.mapper;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerCreateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerUpdateRequest;
@@ -51,11 +54,8 @@ public class SellerMapper
 				seller.getEmail(),
 				seller.getCompanyName(),
 				seller.getItems().stream()
-					.map(item -> new ItemSummaryResponse(
-							item.getItemName(),
-							item.getItemPrice(),
-							item.getImages()))
-					.collect(java.util.stream.Collectors.toSet()));
+					.map(item -> toSummaryResponse(item))
+					.collect(Collectors.toSet()));
 	}
 	
 	public SellerResponse toResponse(Seller seller)
@@ -72,5 +72,16 @@ public class SellerMapper
 		seller.setUsername(req.username());
 		seller.setPassword(passwordEncoder.encode(req.password()));
 		seller.setCompanyName(req.companyName());
+	}
+	
+	// itemler için yardımcı metot.
+	private ItemSummaryResponse toSummaryResponse(Item item)
+	{
+		return new ItemSummaryResponse(
+				item.getTitle(),
+				item.getPrice(),
+				item.getImages().stream()
+					.map(image -> image.getUrl())
+					.collect(Collectors.toList()));
 	}
 }

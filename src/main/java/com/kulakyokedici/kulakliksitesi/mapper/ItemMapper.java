@@ -1,5 +1,7 @@
 package com.kulakyokedici.kulakliksitesi.mapper;
 
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Item;
@@ -13,8 +15,8 @@ public class ItemMapper
 	
 	public ItemResponse toResponse(Item item)
 	{
-		return new ItemResponse(item.getItemName(),
-				item.getItemPrice(),
+		return new ItemResponse(item.getName(),
+				item.getPrice(),
 				new SellerResponse(
 						item.getSeller().getUsername(),
 						item.getSeller().getEmail(),
@@ -25,8 +27,10 @@ public class ItemMapper
 	public ItemSummaryResponse toSummaryResponse(Item item)
 	{
 		return new ItemSummaryResponse(
-				item.getItemName(),
-				item.getItemPrice(),
-				item.getImages());
+				item.getTitle(),
+				item.getPrice(),
+				item.getSmallImages().stream()
+					.map(image -> image.getUrl())
+					.collect(Collectors.toList()));
 	}
 }

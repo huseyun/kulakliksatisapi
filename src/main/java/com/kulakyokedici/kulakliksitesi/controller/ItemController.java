@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
@@ -27,4 +28,10 @@ public class ItemController
 	{
 		return ResponseEntity.ok(itemService.getSummaryAll());
 	}
+	
+	@GetMapping("/items/search")
+    public ResponseEntity<List<ItemSummaryResponse>> searchHeadphones(@RequestParam String keyword) {
+        List<ItemSummaryResponse> results = itemService.search(keyword);
+        return ResponseEntity.ok(results);
+    }
 }

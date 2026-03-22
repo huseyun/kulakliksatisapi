@@ -5,19 +5,19 @@ import java.util.Set;
 import com.kulakyokedici.kulakliksitesi.objects.data.Image;
 
 public record ItemResponse(
-		String itemName,
-		Double itemPrice,
+		String name,
+		Double price,
 		SellerResponse seller,
 		Set<Image> images
 		)
 {
-	public ItemResponse(String itemName,
-			Double itemPrice,
+	public ItemResponse(String name,
+			Double price,
 			SellerResponse seller,
 			Set<Image> images)
 	{
-		this.itemName = itemName;
-		this.itemPrice = itemPrice;
+		this.name = name;
+		this.price = price;
 		this.seller = seller;
 		this.images = images;
 	}
