@@ -83,7 +83,7 @@ public class DataSeeder implements CommandLineRunner {
         {
         	Seller seller = new Seller();
         	seller.setUsername("seller");
-        	seller.setPassword(passwordEncoder.encode("seller"));
+        	seller.setPassword(passwordEncoder.encode("sellerpass"));
         	seller.setEmail("seller@seller.com");
         	seller.setCompanyName("ödemiş ltd şti");
         	

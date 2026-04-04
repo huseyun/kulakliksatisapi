@@ -20,6 +20,7 @@ import com.kulakyokedici.kulakliksitesi.service.ShopperService;
 import jakarta.validation.Valid;
 
 @RestController
+@PreAuthorize("hasRole('SHOPPER')")
 @RequestMapping("api/shoppers")
 public class ShopperController
 {
@@ -35,7 +36,6 @@ public class ShopperController
 	 * GET istekleri
 	 */
 	
-	@PreAuthorize("hasRole('SHOPPER')")
 	@GetMapping("/profile")
 	public ResponseEntity<ShopperResponse> getCurrentUser(Principal principal)
 	{
@@ -46,20 +46,10 @@ public class ShopperController
 	 * POST istekleri
 	 */
 	
-	@PostMapping()
-	public ResponseEntity<ShopperResponse> createUser(@Valid @RequestBody ShopperCreateRequest req)
-	{
-		ShopperResponse resp = shopperService.add(req);
-		
-		return ResponseEntity.created(URI.create("/api/shoppers/" + resp.id()))
-				.body(resp);
-	}
-	
 	/*
 	 * PUT istekleri
 	 */
 	
-	@PreAuthorize("hasRole('SHOPPER')")
 	@PutMapping("/profile")
 	public ResponseEntity<Void> updateShopperDetails(
 			@Valid @RequestBody ShopperDetailsUpdateRequest req,

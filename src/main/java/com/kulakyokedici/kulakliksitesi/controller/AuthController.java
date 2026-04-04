@@ -1,5 +1,7 @@
 package com.kulakyokedici.kulakliksitesi.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,20 +13,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ShopperCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ShopperResponse;
 import com.kulakyokedici.kulakliksitesi.objects.security.dto.AuthRequestDto;
+import com.kulakyokedici.kulakliksitesi.service.ShopperService;
 import com.kulakyokedici.kulakliksitesi.service.security.JwtService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/auth")
-public class LoginController {
+public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final ShopperService shopperService;
     
     @Autowired
-    public LoginController(AuthenticationManager authenticationManager, JwtService jwtService) {
+    public AuthController(
+    		AuthenticationManager authenticationManager, 
+    		JwtService jwtService,
+    		ShopperService shopperService) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.shopperService = shopperService;
     }
 
     @PostMapping("/login")
@@ -41,4 +53,13 @@ public class LoginController {
         
         return ResponseEntity.ok(jsonResponse);
     }
+    
+	@PostMapping("/register")
+	public ResponseEntity<ShopperResponse> createShopper(@Valid @RequestBody ShopperCreateRequest req)
+	{
+		ShopperResponse resp = shopperService.add(req);
+		
+		return ResponseEntity.created(URI.create("/api/shoppers/" + resp.id()))
+				.body(resp);
+	}
 }

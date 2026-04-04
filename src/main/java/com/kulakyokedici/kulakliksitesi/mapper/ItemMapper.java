@@ -19,6 +19,7 @@ public class ItemMapper
 				item.getPrice(),
 				item.getDescription(),
 				new SellerResponse(
+						item.getSeller().getId(),
 						item.getSeller().getUsername(),
 						item.getSeller().getEmail(),
 						item.getSeller().getCompanyName()),
