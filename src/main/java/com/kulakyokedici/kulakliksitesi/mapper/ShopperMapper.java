@@ -48,6 +48,7 @@ public class ShopperMapper
 	public ShopperResponse toResponse(Shopper shopper)
 	{
 		return new ShopperResponse(
+				shopper.getId(),
 				shopper.getUsername(),
 				shopper.getEmail(),
 				shopper.getFirstName(),

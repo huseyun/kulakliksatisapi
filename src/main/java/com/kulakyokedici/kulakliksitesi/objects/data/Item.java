@@ -81,7 +81,12 @@ public class Item implements Comparable<Item>
 	{
 		return this.id.compareTo(other.id);
 	}
-
+	
+	public Long getId()
+	{
+		return id;
+	}
+	
 	public Seller getSeller()
 	{
 		return seller;

@@ -76,5 +76,13 @@ public class UserService
 		
 		userMapper.updateEntity(existing, req);
 	}
+	
+	public void delete(Long id)
+	{
+		userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
+		
+		userRepository.deleteById(id);
+	}
 }
 

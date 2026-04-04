@@ -78,6 +78,7 @@ public class SellerMapper
 	private ItemSummaryResponse toSummaryResponse(Item item)
 	{
 		return new ItemSummaryResponse(
+				item.getId(),
 				item.getTitle(),
 				item.getPrice(),
 				item.getImages().stream()

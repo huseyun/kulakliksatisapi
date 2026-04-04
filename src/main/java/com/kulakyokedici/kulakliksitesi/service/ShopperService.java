@@ -70,7 +70,7 @@ public class ShopperService
 				.collect(Collectors.toList());
 	}
 	
-	public void add(ShopperCreateRequest req)
+	public ShopperResponse add(ShopperCreateRequest req)
 	{
 		Shopper shopper = shopperMapper.toEntity(req);
 		
@@ -79,6 +79,8 @@ public class ShopperService
 				.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.SHOPPER)));
 		
 		shopperRepository.save(shopper);
+		
+		return shopperMapper.toResponse(shopper);
 	}
 	
 	@Transactional

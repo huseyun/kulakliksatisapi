@@ -15,8 +15,9 @@ public class ItemMapper
 	
 	public ItemResponse toResponse(Item item)
 	{
-		return new ItemResponse(item.getName(),
+		return new ItemResponse(item.getTitle(),
 				item.getPrice(),
+				item.getDescription(),
 				new SellerResponse(
 						item.getSeller().getUsername(),
 						item.getSeller().getEmail(),
@@ -27,6 +28,7 @@ public class ItemMapper
 	public ItemSummaryResponse toSummaryResponse(Item item)
 	{
 		return new ItemSummaryResponse(
+				item.getId(),
 				item.getTitle(),
 				item.getPrice(),
 				item.getSmallImages().stream()

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.ItemMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.Item;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
+import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.ItemRepository;
 
 import jakarta.persistence.EntityManager;
@@ -31,6 +33,14 @@ public class ItemService
 		this.itemRepository = itemRepository;
 		this.itemMapper = itemMapper;
 		this.entityManager = entityManager;
+	}
+	
+	public ItemResponse getById(Long id)
+	{
+		Item item = itemRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id));
+		
+		return itemMapper.toResponse(item);
 	}
 	
 	public List<ItemSummaryResponse> getSummaryAll()

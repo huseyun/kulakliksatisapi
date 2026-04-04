@@ -16,6 +16,9 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
 	// eager loading, proxy yerine tek sorguda getir.
 	@EntityGraph(attributePaths = {"images", "smallImages"})
     SortedSet<Item> findBySellerId(Long sellerId);
+	
+	@EntityGraph(attributePaths = {"seller", "images", "smallImages"})
+	Optional<Item> findById(Long id);
     
     Optional<Item> findByIdAndSellerId(Long itemId, Long sellerId);
     

@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
 import com.kulakyokedici.kulakliksitesi.service.ItemService;
 
@@ -34,4 +36,10 @@ public class ItemController
         List<ItemSummaryResponse> results = itemService.search(keyword);
         return ResponseEntity.ok(results);
     }
+	
+	@GetMapping("/items/{id}")
+	public ResponseEntity<ItemResponse> getItemById(@PathVariable Long id)
+	{
+		return ResponseEntity.ok(itemService.getById(id));
+	}
 }
