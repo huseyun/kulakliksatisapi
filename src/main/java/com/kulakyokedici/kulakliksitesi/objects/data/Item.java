@@ -44,6 +44,8 @@ public class Item implements Comparable<Item>
 	@KeywordField
 	private String brand;
 	
+
+
 	@Nullable
 	@Column(name = "item_price")
 	private Double price;
@@ -155,5 +157,15 @@ public class Item implements Comparable<Item>
 	public void setSmallImages(Set<Image> smallImages)
 	{
 		this.smallImages = smallImages;
+	}
+	
+	public String getBrand()
+	{
+		return brand;
+	}
+
+	public void setBrand(String brand)
+	{
+		this.brand = brand;
 	}
 }

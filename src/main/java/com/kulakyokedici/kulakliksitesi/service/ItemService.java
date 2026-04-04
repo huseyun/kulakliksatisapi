@@ -9,11 +9,17 @@ import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.ItemMapper;
+import com.kulakyokedici.kulakliksitesi.mapper.SellerMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.Item;
+import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ItemCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ItemUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerResponse;
 import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.ItemRepository;
+import com.kulakyokedici.kulakliksitesi.repository.SellerRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -22,17 +28,23 @@ import jakarta.transaction.Transactional;
 public class ItemService
 {
 	private final ItemRepository itemRepository;
+	private final SellerRepository sellerRepository;
 	private final ItemMapper itemMapper;
+	private final SellerMapper sellerMapper;
 	private final EntityManager entityManager;
 	
 	public ItemService(
 			ItemRepository itemRepository,
+			SellerRepository sellerRepository,
+			SellerMapper sellerMapper,
 			ItemMapper itemMapper,
 			EntityManager entityManager)
 	{
 		this.itemRepository = itemRepository;
 		this.itemMapper = itemMapper;
+		this.sellerMapper = sellerMapper;
 		this.entityManager = entityManager;
+		this.sellerRepository = sellerRepository;
 	}
 	
 	public ItemResponse getById(Long id)
@@ -41,6 +53,25 @@ public class ItemService
 				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id));
 		
 		return itemMapper.toResponse(item);
+	}
+	
+	public SellerResponse getSellerById(Long id)
+	{
+	    Item item = itemRepository.findById(id)
+	            .orElseThrow(() -> new ResourceNotFoundException("item", "id", id));
+		
+		return sellerMapper.toResponse(item.getSeller());
+	}
+	
+	@Transactional
+	public void update(
+			Long id,
+			ItemUpdateRequest req)
+	{
+		Item item = itemRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id));
+		
+		itemMapper.updateEntity(item, req);
 	}
 	
 	public List<ItemSummaryResponse> getSummaryAll()
@@ -81,5 +112,18 @@ public class ItemService
         		.collect(Collectors.toList());
         
         return response;
+	}
+	
+	@Transactional
+	public ItemResponse add(ItemCreateRequest req, String username)
+	{
+		Seller seller = sellerRepository.findByUsername(username)
+				.orElseThrow(() -> new ResourceNotFoundException("seller", "username", username));
+		
+		Item item = itemMapper.toEntity(req, seller);
+		
+		seller.getItems().add(item);
+		
+		return itemMapper.toResponse(item);
 	}
 }

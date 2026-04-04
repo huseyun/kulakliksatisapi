@@ -17,6 +17,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/sellers")
+@PreAuthorize("hasRole('SELLER')")
 public class SellerController
 {
 	private final SellerService sellerService;
@@ -27,7 +28,6 @@ public class SellerController
 		this.sellerService = sellerService;
 	}
 	
-	@PreAuthorize("hasRole('SELLER')")
 	@PutMapping
 	public ResponseEntity<Void> updateSellerDetails(
 			@Valid @RequestBody SellerDetailsUpdateRequest req,
