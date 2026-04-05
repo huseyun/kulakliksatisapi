@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.ItemMapper;
 import com.kulakyokedici.kulakliksitesi.mapper.SellerMapper;
+import com.kulakyokedici.kulakliksitesi.objects.data.Image;
 import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ItemCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ItemImageCreateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ItemUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
@@ -125,5 +127,26 @@ public class ItemService
 		seller.getItems().add(item);
 		
 		return itemMapper.toResponse(item);
+	}
+	
+	@Transactional
+	public void addImage(ItemImageCreateRequest req, Long id)
+	{
+		Item item = itemRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id));
+		
+		Image smallImage = new Image(req.smallImageUrl());
+		Image image = new Image(req.imageUrl());
+		item.getImages().add(image);
+		item.getSmallImages().add(smallImage);
+	}
+	
+	public void delete(Long id)
+	{
+		itemRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("seller", "id", id));
+		
+		itemRepository.deleteById(id);
+		
 	}
 }

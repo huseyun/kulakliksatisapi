@@ -44,8 +44,6 @@ public class Item implements Comparable<Item>
 	@KeywordField
 	private String brand;
 	
-
-
 	@Nullable
 	@Column(name = "item_price")
 	private Double price;
