@@ -26,7 +26,6 @@ public class ShopperMapper
 		Shopper shopper = new Shopper();
 		
 		shopper.setUsername(newShopper.username());
-		shopper.setPassword(passwordEncoder.encode(newShopper.password()));
 		shopper.setEmail(newShopper.email());
 		shopper.setFirstName(newShopper.firstName());
 		shopper.setLastName(newShopper.lastName());
@@ -61,7 +60,6 @@ public class ShopperMapper
 		shopper.setFirstName(req.firstName());
 		shopper.setLastName(req.lastName());
 		shopper.setUsername(req.username());
-		shopper.setPassword(passwordEncoder.encode(req.password()));
 	}
 	
 	public void updateEntity(Shopper shopper, ShopperDetailsUpdateRequest req)

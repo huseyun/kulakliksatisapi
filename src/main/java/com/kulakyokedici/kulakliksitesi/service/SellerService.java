@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.SellerMapper;
+import com.kulakyokedici.kulakliksitesi.objects.data.EUserType;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerCreateRequest;
@@ -92,6 +93,9 @@ public class SellerService
 	public void add(SellerCreateRequest newSeller)
 	{
 		Seller seller = sellerMapper.toEntity(newSeller);
+		
+		seller.getUserTypes().add(userTypesRepository.findByName(EUserType.SELLER)
+				.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.SELLER)));
 		
 		sellerRepository.save(seller);
 		

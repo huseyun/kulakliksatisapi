@@ -24,6 +24,7 @@ public class AdminMapper {
 	public AdminResponse toResponse(Admin admin)
 	{
 		return new AdminResponse(
+				admin.getId(),
 				admin.getUsername(),
 				admin.getEmail());
 	}

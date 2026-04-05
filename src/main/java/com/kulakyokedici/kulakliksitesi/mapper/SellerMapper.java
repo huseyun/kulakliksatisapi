@@ -30,7 +30,6 @@ public class SellerMapper
 	{
 		Seller seller = new Seller();
 		seller.setUsername(newSeller.username());
-		seller.setPassword(passwordEncoder.encode(newSeller.password()));
 		seller.setCompanyName(newSeller.companyName());
 		seller.setEmail(newSeller.email());
 		
@@ -73,7 +72,6 @@ public class SellerMapper
 	{
 		seller.setEmail(req.email());
 		seller.setUsername(req.username());
-		seller.setPassword(passwordEncoder.encode(req.password()));
 		seller.setCompanyName(req.companyName());
 	}
 	

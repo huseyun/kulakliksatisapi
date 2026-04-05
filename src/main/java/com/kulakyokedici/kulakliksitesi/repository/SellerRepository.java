@@ -10,6 +10,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 
 public interface SellerRepository extends CrudRepository<Seller, Long>
 {
+	@EntityGraph(attributePaths = {"items", "items.images", "items.smallImages"})
 	public Optional<Seller> findById(Long id);
 	
 	public Optional<Seller> findByUsername(String username);
