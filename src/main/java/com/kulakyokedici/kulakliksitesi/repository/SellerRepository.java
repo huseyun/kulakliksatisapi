@@ -10,6 +10,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 
 public interface SellerRepository extends CrudRepository<Seller, Long>
 {
+	@EntityGraph(attributePaths = {"items", "items.images", "items.smallImages"})
 	public Optional<Seller> findById(Long id);
 	
 	public Optional<Seller> findByUsername(String username);
@@ -19,6 +20,6 @@ public interface SellerRepository extends CrudRepository<Seller, Long>
 	public Optional<Seller> findByCompanyName(String companyName);
 	
 	// eager loading, proxy yerine tek sorguda getir.
-	@EntityGraph(attributePaths = {"items", "items.images"})
+	@EntityGraph(attributePaths = {"items", "items.images", "items.smallImages"})
 	public List<Seller> findAll();
 }

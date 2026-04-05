@@ -3,6 +3,10 @@ package com.kulakyokedici.kulakliksitesi.objects.data;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
+
 import jakarta.annotation.Nullable;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CollectionTable;
@@ -20,19 +24,29 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "items")
+@Indexed
 public class Item implements Comparable<Item>
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "item_name")
+	@Column(name = "name")
 	@Nullable
-	private String itemName;
+	private String name;
+	
+	@Column(name = "title")
+	@FullTextField
+	@Nullable
+	private String title;
+	
+	@Column(name = "brand")
+	@KeywordField
+	private String brand;
 	
 	@Nullable
 	@Column(name = "item_price")
-	private Double itemPrice;
+	private Double price;
 	
 	private transient Double priceAfterTax;
 	
@@ -42,15 +56,24 @@ public class Item implements Comparable<Item>
     private Seller seller;
     
 	@ElementCollection
-	@CollectionTable(name = "image")
+	@CollectionTable(name = "images")
 	@Nullable
 	@AttributeOverride(
 			name = "url",
 			column = @Column(name = "image_url"))
 	private Set<Image> images = new HashSet<>();
 	
+	@ElementCollection
+	@CollectionTable(name = "small_images")
+	@Nullable
+	@AttributeOverride(
+			name = "url",
+			column = @Column(name = "small_image_url"))
+	private Set<Image> smallImages = new HashSet<>();
+	
 	@Nullable
 	@Column(name = "description")
+	@FullTextField
 	private String description;
 	
 	@Override
@@ -58,7 +81,12 @@ public class Item implements Comparable<Item>
 	{
 		return this.id.compareTo(other.id);
 	}
-
+	
+	public Long getId()
+	{
+		return id;
+	}
+	
 	public Seller getSeller()
 	{
 		return seller;
@@ -79,24 +107,24 @@ public class Item implements Comparable<Item>
 		this.images = images;
 	}
 
-	public void setItemPrice(Double itemPrice)
+	public void setPrice(Double itemPrice)
 	{
-		this.itemPrice = itemPrice;
+		this.price = itemPrice;
 	}
 
-	public String getItemName()
+	public String getName()
 	{
-		return itemName;
+		return name;
 	}
 	
-	public void setItemName(String itemName)
+	public void setName(String itemName)
 	{
-		this.itemName = itemName;
+		this.name = itemName;
 	}
     
-    public Double getItemPrice()
+    public Double getPrice()
     {
-    	return itemPrice;
+    	return price;
     }
 	
     public String getDescription()
@@ -107,5 +135,35 @@ public class Item implements Comparable<Item>
 	public void setDescription(String description)
 	{
 		this.description = description;
+	}
+	
+	public String getTitle()
+	{
+		return title;
+	}
+
+	public void setTitle(String title)
+	{
+		this.title = title;
+	}
+	
+	public Set<Image> getSmallImages()
+	{
+		return smallImages;
+	}
+
+	public void setSmallImages(Set<Image> smallImages)
+	{
+		this.smallImages = smallImages;
+	}
+	
+	public String getBrand()
+	{
+		return brand;
+	}
+
+	public void setBrand(String brand)
+	{
+		this.brand = brand;
 	}
 }

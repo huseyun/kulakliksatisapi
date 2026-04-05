@@ -3,6 +3,7 @@
  * TODO loglama mekanizması
  * TODO user controller işine başla.
  * TODO lombok'a bir bak.
+ * TODO oluşturma endpoint'lerini REST'e göre(gövdesi ve belki de location header'i full olacak şekilde ayarla.
  * TODO SONRAYA testing.
  * TODO KOLAYLIK mapstruct kütüphanesine bir bak.
  * TODO PRENSIP service'leri interface haline getirme.

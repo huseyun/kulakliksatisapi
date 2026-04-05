@@ -2,6 +2,7 @@ package com.kulakyokedici.kulakliksitesi.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,7 +18,7 @@ import com.kulakyokedici.kulakliksitesi.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/admin")
+@RequestMapping("api/admin/users")
 public class AdminUserController
 {
 	private UserService userService;
@@ -33,7 +34,7 @@ public class AdminUserController
 	 * GET istekleri
 	 */
 	
-	@GetMapping("/users")
+	@GetMapping
 	public ResponseEntity<?> getUser(
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam(name = "email", required = false) String email)
@@ -50,7 +51,7 @@ public class AdminUserController
 		return ResponseEntity.ok(userResponse);
 	}
 	
-	@GetMapping("/users/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<UserResponse> getUserById(@PathVariable Long id)
 	{
 		return ResponseEntity.ok(userService.getById(id));
@@ -59,19 +60,29 @@ public class AdminUserController
 	
 	/*
 	 * POST istekleri
-	 * yeni kaynak eklemek için.
 	 */
 	
 	/*
 	 * PUT istekleri
-	 * kaynak güncellemek için.
 	 */
 	
-	@PutMapping("/users/{userId}")
-	public ResponseEntity<Void> updateUser(@PathVariable Long userId,
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> updateUser(@PathVariable Long id,
 			@Valid @RequestBody UserUpdateRequest newUser)
 	{
-		userService.update(userId, newUser);
+		userService.update(id, newUser);
+		return ResponseEntity.noContent().build();
+	}
+	
+	/*
+	 * DELETE istekleri
+	 */
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteUser(@PathVariable Long id)
+	{
+		userService.delete(id);
+		
 		return ResponseEntity.noContent().build();
 	}
 }

@@ -72,7 +72,7 @@ public class AdminSellerController
 	@GetMapping("/sellers/{sellerId}/items")
 	public ResponseEntity<Set<ItemSummaryResponse>> getItemsBySellerId(@PathVariable Long sellerId)
 	{
-		return ResponseEntity.ok(itemService.getAllBySellerId(sellerId));
+		return ResponseEntity.ok(itemService.getSummaryAllBySellerId(sellerId));
 	}
 	
 	/*

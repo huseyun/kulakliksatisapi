@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kulakyokedici.kulakliksitesi.mapper.UserMapper;
 import com.kulakyokedici.kulakliksitesi.objects.data.User;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.UserPasswordUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.UserUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.UserResponse;
 import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
@@ -75,6 +76,23 @@ public class UserService
 				.orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
 		
 		userMapper.updateEntity(existing, req);
+	}
+	
+	@Transactional
+	public void updatePassword(Long id, UserPasswordUpdateRequest req)
+	{
+		User existing = userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
+		
+		userMapper.updateEntity(existing, req);
+	}
+	
+	public void delete(Long id)
+	{
+		userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
+		
+		userRepository.deleteById(id);
 	}
 }
 

@@ -83,7 +83,7 @@ public class DataSeeder implements CommandLineRunner {
         {
         	Seller seller = new Seller();
         	seller.setUsername("seller");
-        	seller.setPassword(passwordEncoder.encode("shopperpass"));
+        	seller.setPassword(passwordEncoder.encode("sellerpass"));
         	seller.setEmail("seller@seller.com");
         	seller.setCompanyName("ödemiş ltd şti");
         	
@@ -97,10 +97,15 @@ public class DataSeeder implements CommandLineRunner {
         	Image image = new Image();
         	image.setUrl("https://cdn.jsdelivr.net/gh/huseyun/contentdeliverygeneral@0.1.0/kulaklik-satis-api/product_detail_x2_desktop_HD_600_Sennheiser_01.webp");
         	
+        	Image smallImage = new Image();
+        	smallImage.setUrl("https://cdn.jsdelivr.net/gh/huseyun/contentdeliverygeneral@master/kulaklik-satis-api/item_images_small/product_detail_x2_desktop_HD_600_Sennheiser_01%20(1).webp");
+        	
         	Item item = new Item();
-        	item.setItemName("logitek g502");
-        	item.setItemPrice(550.0);
+        	item.setTitle("logitek g502");
+        	item.setPrice(550.0);
         	item.getImages().add(image);
+        	
+        	item.getSmallImages().add(smallImage);
         	
         	item.setSeller(seller);
         	

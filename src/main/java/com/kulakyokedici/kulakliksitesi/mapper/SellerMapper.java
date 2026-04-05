@@ -1,11 +1,15 @@
 package com.kulakyokedici.kulakliksitesi.mapper;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerCreateRequest;
+import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerDetailsUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.SellerUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerDetailedResponse;
@@ -26,7 +30,6 @@ public class SellerMapper
 	{
 		Seller seller = new Seller();
 		seller.setUsername(newSeller.username());
-		seller.setPassword(passwordEncoder.encode(newSeller.password()));
 		seller.setCompanyName(newSeller.companyName());
 		seller.setEmail(newSeller.email());
 		
@@ -47,20 +50,19 @@ public class SellerMapper
 	public SellerDetailedResponse toDetailedResponse(Seller seller)
 	{
 		return new SellerDetailedResponse(
+				seller.getId(),
 				seller.getUsername(),
 				seller.getEmail(),
 				seller.getCompanyName(),
 				seller.getItems().stream()
-					.map(item -> new ItemSummaryResponse(
-							item.getItemName(),
-							item.getItemPrice(),
-							item.getImages()))
-					.collect(java.util.stream.Collectors.toSet()));
+					.map(item -> toSummaryResponse(item))
+					.collect(Collectors.toSet()));
 	}
 	
 	public SellerResponse toResponse(Seller seller)
 	{
 		return new SellerResponse(
+				seller.getId(),
 				seller.getUsername(),
 				seller.getEmail(),
 				seller.getCompanyName());
@@ -70,7 +72,23 @@ public class SellerMapper
 	{
 		seller.setEmail(req.email());
 		seller.setUsername(req.username());
-		seller.setPassword(passwordEncoder.encode(req.password()));
 		seller.setCompanyName(req.companyName());
+	}
+	
+	public void updateEntity(Seller seller, SellerDetailsUpdateRequest req)
+	{
+		seller.setCompanyName(req.companyName());
+	}
+	
+	// itemler için yardımcı metot.
+	private ItemSummaryResponse toSummaryResponse(Item item)
+	{
+		return new ItemSummaryResponse(
+				item.getId(),
+				item.getTitle(),
+				item.getPrice(),
+				item.getImages().stream()
+					.map(image -> image.getUrl())
+					.collect(Collectors.toList()));
 	}
 }
