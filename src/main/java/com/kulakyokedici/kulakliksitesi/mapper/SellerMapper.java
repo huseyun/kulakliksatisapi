@@ -51,6 +51,7 @@ public class SellerMapper
 	public SellerDetailedResponse toDetailedResponse(Seller seller)
 	{
 		return new SellerDetailedResponse(
+				seller.getId(),
 				seller.getUsername(),
 				seller.getEmail(),
 				seller.getCompanyName(),

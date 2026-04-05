@@ -1,6 +1,9 @@
 package com.kulakyokedici.kulakliksitesi.controller;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +50,15 @@ public class AuthController {
         Authentication authenticatedPrincipal = authenticationManager.authenticate(authenticationRequest);
         
         UserDetails userDetails = (UserDetails) authenticatedPrincipal.getPrincipal();
-        String token = jwtService.generateToken(userDetails);
+        
+     // YENİ EKLENEN KISIM: Rolleri SecurityUser (UserDetails) içinden alıp Token'a eklemek
+        Map<String, Object> extraClaims = new HashMap<>();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .toList();
+        extraClaims.put("roles", roles);
+        
+        String token = jwtService.generateToken(extraClaims, userDetails);
         
         String jsonResponse = "{\"token\": \"" + token + "\"}";
         
