@@ -14,6 +14,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
+import com.kulakyokedici.kulakliksitesi.objects.exception.EErrorCode;
 import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.ItemRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
@@ -55,7 +56,7 @@ public class DataSeeder implements CommandLineRunner {
             admin.setEmail("admin@admin.com");
 
             UserType adminRole = userTypeRepository.findByName(EUserType.ADMIN)
-            		.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.ADMIN.name()));
+            		.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.ADMIN.name(), EErrorCode.USERTYPE_NOT_FOUND));
             
             admin.setUserTypes(new HashSet<>(Set.of(adminRole))); 
 
@@ -72,7 +73,7 @@ public class DataSeeder implements CommandLineRunner {
         	shopper.setLastName("fazaoglu");
         	
         	UserType shopperRole = userTypeRepository.findByName(EUserType.SHOPPER)
-        			.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.SHOPPER.name()));
+        			.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.SHOPPER.name(), EErrorCode.USERTYPE_NOT_FOUND));
         	
         	shopper.setUserTypes(new HashSet<>(Set.of(shopperRole)));
         	
@@ -88,7 +89,7 @@ public class DataSeeder implements CommandLineRunner {
         	seller.setCompanyName("ödemiş ltd şti");
         	
         	UserType sellerRole = userTypeRepository.findByName(EUserType.SELLER)
-        			.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.SELLER.name()));
+        			.orElseThrow(() -> new ResourceNotFoundException("user type", "user type name", EUserType.SELLER.name(), EErrorCode.USERTYPE_NOT_FOUND));
         	
         	seller.setUserTypes(new HashSet<>(Set.of(sellerRole)));
         	

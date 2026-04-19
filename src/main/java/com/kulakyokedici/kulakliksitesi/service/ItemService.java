@@ -19,6 +19,7 @@ import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ItemUpdateReque
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.SellerResponse;
+import com.kulakyokedici.kulakliksitesi.objects.exception.EErrorCode;
 import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
 import com.kulakyokedici.kulakliksitesi.repository.ItemRepository;
 import com.kulakyokedici.kulakliksitesi.repository.SellerRepository;
@@ -52,7 +53,7 @@ public class ItemService
 	public ItemResponse getById(Long id)
 	{
 		Item item = itemRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id));
+				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id, EErrorCode.ITEM_NOT_FOUND));
 		
 		return itemMapper.toResponse(item);
 	}
@@ -60,7 +61,7 @@ public class ItemService
 	public SellerResponse getSellerById(Long id)
 	{
 	    Item item = itemRepository.findById(id)
-	            .orElseThrow(() -> new ResourceNotFoundException("item", "id", id));
+	            .orElseThrow(() -> new ResourceNotFoundException("item", "id", id, EErrorCode.SELLER_NOT_FOUND));
 		
 		return sellerMapper.toResponse(item.getSeller());
 	}
@@ -71,7 +72,7 @@ public class ItemService
 			ItemUpdateRequest req)
 	{
 		Item item = itemRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id));
+				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id, EErrorCode.ITEM_NOT_FOUND));
 		
 		itemMapper.updateEntity(item, req);
 	}
@@ -120,7 +121,7 @@ public class ItemService
 	public ItemResponse add(ItemCreateRequest req, String username)
 	{
 		Seller seller = sellerRepository.findByUsername(username)
-				.orElseThrow(() -> new ResourceNotFoundException("seller", "username", username));
+				.orElseThrow(() -> new ResourceNotFoundException("seller", "username", username, EErrorCode.ITEM_NOT_FOUND));
 		
 		Item item = itemMapper.toEntity(req, seller);
 		
@@ -133,7 +134,7 @@ public class ItemService
 	public void addImage(ItemImageCreateRequest req, Long id)
 	{
 		Item item = itemRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id));
+				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id, EErrorCode.ITEM_NOT_FOUND));
 		
 		Image smallImage = new Image(req.smallImageUrl());
 		Image image = new Image(req.imageUrl());
@@ -144,7 +145,7 @@ public class ItemService
 	public void delete(Long id)
 	{
 		itemRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("seller", "id", id));
+				.orElseThrow(() -> new ResourceNotFoundException("seller", "id", id, EErrorCode.ITEM_NOT_FOUND));
 		
 		itemRepository.deleteById(id);
 		
