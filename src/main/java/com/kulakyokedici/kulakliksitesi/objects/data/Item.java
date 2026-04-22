@@ -58,18 +58,7 @@ public class Item implements Comparable<Item>
 	@ElementCollection
 	@CollectionTable(name = "images")
 	@Nullable
-	@AttributeOverride(
-			name = "url",
-			column = @Column(name = "image_url"))
 	private Set<Image> images = new HashSet<>();
-	
-	@ElementCollection
-	@CollectionTable(name = "small_images")
-	@Nullable
-	@AttributeOverride(
-			name = "url",
-			column = @Column(name = "small_image_url"))
-	private Set<Image> smallImages = new HashSet<>();
 	
 	@Nullable
 	@Column(name = "description")
@@ -145,16 +134,6 @@ public class Item implements Comparable<Item>
 	public void setTitle(String title)
 	{
 		this.title = title;
-	}
-	
-	public Set<Image> getSmallImages()
-	{
-		return smallImages;
-	}
-
-	public void setSmallImages(Set<Image> smallImages)
-	{
-		this.smallImages = smallImages;
 	}
 	
 	public String getBrand()

@@ -36,6 +36,11 @@ public class ItemService
 	private final SellerMapper sellerMapper;
 	private final EntityManager entityManager;
 	
+    private static final int STANDARD_SIZE = 800;
+    private static final int THUMBNAIL_SIZE = 200;
+    private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    private static final List<String> ALLOWED_TYPES = List.of("image/jpeg", "image/png", "image/webp");
+	
 	public ItemService(
 			ItemRepository itemRepository,
 			SellerRepository sellerRepository,
