@@ -11,17 +11,15 @@ import org.springframework.stereotype.Component;
 public class StorageProperties {
 
     private String endpoint;
-
-
 	private String accessKey;
     private String secretKey;
 
-    private Bucket bucket = new Bucket();
-
+    private String bucketProductImages;
+    
     // Tüm bucket isimlerini listelemek için yardımcı metot
     public Map<String, String> getAllBuckets() {
         Map<String, String> buckets = new HashMap<>();
-        buckets.put("product-photos", bucket.getProductPhotos());
+        buckets.put("product-images", bucketProductImages);
         return buckets;
     }
     
