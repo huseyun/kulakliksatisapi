@@ -31,6 +31,10 @@ public class Item implements Comparable<Item>
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	// Bu değer dışarıdan değiştirilemez (updatable=false), boş olamaz ve benzersizdir.
+	@Column(name = "item_uuid", updatable = false, nullable = false, unique = true)
+	private String itemUuid = java.util.UUID.randomUUID().toString();
+	
 	@Column(name = "name")
 	@Nullable
 	private String name;
@@ -145,4 +149,13 @@ public class Item implements Comparable<Item>
 	{
 		this.brand = brand;
 	}
+	
+	public String getItemUuid() {
+		return itemUuid;
+	}
+
+	public void setItemUuid(String itemUuid) {
+		this.itemUuid = itemUuid;
+	}
+
 }

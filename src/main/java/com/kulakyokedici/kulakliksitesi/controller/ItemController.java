@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ItemCreateRequest;
-import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ItemImageCreateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.request.ItemUpdateRequest;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemResponse;
 import com.kulakyokedici.kulakliksitesi.objects.data.dto.response.ItemSummaryResponse;
@@ -109,7 +110,7 @@ public class ItemController
 	@PostMapping("/{id}/images")
 	public ResponseEntity<Void> updateItemImages(
 			@PathVariable Long id,
-			@Valid @RequestBody ItemImageCreateRequest image,
+			@RequestPart MultipartFile file,
 			Principal principal)
 	{
 		SellerResponse sellerResp = itemService.getSellerById(id);
@@ -117,7 +118,7 @@ public class ItemController
 		if(!sellerResp.username().equals(principal.getName()))
 			throw new AccessDeniedException("bunu yapmaya yetkiniz yok.");
 		
-		itemService.addImage(image, id);
+		itemService.addImage(file, id);
 		
 		return ResponseEntity.noContent().build();
 	}
