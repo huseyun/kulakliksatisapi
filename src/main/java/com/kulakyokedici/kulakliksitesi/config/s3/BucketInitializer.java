@@ -10,6 +10,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
 import software.amazon.awssdk.services.s3.model.HeadBucketRequest;
 import software.amazon.awssdk.services.s3.model.NoSuchBucketException;
+import software.amazon.awssdk.services.s3.model.PutBucketPolicyRequest;
 
 @Component
 public class BucketInitializer {
@@ -41,6 +42,8 @@ public class BucketInitializer {
                         .bucket(bucketName)
                         .build());
                 System.out.println("Bucket oluşturuldu:  " + label + " " + bucketName);
+                
+                makeBucketPublic(bucketName);
             }
         }
     }
@@ -54,5 +57,30 @@ public class BucketInitializer {
         } catch (NoSuchBucketException e) {
             return false;
         }
+    }
+    
+    private void makeBucketPublic(String bucketName) {
+        // S3'ün anladığı kurallar bütününü (Policy) JSON string'i olarak hazırlıyoruz
+        String publicPolicy = "{"
+                + "\"Version\":\"2012-10-17\","
+                + "\"Statement\":["
+                + "  {"
+                + "    \"Sid\":\"PublicRead\","
+                + "    \"Effect\":\"Allow\"," // İzin Ver
+                + "    \"Principal\": \"*\"," // Herkese (İnternetteki herkes)
+                + "    \"Action\":[\"s3:GetObject\"]," // Sadece objeleri okuma/indirme yetkisi
+                + "    \"Resource\":[\"arn:aws:s3:::" + bucketName + "/*\"]" // Bu kovanın içindeki tüm dosyalara (/*)
+                + "  }"
+                + "]"
+                + "}";
+
+        // Amazon SDK'ya kuralı işleme emri veriyoruz
+        PutBucketPolicyRequest policyReq = PutBucketPolicyRequest.builder()
+                .bucket(bucketName)
+                .policy(publicPolicy)
+                .build();
+
+        s3Client.putBucketPolicy(policyReq);
+        System.out.println("Bucket yetkisi 'Public Read-Only' olarak ayarlandı: " + bucketName);
     }
 }

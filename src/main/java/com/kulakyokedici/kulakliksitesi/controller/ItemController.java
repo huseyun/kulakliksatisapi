@@ -111,6 +111,7 @@ public class ItemController
 	public ResponseEntity<Void> updateItemImages(
 			@PathVariable Long id,
 			@RequestPart MultipartFile file,
+			//@RequestBody boolean isThumbnail, // şimdilik işlevsiz
 			Principal principal)
 	{
 		SellerResponse sellerResp = itemService.getSellerById(id);

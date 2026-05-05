@@ -16,7 +16,7 @@ public class StorageProperties {
 
     private String bucketProductImages;
     
-    // Tüm bucket isimlerini listelemek için yardımcı metot
+	// Tüm bucket isimlerini listelemek için yardımcı metot
     public Map<String, String> getAllBuckets() {
         Map<String, String> buckets = new HashMap<>();
         buckets.put("product-images", bucketProductImages);
@@ -51,5 +51,15 @@ public class StorageProperties {
 	public void setSecretKey(String secretKey)
 	{
 		this.secretKey = secretKey;
+	}
+	
+    public String getBucketProductImages()
+	{
+		return bucketProductImages;
+	}
+
+	public void setBucketProductImages(String bucketProductImages)
+	{
+		this.bucketProductImages = bucketProductImages;
 	}
 }

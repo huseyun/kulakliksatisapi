@@ -228,6 +228,7 @@ public class ItemService
 		image.setOriginalKey(originalKey);
 		image.setThumbnailKey(thumbnailKey);
 		image.setStandartKey(standardKey);
+		image.setThumbnail(true);
 		
 		item.getImages().add(image);
 	}

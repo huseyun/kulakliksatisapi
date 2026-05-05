@@ -11,7 +11,7 @@ public class Image
 	
 	private String standardKey;
 	
-	private boolean isShowcase;
+	private boolean isThumbnail;
 
 	private int displayOrder;
 	
@@ -49,12 +49,12 @@ public class Image
 
 	public boolean isThumbnail()
 	{
-		return isShowcase;
+		return isThumbnail;
 	}
 
 	public void setThumbnail(boolean isThumbnail)
 	{
-		this.isShowcase = isThumbnail;
+		this.isThumbnail = isThumbnail;
 	}
 
 	public int getDisplayOrder()
