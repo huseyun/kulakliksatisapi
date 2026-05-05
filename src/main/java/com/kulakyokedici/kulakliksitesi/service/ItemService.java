@@ -162,67 +162,15 @@ public class ItemService
 		String thumbnailKey = baseFolderPath + "thumbnail-" + uniqueId + extension;
 		String standardKey = baseFolderPath + "standard-" + uniqueId + extension;
 		
-		ByteArrayOutputStream thumbnailOutput = new ByteArrayOutputStream();
-		ByteArrayOutputStream standardOutput = new ByteArrayOutputStream();
-		
-		// BURAYA BAKILACAK
-		try {
-			Thumbnails.of(file.getInputStream())
-					.size(800, 800)
-				    .outputFormat("jpg") // Formatı sabitlediğimiz için aşağıda image/jpeg diyeceğiz
-				   	.toOutputStream(thumbnailOutput);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        byte[] thumbnailBytes = thumbnailOutput.toByteArray();
-        InputStream thumbnailStream = new ByteArrayInputStream(thumbnailBytes);
-        long thumbnailSize = thumbnailBytes.length;
-        
-		try {
-			Thumbnails.of(file.getInputStream())
-					.size(1500, 1500)
-				    .outputFormat("jpg") // Formatı sabitlediğimiz için aşağıda image/jpeg diyeceğiz
-				   	.toOutputStream(standardOutput);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		byte[] standardBytes = standardOutput.toByteArray();
-		InputStream standardStream = new ByteArrayInputStream(standardBytes);
-		long standardSize = standardBytes.length;
-        
-        // BURALARA DA BAKILACAK
-		try {
-			storageService.uploadFile(
-					file.getInputStream(), 
-					file.getSize(), 
-				    file.getContentType(), 
-				    targetBucket, 
-				    originalKey
-				);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		storageService.uploadFile(
-                thumbnailStream, 
-                thumbnailSize, 
-                "image/jpeg", // Thumbnailator jpg ürettiği için tip sabit
-                targetBucket, 
-                thumbnailKey
-        );
+			file, 
+			file.getSize(), 
+		    file.getContentType(), 
+		    targetBucket, 
+		    originalKey);
 		
-		storageService.uploadFile(
-                standardStream, 
-                standardSize, 
-                "image/jpeg", // Thumbnailator jpg ürettiği için tip sabit
-                targetBucket, 
-                standardKey
-        );
+		storageService.reshapeAndUploadImage(file, 1500, 1500, targetBucket, standardKey);
+		storageService.reshapeAndUploadImage(file, 800, 800, targetBucket, thumbnailKey);
 		
 		Image image = new Image();
 		image.setOriginalKey(originalKey);

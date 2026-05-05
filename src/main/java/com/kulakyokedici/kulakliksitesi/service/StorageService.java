@@ -1,15 +1,22 @@
 package com.kulakyokedici.kulakliksitesi.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kulakyokedici.kulakliksitesi.config.s3.StorageProperties;
+import com.kulakyokedici.kulakliksitesi.objects.exception.StorageException;
 
+import net.coobird.thumbnailator.Thumbnails;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
 
 @Service
 public class StorageService 
@@ -22,31 +29,84 @@ public class StorageService
 		this.s3Client = s3Client;
 	}
 	
-	public String uploadFile(
-			InputStream inputStream, 
+	public void uploadFile(
+			MultipartFile file, 
 			long contentLength, 
 			String contentType, 
 			String bucketName, 
 			String objectKey)
 	{
-		try
-		{
 			PutObjectRequest req = PutObjectRequest.builder()
 					.bucket(bucketName)
 					.key(objectKey)
 					.contentType(contentType)
 					.build();
 			
-			s3Client.putObject(
-					req, 
-					RequestBody.fromInputStream(inputStream, contentLength));
+			try
+			{
+				s3Client.putObject(
+						req, 
+						RequestBody.fromInputStream(file.getInputStream(), contentLength));
+			} catch (IOException e)
+			{
+				throw new StorageException("dosya sisteminde bir hata oluştu:" + e.getMessage());
+			}
+	}
+	
+	public void uploadFile(
+			InputStream input, 
+			long contentLength, 
+			String contentType, 
+			String bucketName, 
+			String objectKey)
+	{
+			PutObjectRequest req = PutObjectRequest.builder()
+					.bucket(bucketName)
+					.key(objectKey)
+					.contentType(contentType)
+					.build();
 			
-			return objectKey;
-		} catch(Exception e)
+				s3Client.putObject(
+						req, 
+						RequestBody.fromInputStream(input, contentLength));
+	}
+	
+	public void reshapeAndUploadImage(
+			MultipartFile file,
+			int width,
+			int height,
+			String bucketName,
+			String key)
+	{
+		byte[] reshapedBytes = reshapeImage(file, width, height);
+		
+		InputStream inputStream = new ByteArrayInputStream(reshapedBytes);
+		long reshapedLength = reshapedBytes.length;
+		
+		uploadFile(
+				inputStream,
+				reshapedLength,
+				"image/jpeg",
+				bucketName,
+				key);
+	}
+	
+	private byte[] reshapeImage(MultipartFile file, int width, int height)
+	{
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		
+		try 
 		{
-			throw new RuntimeException("Dosya depolama servisine yüklenirken hata oluştu: " + e.getMessage(), e);
+			Thumbnails.of(file.getInputStream())
+					.size(width, height)
+				    .outputFormat("jpg")
+				   	.toOutputStream(outputStream);
+		} catch (IOException e) 
+		{
+			throw new StorageException("dosya sisteminde bir hata oluştu:" + e.getMessage());
 		}
 		
+		return outputStream.toByteArray();
 	}
 	
 	private String getExtension(String fileName) {
