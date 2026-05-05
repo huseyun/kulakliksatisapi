@@ -55,6 +55,7 @@ public class ItemMapper
 		String thumbnailKey = storageProperties.getEndpoint()
 				+ "/"
 				+ storageProperties.getAllBuckets().get("product-images")
+				+ "/"
 				+ item.getImages().stream()
 				.filter(image -> image.isThumbnail())
 				.findAny()

@@ -144,7 +144,7 @@ public class ItemService
 		return itemMapper.toResponse(item);
 	}
 	
-	@Transactional
+	@Transactional //e
 	public void addImage(MultipartFile file, Long id)
 	{
 		Item item = itemRepository.findById(id)

@@ -52,6 +52,7 @@ public class Item implements Comparable<Item>
 	@Column(name = "item_price")
 	private Double price;
 	
+	// uygulama içi fiyat hesaplama yapılacak.
 	private transient Double priceAfterTax;
 	
 	@NotNull
