@@ -144,41 +144,53 @@ public class ItemService
 		return itemMapper.toResponse(item);
 	}
 	
-	@Transactional //e
-	public void addImage(MultipartFile file, Long id)
+	@Transactional
+	public void addImages(List<MultipartFile> files, Long id, List<Boolean> isThumbnail)
 	{
 		Item item = itemRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("item", "id", id, EErrorCode.ITEM_NOT_FOUND));
 		
 		String targetBucket = storageProperties.getAllBuckets().get("product-images");
-		String uniqueId = UUID.randomUUID().toString();
-		String extension = getExtension(file.getOriginalFilename());
-		
 		
 		String productName = item.getItemUuid();
 		String baseFolderPath = productName + "/";
 		
-		String originalKey = baseFolderPath + "original-" + uniqueId + extension;
-		String thumbnailKey = baseFolderPath + "thumbnail-" + uniqueId + extension;
-		String standardKey = baseFolderPath + "standard-" + uniqueId + extension;
-		
-		storageService.uploadFile(
-			file, 
-			file.getSize(), 
-		    file.getContentType(), 
-		    targetBucket, 
-		    originalKey);
-		
-		storageService.reshapeAndUploadImage(file, 1500, 1500, targetBucket, standardKey);
-		storageService.reshapeAndUploadImage(file, 800, 800, targetBucket, thumbnailKey);
-		
-		Image image = new Image();
-		image.setOriginalKey(originalKey);
-		image.setThumbnailKey(thumbnailKey);
-		image.setStandartKey(standardKey);
-		image.setThumbnail(true);
-		
-		item.getImages().add(image);
+		int i = 0;
+		for(MultipartFile file : files)
+		{
+			String extension = getExtension(file.getOriginalFilename());
+			String uniqueId = UUID.randomUUID().toString();
+			String originalKey = baseFolderPath + "original-" + uniqueId + extension;
+			String thumbnailKey = baseFolderPath + "thumbnail-" + uniqueId + extension;
+			String standardKey = baseFolderPath + "standard-" + uniqueId + extension;
+			
+			storageService.uploadFile(
+					file, 
+					file.getSize(), 
+				    file.getContentType(), 
+				    targetBucket, 
+				    originalKey);
+			
+			storageService.reshapeAndUploadImage(file, 1500, 1500, targetBucket, standardKey);
+			storageService.reshapeAndUploadImage(file, 800, 800, targetBucket, thumbnailKey);
+			
+			Image image = new Image();
+			image.setOriginalKey(originalKey);
+			image.setThumbnailKey(thumbnailKey);
+			image.setStandartKey(standardKey);
+			
+			if(isThumbnail.get(i).booleanValue() == true)
+			{
+				item.getImages().stream()
+				.forEach(img -> img.setThumbnail(false));
+				image.setThumbnail(true);
+			}
+			else
+				image.setThumbnail(false);
+			
+			item.getImages().add(image);
+			i++;
+		}
 	}
 	
 	public void delete(Long id)

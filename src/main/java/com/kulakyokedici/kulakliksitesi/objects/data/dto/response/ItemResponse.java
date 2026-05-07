@@ -1,6 +1,6 @@
 package com.kulakyokedici.kulakliksitesi.objects.data.dto.response;
 
-import java.util.Set;
+import java.util.List;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Image;
 
@@ -10,7 +10,7 @@ public record ItemResponse(
 		Double price,
 		String description,
 		SellerResponse seller,
-		Set<Image> images
+		List<Image> images
 		)
 {
 	public ItemResponse(
@@ -19,7 +19,7 @@ public record ItemResponse(
 			Double price,
 			String description,
 			SellerResponse seller,
-			Set<Image> images)
+			List<Image> images)
 	{
 		this.id = id;
 		this.title = title;

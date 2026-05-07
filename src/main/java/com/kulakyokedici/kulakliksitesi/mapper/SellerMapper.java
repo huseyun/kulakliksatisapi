@@ -88,17 +88,25 @@ public class SellerMapper
 	// itemler için yardımcı metot.
 	private ItemSummaryResponse toSummaryResponse(Item item)
 	{
-		String thumbnailKey = item.getImages().stream()
-				.filter(image -> image.isThumbnail())
-				.findAny().get().getThumbnailKey();
+		String thumbnailKey;
+		if(!item.getImages().isEmpty())
+			thumbnailKey = storageProperties.getEndpoint()
+					+ "/"
+					+ storageProperties.getAllBuckets().get("product-images")
+					+ "/"
+					+ item.getImages().stream()
+					.filter(image -> image.isThumbnail())
+					.findAny()
+					.map(image -> image.getThumbnailKey())
+					.orElse("");
+		else
+			thumbnailKey = "-";
 		
 		return new ItemSummaryResponse(
 				item.getId(),
 				item.getTitle(),
 				item.getPrice(),
-				storageProperties.getEndpoint()
-				+ "/"
-				+ storageProperties.getAllBuckets().get("product-images")
+				thumbnailKey
 				);
 	}
 }

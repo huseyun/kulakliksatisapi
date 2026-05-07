@@ -1,14 +1,13 @@
 package com.kulakyokedici.kulakliksitesi.objects.data;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -63,7 +62,7 @@ public class Item implements Comparable<Item>
 	@ElementCollection
 	@CollectionTable(name = "images")
 	@Nullable
-	private Set<Image> images = new HashSet<>();
+	private List<Image> images;
 	
 	@Nullable
 	@Column(name = "description")
@@ -91,12 +90,12 @@ public class Item implements Comparable<Item>
 		this.seller = seller;
 	}
 
-	public Set<Image> getImages()
+	public List<Image> getImages()
 	{
 		return images;
 	}
 
-	public void setImages(Set<Image> images)
+	public void setImages(List<Image> images)
 	{
 		this.images = images;
 	}

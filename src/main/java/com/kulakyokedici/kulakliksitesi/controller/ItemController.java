@@ -48,11 +48,7 @@ public class ItemController
 	 * GET istekleri
 	 */
 	
-	@GetMapping
-	public ResponseEntity<List<ItemSummaryResponse>> getSummaryItemList()
-	{
-		return ResponseEntity.ok(itemService.getSummaryAll());
-	}
+
 	
 	@GetMapping("/search")
     public ResponseEntity<List<ItemSummaryResponse>> searchItems(
@@ -110,8 +106,8 @@ public class ItemController
 	@PostMapping("/{id}/images")
 	public ResponseEntity<Void> updateItemImages(
 			@PathVariable Long id,
-			@RequestPart MultipartFile file,
-			//@RequestBody boolean isThumbnail, // şimdilik işlevsiz
+			@RequestPart List<MultipartFile> files,
+			@RequestParam(required = false) List<Boolean> isThumbnail,
 			Principal principal)
 	{
 		SellerResponse sellerResp = itemService.getSellerById(id);
@@ -119,7 +115,7 @@ public class ItemController
 		if(!sellerResp.username().equals(principal.getName()))
 			throw new AccessDeniedException("bunu yapmaya yetkiniz yok.");
 		
-		itemService.addImage(file, id);
+		itemService.addImages(files, id, isThumbnail);
 		
 		return ResponseEntity.noContent().build();
 	}

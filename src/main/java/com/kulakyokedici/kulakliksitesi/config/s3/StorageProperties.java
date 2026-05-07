@@ -15,27 +15,13 @@ import lombok.Setter;
 @Setter
 public class StorageProperties {
 
-    private final String endpoint;
-    private final String publicEndPoint;
+    private String endpoint;
+    private String publicEndPoint;
     
-	private final String accessKey;
-    private final String secretKey;
+	private String accessKey;
+    private String secretKey;
     
-    private final String bucketProductImages;
-    
-    public StorageProperties(
-    		String endpoint,
-    		String accessKey,
-    		String secretKey,
-    		String publicEndPoint,
-    		String bucketProductImages) 
-    {
-		this.endpoint = endpoint;
-		this.accessKey = accessKey;
-		this.secretKey = secretKey;
-		this.publicEndPoint = publicEndPoint;
-		this.bucketProductImages = bucketProductImages;
-	}
+    private String bucketProductImages;
     
 	// Tüm bucket isimlerini listelemek için yardımcı metot
     public Map<String, String> getAllBuckets() {
