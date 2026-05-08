@@ -1,6 +1,5 @@
 package com.kulakyokedici.kulakliksitesi.objects.data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
@@ -20,14 +19,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "items")
 @Indexed
+@Getter
+@Setter
 public class Item implements Comparable<Item>
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Setter(AccessLevel.NONE)
 	private Long id;
 	
 	// Bu değer dışarıdan değiştirilemez (updatable=false), boş olamaz ve benzersizdir.
@@ -54,6 +59,13 @@ public class Item implements Comparable<Item>
 	// uygulama içi fiyat hesaplama yapılacak.
 	private transient Double priceAfterTax;
 	
+	@Column(name = "is_recommended")
+	private boolean isRecommended;
+	
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category;
+	
 	@NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
@@ -74,88 +86,4 @@ public class Item implements Comparable<Item>
 	{
 		return this.id.compareTo(other.id);
 	}
-	
-	public Long getId()
-	{
-		return id;
-	}
-	
-	public Seller getSeller()
-	{
-		return seller;
-	}
-
-	public void setSeller(Seller seller)
-	{
-		this.seller = seller;
-	}
-
-	public List<Image> getImages()
-	{
-		return images;
-	}
-
-	public void setImages(List<Image> images)
-	{
-		this.images = images;
-	}
-
-	public void setPrice(Double itemPrice)
-	{
-		this.price = itemPrice;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-	
-	public void setName(String itemName)
-	{
-		this.name = itemName;
-	}
-    
-    public Double getPrice()
-    {
-    	return price;
-    }
-	
-    public String getDescription()
-	{
-		return description;
-	}
-
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
-	
-	public String getTitle()
-	{
-		return title;
-	}
-
-	public void setTitle(String title)
-	{
-		this.title = title;
-	}
-	
-	public String getBrand()
-	{
-		return brand;
-	}
-
-	public void setBrand(String brand)
-	{
-		this.brand = brand;
-	}
-	
-	public String getItemUuid() {
-		return itemUuid;
-	}
-
-	public void setItemUuid(String itemUuid) {
-		this.itemUuid = itemUuid;
-	}
-
 }

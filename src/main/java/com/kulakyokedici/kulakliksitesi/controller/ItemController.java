@@ -65,6 +65,12 @@ public class ItemController
 		return ResponseEntity.ok(itemService.getById(id));
 	}
 	
+	@GetMapping("/recommended")
+	public ResponseEntity<List<ItemSummaryResponse>> getRecommendedItems()
+	{
+		return ResponseEntity.ok(itemService.getSummaryAllRecommended());
+	}
+	
 	/*
 	 * PUT istekleri
 	 */

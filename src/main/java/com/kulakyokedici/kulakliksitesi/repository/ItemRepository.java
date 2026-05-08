@@ -29,4 +29,7 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
     
     @EntityGraph(attributePaths = {"images"})
     public List<Item> findAll();
+    
+    @EntityGraph(attributePaths = {"images"})
+    public List<Item> findByIsRecommended(boolean recommended);
 }

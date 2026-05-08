@@ -106,6 +106,7 @@ public class SellerMapper
 				item.getId(),
 				item.getTitle(),
 				item.getPrice(),
+				item.isRecommended(),
 				thumbnailKey
 				);
 	}

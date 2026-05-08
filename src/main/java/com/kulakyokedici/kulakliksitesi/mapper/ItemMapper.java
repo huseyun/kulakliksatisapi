@@ -70,6 +70,7 @@ public class ItemMapper
 				item.getId(),
 				item.getTitle(),
 				item.getPrice(),
+				item.isRecommended(),
 				thumbnailKey
 				);
 	}

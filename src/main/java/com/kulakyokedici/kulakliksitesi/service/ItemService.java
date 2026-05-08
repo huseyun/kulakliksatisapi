@@ -112,6 +112,17 @@ public class ItemService
 		return responseItems;
 	}
 	
+	public List<ItemSummaryResponse> getSummaryAllRecommended()
+	{
+		List<Item> recommendedItems = itemRepository.findByIsRecommended(true);
+		
+		List<ItemSummaryResponse> recommendedResponse = recommendedItems.stream()
+				.map(item -> itemMapper.toSummaryResponse(item))
+				.collect(Collectors.toList());
+		
+		return recommendedResponse;
+	}
+	
 	@Transactional
     public List<ItemSummaryResponse> search(String keyword) {
         // hibernate search oturumunu başlat 

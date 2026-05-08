@@ -8,14 +8,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.kulakyokedici.kulakliksitesi.objects.data.Admin;
+import com.kulakyokedici.kulakliksitesi.objects.data.Category;
+import com.kulakyokedici.kulakliksitesi.objects.data.ECategory;
 import com.kulakyokedici.kulakliksitesi.objects.data.EUserType;
-import com.kulakyokedici.kulakliksitesi.objects.data.Image;
 import com.kulakyokedici.kulakliksitesi.objects.data.Item;
 import com.kulakyokedici.kulakliksitesi.objects.data.Seller;
 import com.kulakyokedici.kulakliksitesi.objects.data.Shopper;
 import com.kulakyokedici.kulakliksitesi.objects.data.UserType;
 import com.kulakyokedici.kulakliksitesi.objects.exception.EErrorCode;
 import com.kulakyokedici.kulakliksitesi.objects.exception.ResourceNotFoundException;
+import com.kulakyokedici.kulakliksitesi.repository.CategoryRepository;
 import com.kulakyokedici.kulakliksitesi.repository.ItemRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserRepository;
 import com.kulakyokedici.kulakliksitesi.repository.UserTypeRepository;
@@ -29,15 +31,18 @@ public class DataSeeder implements CommandLineRunner {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CategoryRepository categoryRepository;
 
     public DataSeeder(UserTypeRepository userTypeRepository, 
                       UserRepository userRepository, 
                       PasswordEncoder passwordEncoder,
-                      ItemRepository itemRepository) {
+                      ItemRepository itemRepository,
+                      CategoryRepository categoryRepository) {
         this.userTypeRepository = userTypeRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.itemRepository = itemRepository;
+        this.categoryRepository = categoryRepository;
     }
     
     @Transactional
@@ -47,6 +52,10 @@ public class DataSeeder implements CommandLineRunner {
         createRoleIfNotFound(EUserType.ADMIN);
         createRoleIfNotFound(EUserType.SELLER);
         createRoleIfNotFound(EUserType.SHOPPER);
+        
+        createCategoryIfNotFound(ECategory.IN_EAR);
+        createCategoryIfNotFound(ECategory.ON_EAR);
+        createCategoryIfNotFound(ECategory.OVER_EAR);
 
         if (!userRepository.existsByUsername("admin")) 
         {
@@ -99,10 +108,14 @@ public class DataSeeder implements CommandLineRunner {
         	Item item = new Item();
         	item.setTitle("logitek g502");
         	item.setPrice(550.0);
-        	
         	item.setSeller(seller);
-        	
         	item.setDescription("herhangi bir eşya");
+        	item.setRecommended(true);
+        	
+        	Category overEarCategory = categoryRepository.findByCategory(ECategory.OVER_EAR)
+        			.orElseThrow(() -> new ResourceNotFoundException("category", "category name", ECategory.OVER_EAR.name(), EErrorCode.CATEGORY_NOT_FOUND));
+        	
+        	item.setCategory(overEarCategory);
         	
         	itemRepository.save(item);
         	
@@ -116,6 +129,15 @@ public class DataSeeder implements CommandLineRunner {
             UserType role = new UserType();
             role.setName(roleName);
             userTypeRepository.save(role);
+        }
+    }
+    
+    private void createCategoryIfNotFound(
+    		ECategory category) {
+        if (categoryRepository.findByCategory(category).isEmpty()) {
+            Category newCategory = new Category();
+            newCategory.setCategory(category);
+            categoryRepository.save(newCategory);
         }
     }
 }
