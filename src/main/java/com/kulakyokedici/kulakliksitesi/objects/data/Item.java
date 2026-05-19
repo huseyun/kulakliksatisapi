@@ -39,6 +39,9 @@ public class Item implements Comparable<Item>
 	@Column(name = "item_uuid", updatable = false, nullable = false, unique = true)
 	private String itemUuid = java.util.UUID.randomUUID().toString();
 	
+	@Column(name = "autoeq_id", nullable = true)
+	private String autoeqId;
+	
 	@Column(name = "name")
 	@Nullable
 	private String name;
