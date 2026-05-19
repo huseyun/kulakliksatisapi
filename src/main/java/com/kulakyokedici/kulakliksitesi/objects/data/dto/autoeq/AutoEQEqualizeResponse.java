@@ -5,8 +5,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record AutoEQEqualizeResponse(
-		@JsonProperty("source_id") String sourceId,
-		@JsonProperty("target_id") String targetId,
+		String source_id,
+		String target_id,
 		int fs,
 		@JsonProperty("preamp_db") double preampDb,
 		List<AutoEQBiquadFilter> filters)

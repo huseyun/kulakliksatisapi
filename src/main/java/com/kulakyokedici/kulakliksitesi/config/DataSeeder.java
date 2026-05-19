@@ -117,6 +117,8 @@ public class DataSeeder implements CommandLineRunner {
         	
         	item.setCategory(overEarCategory);
         	
+        	item.setAutoeqId("oratory1990/over-ear/Sennheiser HD 800");
+        	
         	itemRepository.save(item);
         	
         	seller.getItems().add(item);
