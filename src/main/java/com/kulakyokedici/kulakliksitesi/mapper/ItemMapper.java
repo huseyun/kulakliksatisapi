@@ -47,7 +47,10 @@ public class ItemMapper
 						item.getSeller().getUsername(),
 						item.getSeller().getEmail(),
 						item.getSeller().getCompanyName()),
-				item.getImages());
+				item.getImages(),
+				item.getAutoeqId()
+				);
+			
 	}
 	
 	public ItemSummaryResponse toSummaryResponse(Item item)
