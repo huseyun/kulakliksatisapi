@@ -1,9 +1,5 @@
 package com.kulakyokedici.kulakliksitesi.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -32,7 +28,6 @@ import com.kulakyokedici.kulakliksitesi.repository.SellerRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import net.coobird.thumbnailator.Thumbnails;
 
 @Service
 public class ItemService

@@ -115,10 +115,6 @@ public abstract class User
         this.userTypes = userTypes;
     }
     
-    public void resetId()
-	{
-		this.id = null;
-	}
     
     public void addUserType(UserType userType) {
         this.userTypes.add(userType);

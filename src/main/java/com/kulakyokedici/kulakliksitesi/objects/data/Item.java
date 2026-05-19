@@ -66,6 +66,9 @@ public class Item implements Comparable<Item>
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
+	@Column(name = "stock")
+	private Integer stock;
+	
 	@NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")

@@ -48,8 +48,6 @@ public class ItemController
 	 * GET istekleri
 	 */
 	
-
-	
 	@GetMapping("/search")
     public ResponseEntity<List<ItemSummaryResponse>> searchItems(
     		@RequestParam String keyword) {

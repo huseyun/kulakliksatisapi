@@ -1,6 +1,6 @@
 {
   "permissions": {
-    "defaultMode": "deny",
+    "default": "deny",
     "allow": [
       "Read",
       "Glob",
