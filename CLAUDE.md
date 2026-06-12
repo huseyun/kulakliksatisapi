@@ -84,25 +84,28 @@ src/main/java/com/kulakyokedici/kulakliksitesi/
 User (abstract, @Inheritance JOINED, tablo: all_users)
 ├── Admin
 ├── Seller (companyName, OneToMany→Item EAGER)
-└── Shopper (firstName, lastName, @Embedded billingAddress, shippingAddress)
+└── Shopper (firstName, lastName, @Embedded billingAddress, shippingAddress,
+             @OneToOne→Cart cascade ALL LAZY)
 User ↔ UserType (ManyToMany, join: user_typelist)
 UserType: EUserType enum (SHOPPER, SELLER, ADMIN)
-Item (id, itemUuid UUID, name, title, brand, price, priceAfterTax transient,
-isRecommended, description,
+Item (id, itemUuid UUID, autoeqId, name, title, brand, price, priceAfterTax transient,
+isRecommended, stock, description,
 ManyToOne→Seller, ManyToOne→Category,
 @ElementCollection→Image)
+Cart (id, @OneToOne→Shopper unique, @OneToMany→CartItem cascade ALL orphanRemoval)
+CartItem (id, @ManyToOne→Cart, @ManyToOne→Item, quantity;
+          equals() Item.itemUuid'e göre — ⚠️ hashCode() yok, contract ihlali)
 Image (@Embeddable): originalKey, thumbnailKey, standardKey, isThumbnail, displayOrder
 Address (@Embeddable): addressLine1/2, district, city, zipCode
 Category: ECategory enum (IN_EAR, ON_EAR, OVER_EAR)
 
 **Henüz yazılmamış domain'ler (frontend'in farkında olması gereken):**
-- Cart / Basket (sepet) — **yakın vadede yazılacak**
+- Cart / Basket (sepet) — entity + service var; ⚠️ Controller boş, endpoint exposed değil
 - Order / Purchase (sipariş)
 - Payment (ödeme)
 - Review / Rating (yorum/puan)
-- Stock / Inventory (stok — şu an Item'da `quantity` bile yok)
+- Stock / Inventory (stok — `Item.stock` alanı eklendi; rezervasyon/lock/concurrency mantığı yok, CartService addToCart `stock -= qty` yapıyor ama negatif kontrolü yok)
 - Notification (bildirim)
-- AutoEQ entegrasyonu (FastAPI servisi ile köprü) — **yakın vadede yazılacak**
 
 ---
 
@@ -175,30 +178,35 @@ Bu liste **canlı bir liste**. Sorun çözüldükçe maddeyi listeden çıkar.
 7. **`AccessDeniedException` / `AuthenticationException` handler yok** → Spring Security default HTML 401/403 dönüyor, JSON değil. Frontend bu durumda hatalı parse eder.
 8. **Validation mesajları TR/EN karışık** (`"username is too short or long"` vs `"kullanici adi bos olamaz."`) → bir dil seçilmeli.
 9. **`Seller.items` `FetchType.EAGER`** → bir seller yüklendiğinde tüm item'ları gelir. Performans sorunu adayı.
-10. **Repository'ler `CrudRepository` extends ediyor** → pagination yok. `JpaRepository`'ye geçilmeli.
+10. **Repository'ler `CrudRepository` extends ediyor** → pagination yok. `JpaRepository`'ye geçilmeli (`CartRepository` dahil).
+11. **`CartController` boş** → `/api/carts` mapping'i var ama hiç endpoint exposed değil; `CartService` metodları (`addToCart`, `incrementCartItem`, `setItemQuantity`, `removeFromCart`) controller'dan çağrılmıyor.
+12. **`CartService` stok yönetimi tutarsız ve güvensiz** → `addToCart`/`incrementCartItem` `item.setStock(item.getStock() - qty)` yapıyor (negatife düşebilir, kontrol yok); `setItemQuantity` stok'a hiç dokunmuyor. Concurrency koruması da yok.
+13. **`CartItem.equals()` LAZY proxy bağımlı** → `item.getItemUuid()` çağırıyor (Item LAZY load); initialization gerektirir. Ayrıca `hashCode()` override edilmemiş — Java contract ihlali.
+14. **AutoEQ endpoint'leri public** → `/api/autoeq/equalize` her çağrıda DB read + FastAPI network çağrısı yapıyor. Auth yok → DoS vektörü. Rate limiting veya auth gerekiyor mu, karar verilmeli.
 
 ### Düşük öncelikli
 
-11. Mapper'larda S3 URL oluşturma kodu copy-paste (ItemMapper + SellerMapper).
-12. Admin controller'larında ortak `@RequestMapping("/api/admin")` base eksik.
-13. Record canonical constructor'ları gereksiz yere yeniden yazılmış (ItemResponse, SellerResponse vs.).
-14. `ResponseEntity<?>` wildcard kullanımı admin controller'larda — ayrı endpoint'ler daha temiz olur.
-15. `@RequestMapping` leading slash tutarsız (bazı yerlerde `/api/...`, bazı yerlerde `api/...`).
-16. `storageProperties.getAllBuckets()` her çağrıda yeni HashMap.
-17. `getExtension()` metodu iki yerde (ItemService + StorageService).
-18. `User.resetId()` kullanılmıyor.
-19. `S3Config` region hardcoded `EU_CENTRAL_1`.
-20. `JwtService` / `JwtAuthenticationFilter` dosyalarının başında `// AI` yorumu — AI tarafından yazılmış olduğunu işaretliyor.
-21. `@Autowired` kullanımı tutarsız (Spring Boot 3.x'te tek constructor için gereksiz).
+15. Mapper'larda S3 URL oluşturma kodu copy-paste (ItemMapper + SellerMapper).
+16. Admin controller'larında ortak `@RequestMapping("/api/admin")` base eksik.
+17. Record canonical constructor'ları gereksiz yere yeniden yazılmış (ItemResponse, SellerResponse vs.).
+18. `ResponseEntity<?>` wildcard kullanımı admin controller'larda — ayrı endpoint'ler daha temiz olur.
+19. `@RequestMapping` leading slash tutarsız (bazı yerlerde `/api/...`, bazı yerlerde `api/...`).
+20. `storageProperties.getAllBuckets()` her çağrıda yeni HashMap.
+21. `getExtension()` metodu iki yerde (ItemService + StorageService).
+22. `S3Config` region hardcoded `EU_CENTRAL_1`.
+23. `JwtService` / `JwtAuthenticationFilter` dosyalarının başında `// AI` yorumu — AI tarafından yazılmış olduğunu işaretliyor.
+24. `@Autowired` kullanımı tutarsız (Spring Boot 3.x'te tek constructor için gereksiz).
+25. `Cart.@JoinColumn(name = "user_id")` — kafa karıştırıcı isim, aslında `shopper_id` olmalıydı. Joined inheritance yüzünden DB seviyesinde `shoppers.id`'e bağlanıyor ama "user" adlandırması yanıltıcı.
+26. AutoEQ iç DTO'ları (`AutoEQEqualizeRequest`, `AutoEQEqualizeResponse`) snake_case alanlar (`source_id`, `target_id`) içeriyor — Java convention dışı. FastAPI sözleşmesi snake_case olduğu için tutarlı; sadece bilinç notu.
 
 ---
 
 ## 11. Yakın Vade Roadmap
 
 **Sırasıyla:**
-1. **Cart / Sepet domain'i** — CartItem entity, CartService, sepete ekle/çıkar endpoint'leri.
-2. **AutoEQ entegrasyonu (FastAPI ↔ Spring Boot köprüsü)** — Ayrı bir FastAPI servisi AutoEQ verilerini servis edecek, Spring Boot bunu kullanıcıya proxy'leyecek (veya frontend doğrudan FastAPI'yi konuşacak — karar verilmedi).
-3. Yukarıdaki "kritik" bilinen sorunlar (en azından `@EnableMethodSecurity` + ownership check) bu domain'lerden önce düzeltilmeli.
+1. **Cart endpoint'leri** — entity ve service yazıldı; `CartController` boş, endpoint'ler açılacak (`GET /api/carts/me`, `POST /api/carts/items`, `PUT /api/carts/items/{id}`, `DELETE /api/carts/items/{id}`). Stok kontrolü, `CartItemResponse` DTO ve mapper eksik.
+2. **AutoEQ — tamamlandı.** Mimari kararı: Seçenek A (Frontend → Spring Boot → FastAPI proxy). Geriye kalan: AutoEQ endpoint'lerinin auth/rate limit gerektirip gerektirmediği kararı (şu an public), cache stratejisi.
+3. Yukarıdaki "kritik" bilinen sorunlar (en azından `@EnableMethodSecurity` + ownership check) Cart endpoint'leri açılmadan önce düzeltilmeli.
 
 **Sonra (öncelik sırası belirsiz):** Order, Payment, Stock, Review, Notification.
 

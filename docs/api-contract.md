@@ -83,6 +83,11 @@ Frontend bu enum değerlerini izleyerek Türkçe kullanıcı mesajları üretir.
 | `USERTYPE_NOT_FOUND` | 404 | `UserTypeService` |
 | `CATEGORY_NOT_FOUND` | 404 | (henüz controller'ı yok) |
 | `INTERNAL_SERVER_ERROR` | 500 | `StorageException`, genel `Exception` handler |
+| `CART_NOT_FOUND` | 404 | `CartService` (addToCart, setItemQuantity, incrementCartItem, removeFromCart) — ⚠️ henüz endpoint exposed değil |
+| `AUTOEQ_HEADPHONE_NOT_FOUND` | 404 | `AutoEQClientService.equalize` (FastAPI 404) |
+| `AUTOEQ_INVALID_ID` | 400 | `AutoEQClientService.equalize` (FastAPI 400) |
+| `AUTOEQ_NOT_SUPPORTED_FOR_PRODUCT` | 400 | `AutoEQService.equalize` (Item.autoeqId null/blank) |
+| `AUTOEQ_SERVICE_UNAVAILABLE` | 502 | `AutoEQClientService` (FastAPI down / 5xx / network) |
 
 ⚠️ Şu an **storage-specific bir error code yok** — storage hataları `INTERNAL_SERVER_ERROR` dönüyor. İleride `STORAGE_ERROR` eklenebilir.
 
@@ -471,6 +476,59 @@ markdown## 6. Admin — Item Endpoint'leri
 
 ---
 
+## 11. AutoEQ Endpoint'leri
+
+`AutoEQController` — class-level `@PreAuthorize` **yok**, tüm endpoint'ler **public** (auth gerekmez). FastAPI servisi (`AUTOEQ_URL` env, default `http://localhost:8000`) önünde proxy görevi görüyor.
+
+⚠️ **Tasarım notu:** Şu an public — auth/rate limiting kararı verilmedi. `/equalize` her çağrıda DB read + FastAPI network çağrısı yapıyor, potansiyel DoS vektörü.
+
+### `POST /api/autoeq/equalize` — Kullanıcı kulaklığını ürüne benzetecek EQ profili
+- **Controller:** `AutoEQController.equalize()`
+- **Auth:** Public
+- **Request body:** `EqualizeRequest`
+```json
+  { "userHeadphoneId": "string", "productId": 5 }
+```
+- **Response 200:** `EqualizeResponse`
+```json
+  {
+    "fs": 44100,
+    "preampDb": -6.5,
+    "filters": [
+      { "type": "PK", "fc": 105.0, "q": 0.71, "gain": 2.3 }
+    ]
+  }
+```
+- **Hatalar:**
+  - 400 (`VALIDATION_ERROR`)
+  - 404 (`ITEM_NOT_FOUND`) — productId DB'de yok
+  - 400 (`AUTOEQ_NOT_SUPPORTED_FOR_PRODUCT`) — `Item.autoeqId` boş/null
+  - 404 (`AUTOEQ_HEADPHONE_NOT_FOUND`) — FastAPI 404 (kulaklık ölçümü bulunamadı)
+  - 400 (`AUTOEQ_INVALID_ID`) — FastAPI 400 (geçersiz ID formatı)
+  - 502 (`AUTOEQ_SERVICE_UNAVAILABLE`) — FastAPI down / 5xx / timeout
+
+### `GET /api/autoeq/headphones` — Kulaklık arama (frontend autocomplete)
+- **Controller:** `AutoEQController.searchHeadphones()`
+- **Auth:** Public
+- **Query params:**
+  - `q: String` — opsiyonel (boş veya null ise ilk N alfabetik)
+  - `limit: int` — opsiyonel, default `20`
+- **Response 200:** `AutoEQSearchResponse`
+```json
+  {
+    "results": [
+      { "id": "oratory1990/over-ear/Sennheiser HD 800",
+        "label": "Sennheiser HD 800",
+        "form": "over-ear",
+        "source": "oratory1990" }
+    ],
+    "total": 1
+  }
+```
+- **Hatalar:** 502 (`AUTOEQ_SERVICE_UNAVAILABLE`)
+
+---
+
 ## DTO Referansları
 
 ### Request DTO'lar
@@ -571,6 +629,13 @@ markdown## 6. Admin — Item Endpoint'leri
 | brand | String | `@NotBlank` |
 | description | String | `@Nullable` |
 
+#### `EqualizeRequest` (record)
+
+| Alan | Tip | Validation |
+|---|---|---|
+| userHeadphoneId | String | `@NotBlank` |
+| productId | Long | `@NotNull`, `@Positive` |
+
 #### ⚠️ Ölü kod: `ItemImageCreateRequest`
 Hiçbir endpoint kullanmıyor. Image upload'lar `multipart/form-data` ile `MultipartFile` olarak alınıyor.
 
@@ -641,6 +706,7 @@ Hiçbir endpoint kullanmıyor. Image upload'lar `multipart/form-data` ile `Multi
 | description | String | Evet | — |
 | seller | `SellerResponse` | Hayır | nested DTO |
 | images | `List<Image>` | Hayır | ⚠️ **entity sızıyor** — DTO değil. Alanları: `originalKey`, `thumbnailKey`, `standardKey`, `isThumbnail`, `displayOrder` (S3 key'leri, tam URL değil) |
+| autoeqId | String | Evet | AutoEQ profil ID (örn. `oratory1990/over-ear/Sennheiser HD 800`). null ise frontend "ses simülasyonu mevcut değil" göstermeli. |
 
 #### `ItemSummaryResponse` (record)
 
@@ -651,6 +717,39 @@ Hiçbir endpoint kullanmıyor. Image upload'lar `multipart/form-data` ile `Multi
 | price | Double | Evet |
 | isRecommended | boolean (primitive) | Hayır |
 | thumbnailImageUrl | String | Evet |
+
+#### `EqualizeResponse` (record)
+
+| Alan | Tip | Not |
+|---|---|---|
+| fs | int | sample rate (örn. 44100) |
+| preampDb | double | preamp gain (dB) |
+| filters | `List<BiquadFilter>` | uygulanacak biquad filtre zinciri |
+
+#### `BiquadFilter` (record)
+
+| Alan | Tip | Not |
+|---|---|---|
+| type | String | filtre tipi (örn. `PK`, `LSC`, `HSC`) |
+| fc | double | merkez frekans, Hz |
+| q | double | Q faktörü |
+| gain | double | dB |
+
+#### `AutoEQSearchResponse` (record)
+
+| Alan | Tip | Not |
+|---|---|---|
+| results | `List<AutoEQSearchEntry>` | — |
+| total | int | toplam sonuç sayısı |
+
+#### `AutoEQSearchEntry` (record)
+
+| Alan | Tip | Not |
+|---|---|---|
+| id | String | AutoEQ data path (örn. `oratory1990/over-ear/Sennheiser HD 800`) — `Item.autoeqId` bu formattadır |
+| label | String | kullanıcıya gösterilecek kulaklık adı |
+| form | String | `in-ear`, `on-ear`, `over-ear` |
+| source | String | ölçüm kaynağı (örn. `oratory1990`) |
 
 #### ⚠️ Ölü kod: `ShopperDetailsResponse`
 Hiçbir endpoint döndürmüyor. Planlanmış ama eklenmemiş.
@@ -673,11 +772,11 @@ Hiçbir endpoint döndürmüyor. Planlanmış ama eklenmemiş.
 - Yardım için `prompts/backend/review-changes.md` (Adım 4.7'de yazılacak) — son commit'leri tarayıp eksikleri raporlar
 
 **Yakın vadede beklenen güncellemeler:**
-- Cart / Sepet endpoint'leri (POST/DELETE /api/cart/items, GET /api/cart/me)
-- AutoEQ entegrasyonu için endpoint'ler (henüz tasarım belirsiz)
+- Cart endpoint'leri — Controller stub `/api/carts`'ta var, hiç endpoint exposed değil. Servis hazır (`CartService`).
 - `ItemCreateRequest` ve `ItemUpdateRequest`'e `price` alanı eklenmesi
 - `ItemController.getItemById` için SHOPPER erişim hakkı (ürün detay sayfası gereği)
 - Shopper adres güncelleme endpoint'i
+- AutoEQ endpoint'lerine auth/rate limiting eklenip eklenmeyeceği kararı
 
 **Bu dosyadaki ⚠️ uyarıları silme zamanı:**
 - `@EnableMethodSecurity` eklendiğinde → "Kritik Güvenlik Durumu" bölümü silinir, tüm "⚠️ şu an açık" notları silinir

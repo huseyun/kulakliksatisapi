@@ -106,7 +106,7 @@ public class DataSeeder implements CommandLineRunner {
         	
         	
         	Item item = new Item();
-        	item.setTitle("logitek g502");
+        	item.setTitle("hd 800");
         	item.setPrice(550.0);
         	item.setSeller(seller);
         	item.setDescription("herhangi bir eşya");
@@ -120,8 +120,65 @@ public class DataSeeder implements CommandLineRunner {
         	item.setAutoeqId("oratory1990/over-ear/Sennheiser HD 800");
         	
         	itemRepository.save(item);
-        	
         	seller.getItems().add(item);
+        	
+        	Item item2 = new Item();
+        	item2.setTitle("jbl tune 520bt");
+        	item2.setPrice(150.0);
+        	item2.setSeller(seller);
+        	item2.setDescription("rastgele bir eşya");
+        	item2.setRecommended(true);
+        	
+        	Category onEarCategory = categoryRepository.findByCategory(ECategory.ON_EAR)
+        			.orElseThrow(() -> new ResourceNotFoundException("category", "category name", ECategory.ON_EAR.name(), EErrorCode.CATEGORY_NOT_FOUND));
+        	
+        	item2.setCategory(onEarCategory);
+        	item2.setAutoeqId("rtings/over-ear/Bruel & Kjaer 5128/JBL Tune 520BT");
+        	
+        	itemRepository.save(item2);
+        	seller.getItems().add(item2);
+        	
+        	Item item3 = new Item();
+        	item3.setTitle("akg k371");
+        	item3.setPrice(450.0);
+        	item3.setSeller(seller);
+        	item3.setDescription("zasdh bir eşya");
+        	item3.setRecommended(true);
+        	
+        	item3.setCategory(overEarCategory);
+        	
+        	item3.setAutoeqId("oratory1990/over-ear/AKG K371");
+        	
+        	itemRepository.save(item3);
+        	seller.getItems().add(item3);
+        	
+        	Item item4 = new Item();
+        	item4.setTitle("mdr 7506");
+        	item4.setPrice(136.79);
+        	item4.setSeller(seller);
+        	item4.setDescription("kulaklık bir eşya");
+        	item4.setRecommended(true);
+        	
+        	item4.setCategory(overEarCategory);
+        	
+        	item4.setAutoeqId("oratory1990/over-ear/Sony MDR-7506");
+        	
+        	itemRepository.save(item4);
+        	seller.getItems().add(item4);
+        	
+        	Item item5 = new Item();
+        	item5.setTitle("audeze lcd-2 classic");
+        	item5.setPrice(478.21);
+        	item5.setSeller(seller);
+        	item5.setDescription("dfg fefg zzdsdfd ve famanas");
+        	item5.setRecommended(true);
+        	
+        	item5.setCategory(overEarCategory);
+        	
+        	item5.setAutoeqId("oratory1990/over-ear/Audeze LCD-2 Classic");
+        	
+        	itemRepository.save(item5);
+        	seller.getItems().add(item5);
         }
         
     }
